@@ -2,55 +2,40 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Linearizing exponentials</title>
+<title>Simplifying and expressing preferentially with sines</title>
 </head>
 <body >
-<a href="cascmd_en317.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en319.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en317.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en319.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:lin" class="subsection">9.3.4  Linearizing exponentials</h3>
-<p>The <span style="font-family:monospace">lin</span><a id="hevea_default559"></a> command will linearize
-expressions involving exponentials; namely, it will replace products
-of exponentials by exponentials of sums.
-It will first replace any hyperbolic functions by exponentials.
+<h3 id="ssec:trigsin" class="subsection">10.2.23  Simplifying and expressing preferentially with sines</h3>
+<p>Any trigonometric function can be written in terms of sines and
+cosines, and even powers of cosines can be turned into powers of sines by
+using the identity sin(<span style="font-style:italic">x</span>)<sup>2</sup>+cos(<span style="font-style:italic">x</span>)<sup>2</sup>=1. The
+<span style="font-family:monospace">trigsin</span><a id="hevea_default565"></a> command performs
+these substitutions.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">lin</span> takes
-<span style="font-style:italic">expr</span>, an expression.
-</li><li class="li-itemize"><span style="font-family:monospace">lin(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> returns the linearized
-version of <span style="font-style:italic">expr</span>.
-</li></ul><h4 id="sec712" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">lin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sinh</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)^2)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">e</span></span><sup><span style="color:#0000CC">2 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span></sup></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">4</span></td></tr>
-</table></td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">e</span><sup>−2 <span style="font-style:italic">x</span></sup></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">4</td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">lin</span></span><span style="font-weight:bold"><span style="color:#BF0000">((</span></span><span style="font-weight:bold"><span style="color:#BF0000">exp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)+1)^3)</span></span></td></tr>
+<span style="font-family:monospace">trigsin</span> takes
+<span style="font-style:italic">expr</span>, an expression containing trigonometric functions.
+</li><li class="li-itemize"><span style="font-family:monospace">trigsin(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> returns <span style="font-style:italic">expr</span>
+with the trigonometric functions rewritten in terms of sines and
+cosines, with as many cosines as possible transformed to sines.
+</li></ul><h4 id="sec717" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">trigsin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)^4+</span></span><span style="font-weight:bold"><span style="color:#BF0000">cos</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)^2+1)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC"><span style="font-style:italic">e</span></span><sup><span style="color:#0000CC">3 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span></sup><span style="color:#0000CC">+3 </span><span style="color:#0000CC"><span style="font-style:italic">e</span></span><sup><span style="color:#0000CC">2 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span></sup><span style="color:#0000CC">+3 </span><span style="color:#0000CC"><span style="font-style:italic">e</span></span><sup><span style="color:#0000CC"><span style="font-style:italic">x</span></span></sup><span style="color:#0000CC">+1
+</span><span style="color:#0000CC">sin</span><sup><span style="color:#0000CC">4</span></sup><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">−</span><span style="color:#0000CC">sin</span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+2
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
 <hr>
-<a href="cascmd_en317.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en319.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en317.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en319.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

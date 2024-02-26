@@ -2,35 +2,50 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Vertices</title>
+<title>Similarity in space</title>
 </head>
 <body >
-<a href="cascmd_en988.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en990.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en988.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en990.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec2438" class="subsection">25.14.6  Vertices</h3>
-<p>The <span style="font-family:monospace">vertices</span><a id="hevea_default1908"></a>
-command takes as argument a polyhedron.</p><p><span style="font-family:monospace">vertices</span> returns and draws a list of the vertices of the
-polyhedron. For example:
+<h3 id="ssec:3dsimilarity" class="subsection">26.12.6  Similarity in space</h3>
+<p>See Section <a href="cascmd_en894.html#ssec%3A2dsimilarity">25.14.6</a> for similarities in the plane.</p><p>The <span style="font-family:monospace">similarity</span><a id="hevea_default1897"></a>
+command creates a command to rotate and scale about a given line.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">similarity</span> takes three mandatory arguments and
+one optional argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">L</span>, a line (the axis of the rotation).
+</li><li class="li-itemize"><span style="font-style:italic">r</span>, a real number (the scaling ratio).
+</li><li class="li-itemize">θ, a real number (the angle of rotation).
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">G</span>, a geometric object.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">similarity(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">r</span>,θ<span style="font-family:monospace">)</span> returns a new command which
+rotates about <span style="font-style:italic">L</span> through an angle of θ and scales about <span style="font-style:italic">L</span>
+by a factor of <span style="font-style:italic">r</span>. If <span style="font-style:italic">r</span> is negative, the direction of rotation
+is reversed.
+</li><li class="li-itemize"><span style="font-family:monospace">similarity(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">r</span>,θ,<span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns and draws the
+transformation of <span style="font-style:italic">G</span>.
+</li></ul><h4 id="sec2467" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">sphere</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,0,0],0.5);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">similarity</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1,1)), 2, 2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">/3);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">blue</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">V</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">vertices</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">polyhedron</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,0,0],[-2,0,0],[2,0,0],[0,2,0],[0,0,2]))</span></span></td></tr>
-</table><p>then:
+<img src="cascmd_en397.png">
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">coordinates</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">V</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">similarity</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,1,1)), 2, 2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">/3, </span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
+</table><div class="center">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-[[0,0,0],[−2,0,0],[2,0,0],[0,2,0],[0,0,2]]
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table>
+<img src="cascmd_en398.png">
+
+</div>
 <hr>
-<a href="cascmd_en988.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en990.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en988.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en990.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

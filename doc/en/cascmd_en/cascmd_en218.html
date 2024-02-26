@@ -2,78 +2,94 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>β function</title>
+<title>Dirac distribution</title>
 </head>
 <body >
-<a href="cascmd_en217.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en219.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en217.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en219.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:beta" class="subsection">6.3.16  β function</h3>
-<p>The β function is defined by </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">β(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>)=</td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">1</td></tr>
+<h3 id="ssec:dirac" class="subsection">7.3.10  Dirac distribution</h3>
+<p>The Dirac δ distribution is the distributional derivative of
+the Heaviside function. This means that
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">+∞</td></tr>
 <tr><td class="dcell" style="text-align:left"><br>
 <br>
 </td></tr>
-<tr><td class="dcell" style="text-align:left">0</td></tr>
-</table></td><td class="dcell"> <span style="font-style:italic">t</span><sup><span style="font-style:italic">x</span>−1</sup>
-(1−<span style="font-style:italic">t</span>)<sup><span style="font-style:italic">y</span>−1</sup>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">Γ(<span style="font-style:italic">x</span>) Γ(<span style="font-style:italic">y</span>)</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">Γ(<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>)</td></tr>
-</table></td><td class="dcell">. </td></tr>
-</table><p> This is
-defined for <span style="font-style:italic">x</span> and <span style="font-style:italic">y</span> positive reals (to ensure the convergence of
-the integral) and by extension for <span style="font-style:italic">x</span> and <span style="font-style:italic">y</span> if they are not
-negative integers.
-Notably, β(1,1)=1, β(<span style="font-style:italic">n</span>,1)=1/<span style="font-style:italic">n</span> and β(<span style="font-style:italic">n</span>,2)=1/<span style="font-style:italic">n</span>(<span style="font-style:italic">n</span>+1).</p><p>The <span style="font-family:monospace">Beta</span><a id="hevea_default354"></a> command computes the β function.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">Beta</span> takes two arguments:
-<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, real numbers.
-</li><li class="li-itemize"><span style="font-family:monospace">Beta(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span><span style="font-family:monospace">)</span> returns the value of the β(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>).
-</li></ul><h4 id="sec450" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">Beta</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5,2)</span></span></td></tr>
+<tr><td class="dcell" style="text-align:left">−∞</td></tr>
+</table></td><td class="dcell"> δ(<span style="font-style:italic">x</span>) <span style="font-style:italic">d</span><span style="font-style:italic">x</span>=1
+</td></tr>
+</table><p>
+and, in fact,
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">b</span></td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left"><span style="font-style:italic">a</span></td></tr>
+</table></td><td class="dcell"> δ(<span style="font-style:italic">x</span>) <span style="font-style:italic">d</span><span style="font-style:italic">x</span>= </td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
+⎨<br>
+⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >    1</td><td style="text-align:left;white-space:nowrap" >if  0 ∈ [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>],</td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >    0</td><td style="text-align:left;white-space:nowrap" >otherwise.
+</td></tr>
+</table></td></tr>
+</table></td></tr>
+</table><p>
+The defining property of the Dirac distribution is that
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">+∞</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">−∞</td></tr>
+</table></td><td class="dcell"> δ(<span style="font-style:italic">x</span>) <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) <span style="font-style:italic">d</span><span style="font-style:italic">x</span>=<span style="font-style:italic">f</span>(0)
+</td></tr>
+</table><p>
+and consequently, for <span style="font-style:italic">c</span>∈[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>],
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">b</span></td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left"><span style="font-style:italic">a</span></td></tr>
+</table></td><td class="dcell"> δ(<span style="font-style:italic">x</span>−<span style="font-style:italic">c</span>)<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) <span style="font-style:italic">d</span><span style="font-style:italic">x</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">c</span>).
+</td></tr>
+</table><p>The <span style="font-family:monospace">Dirac</span><a id="hevea_default359"></a> command
+represents the Dirac distribution.</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">Dirac</span> takes one mandatory argument and one optional argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">x</span>, a symbol or an expression.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">n</span>, a nonnegative integer.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">Dirac(</span><span style="font-style:italic">x</span> ⟨,<span style="font-style:italic">n</span> ⟩<span style="font-family:monospace">)</span> returns δ<sup>(<span style="font-style:italic">n</span>)</sup>(<span style="font-style:italic">x</span>),
+where δ<sup>(<span style="font-style:italic">n</span>)</sup> is the <span style="font-style:italic">n</span>th derivative of δ.
+</li></ul><p>
+Note that <span style="font-style:italic">x</span> can be a real number, for which <span style="font-family:monospace">Dirac</span> returns 0 if <span style="font-style:italic">x</span>≠ 0
+and ∞ otherwise. However, since δ is a distribution, not a function,
+computing its value at a point makes little sense.</p><h4 id="sec453" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">int</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">Dirac</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-1)*</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,-1,2)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">30</span></td></tr>
-</table></td></tr>
+</span><span style="color:#0000CC">sin</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">1</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">Beta</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">int</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">Dirac</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-1,1)*</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,-</span></span><span style="font-weight:bold"><span style="color:#BF0000">inf</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">inf</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">Γ</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC">Γ</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">y</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+−</span><span style="color:#0000CC">cos</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">1</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
 ⎠</span></td></tr>
-</table></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">Γ</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">y</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td></tr>
-</table></td></tr>
-</table></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">Beta</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5.1,2.2)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.0242053671402
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
 <hr>
-<a href="cascmd_en217.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en219.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en217.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en219.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

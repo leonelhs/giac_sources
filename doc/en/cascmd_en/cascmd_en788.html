@@ -2,95 +2,62 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Starting the debugger</title>
+<title>While loop</title>
 </head>
 <body >
-<a href="cascmd_en787.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en789.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en787.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en789.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec2004" class="subsection">23.6.1  Starting the debugger</h3>
-<p>The <span style="font-family:monospace">debug</span><a id="hevea_default1605"></a>
-command starts the <span style="font-variant:small-caps">Xcas</span> debugger<a id="hevea_default1606"></a>.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">debug</span> takes
-<span style="font-style:italic">fn(arg)</span>, a function and its argument.
-</li><li class="li-itemize"><span style="font-family:monospace">debug(</span><span style="font-style:italic">fn(arg)</span><span style="font-family:monospace">)</span>
-brings up a debug window which contains a pane with the program with
-the current line highlighted, an <span style="font-family:monospace">eval</span> entry box,
-a pane with the program including the breakpoints, a row of buttons,
-and a pane keeping track of the values of variables.
-</li></ul><p>
-By default, the
-value of all variables in the program are in this pane. The buttons
-are shortcuts for entering commands in the <span style="font-family:monospace">eval</span> box, but you
-can enter other commands in the <span style="font-family:monospace">eval</span> box to change the values
-of variables or to run a command in the context of the program.</p><h4 id="sec2005" class="subsubsection">Example</h4>
+<h3 id="sec2023" class="subsection">24.3.5  While loop</h3>
+<p>The while-loop is used to repeat a code block as long as a
+given condition holds. To use it, enter
+<span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">while</span></span></span><a id="hevea_default1620"></a>, the
+condition in parentheses, and then a code block.
+</p><div class="center">
+<span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">while</span></span></span> <span style="font-family:monospace">(</span><span style="font-style:italic">boolean</span><span style="font-family:monospace">)</span> <span style="font-style:italic">block</span>
+</div><h4 id="sec2024" class="subsubsection">Example</h4>
 <p>
-With the <span style="font-family:monospace">sumprod</span> program:
+Add the terms of
+the harmonic series 1+1/2+1/3+1/4+⋯ until a term is less
+than 0.05.</p><p>You can initialize the sum <span style="font-family:monospace">S</span> to 0 and let
+<span style="font-family:monospace">j</span> be the first term 1. Input:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> sumprod(a,b):={
-   <span style="color:#0000CC"><span style="font-weight:bold">local</span></span> s,p;
-   s:=a+b;
-   p:=a*b;
-   <span style="color:#0000CC"><span style="font-weight:bold">return</span></span> [s,p];
- }</td></tr>
-</table><p>input:
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=0; </span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=1</span></span></td></tr>
+</table><p>Then use a while loop.
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">debug</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sumprod</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3))</span></span></td></tr>
-</table><p>which opens the debug window shown in Figure <a href="#fig%3Adebugwindow">23.2</a>.
-</p><blockquote class="figure"><div class="center"><div class="center"><hr style="width:80%;height:2"></div><img src="cascmd_en168.png">
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#0000CC">while</span></span><span style="font-weight:bold"><span style="color:#BF0000"> (1/</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">&gt;=0.05) { </span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1/</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">; </span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1; }</span></span></td></tr>
+</table><p>or:
 
-<div class="caption"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="vertical-align:top;text-align:left;" >Figure 23.2: <a id="fig:debugwindow"></a>The debug window in <span style="font-variant:small-caps">Xcas</span></td></tr>
-</table></div>
-<div class="center"><hr style="width:80%;height:2"></div></div></blockquote><p>
-It has the following buttons:
-</p><ul class="itemize"><li class="li-itemize">
-<span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">sst</span></span></span> runs the
-<span style="font-family:monospace">sst</span><a id="hevea_default1607"></a>
-command, which takes no arguments and runs the
-highlighted line in the program before moving to the next line.</li><li class="li-itemize"><span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">in</span></span></span> runs the
-<span style="font-family:monospace">sst_in</span><a id="hevea_default1608"></a>
-command, which takes no argument and runs one step in
-the program or a user defined function used in the program.</li><li class="li-itemize"><span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">cont</span></span></span> runs the
-<span style="font-family:monospace">cont</span><a id="hevea_default1609"></a> command,
-which takes no arguments and runs the commands
-from the highlighted line to a breakpoint.</li><li class="li-itemize"><span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">kill</span></span></span> runs the
-<span style="font-family:monospace">kill</span><a id="hevea_default1610"></a> command,
-which exits the debugger.</li><li class="li-itemize"><span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">break</span></span></span> puts the command
-<span style="font-family:monospace">breakpoint</span><a id="hevea_default1611"></a>
-in the <span style="font-family:monospace">eval</span> box, with default arguments
-of the current program and the current line. It sets a breakpoint at
-the given line of the given program. Alternatively, if you click on a
-line in the program in the top pane, you will get the
-<span style="font-family:monospace">breakpoint</span> command with that program and the line you clicked
-on.<p>You can set a breakpoint when you write a program with the
-<span style="font-family:monospace">halt</span><a id="hevea_default1612"></a> command.
-A <span style="font-family:monospace">halt()</span> line in the program will bring up the debugger
-during runtime. If you want to
-debug the program, though, it is still better to use the debug
-command. Also, you should remove any <span style="font-family:monospace">halt</span> commands when you
-are done debugging.</p></li><li class="li-itemize"><span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">rmbrk</span></span></span> puts the command
-<span style="font-family:monospace">rmbreakpoint</span><a id="hevea_default1613"></a>
-in the <span style="font-family:monospace">eval</span> box, with default
-arguments of the current program and the current line. It removes a
-breakpoint at the given line of the given program. Alternatively, you
-can click on the line in the program in the top pane with the bookmark
-you want to remove.</li><li class="li-itemize"><span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">watch</span></span></span> puts the command
-<span style="font-family:monospace">watch</span><a id="hevea_default1614"></a>
-in the <span style="font-family:monospace">eval</span> box, without the arguments filled
-in. It takes a list of variables as arguments, and will keep track of
-the values of these variables in the variable pane.</li><li class="li-itemize"><span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">rmwtch</span></span></span> puts the
-command <span style="font-family:monospace">rmwatch</span><a id="hevea_default1615"></a>
-in the <span style="font-family:monospace">eval</span> box
-without the arguments filled in. The arguments are the variables you
-want to remove from the watch list.
-</li></ul>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#0000CC">tantque</span></span><span style="font-weight:bold"><span style="color:#BF0000"> (1/</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">&gt;=0.05) </span></span><span style="font-weight:bold"><span style="color:#0000CC">faire</span></span><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1/</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">; </span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1; </span></span><span style="font-weight:bold"><span style="color:#0000CC">ftantque</span></span></td></tr>
+</table><p>then:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">55835135</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">15519504</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Note that a <span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">while</span></span></span> loop can also be written as a <span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">for</span></span></span>
+loop. For example, as long as <span style="font-family:monospace">S</span> is set to 0 and <span style="font-family:monospace">j</span>
+is set to 1, the above loop can be written as
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#0000CC">for</span></span><span style="font-weight:bold"><span style="color:#BF0000"> (;1/</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">&gt;=0.05;) { </span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1/</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">; </span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1; }</span></span></td></tr>
+</table><p>or, with only <span style="font-family:monospace">S</span> set to 0,
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#0000CC">for</span></span><span style="font-weight:bold"><span style="color:#BF0000"> (</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=1; 1/</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">&gt;=0.05; </span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">++) { </span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1/</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">; }</span></span></td></tr>
+</table><p>which, of course, yields the same result.</p>
 <hr>
-<a href="cascmd_en787.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en789.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en787.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en789.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

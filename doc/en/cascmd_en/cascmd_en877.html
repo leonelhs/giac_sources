@@ -2,48 +2,108 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Reflections in the plane</title>
+<title>Measurement and display</title>
 </head>
 <body >
-<a href="cascmd_en876.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en878.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en876.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en878.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:2dreflections" class="subsection">24.14.3  Reflections in the plane</h3>
-<p>See Section <a href="cascmd_en972.html#ssec%3A3dreflections">25.12.3</a> for reflections in space.</p><p>The <span style="font-family:monospace">reflection</span><a id="hevea_default1788"></a>
-command creates a reflection.
+<h3 id="sec:measdisplay" class="subsection">25.13.1  Measurement and display</h3>
+<p>
+<a id="hevea_default1765"></a>
+<a id="hevea_default1766"></a>
+<a id="hevea_default1767"></a>
+<a id="hevea_default1768"></a>
+<a id="hevea_default1769"></a>
+<a id="hevea_default1770"></a>
+<a id="hevea_default1771"></a>
+<a id="hevea_default1772"></a>
+<a id="hevea_default1773"></a>
+<a id="hevea_default1774"></a>
+<a id="hevea_default1775"></a></p><p>Many commands to find measures have a version ending in <span style="font-family:monospace">at</span>
+(or <span style="font-family:monospace">atraw</span>) which are used to interactively find and display
+the appropriate measure in a two-dimensional geometry screen. To use
+them, open a geometry screen with <span style="font-family:sans-serif">Alt+G</span> and then select the
+appropriate measure from the
+<span style="font-family:sans-serif">Mode</span> ▸ <span style="font-family:sans-serif">Measure</span> menu.
+Once the mode is selected, then clicking on the names
+of the appropriate objects (or, if a point is being selected, a name
+will be automatically generated if clicking on an open point) with the
+mouse, and then clicking on another point will put the measurement at
+the point; if the mode is the version ending in <span style="font-family:monospace">at</span>, then the
+measurement will have a label, if the mode is the version ending in
+<span style="font-family:monospace">atraw</span>, then the measurement will appear without a label.</p><p>The commands with <span style="font-family:monospace">at</span> and <span style="font-family:monospace">atraw</span> versions are the following:
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">reflection</span> takes one mandatory argument and
-one optional argument:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">P</span>, a point or a line.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">G</span>, a geometric object.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">reflection(</span><span style="font-style:italic">P</span><span style="font-family:monospace">)</span> returns a new command which
-reflects about <span style="font-style:italic">P</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">reflection(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns and draws the reflection of
-<span style="font-style:italic">G</span> about <span style="font-style:italic">P</span>.
-</li></ul><h4 id="sec2195" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rf</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">reflection</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">rf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>or:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">reflection</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+<span style="font-family:monospace">distance</span>, <span style="font-family:monospace">distanceat</span>, <span style="font-family:monospace">distanceatraw</span> —
+This finds the distance between two points or other geometric objects
+(see Section <a href="cascmd_en878.html#ssec%3A2ddist">25.13.2</a>).</li><li class="li-itemize"><span style="font-family:monospace">angle</span>, <span style="font-family:monospace">angleat</span>, <span style="font-family:monospace">angleatraw</span> — This finds the
+measure of an angle <span style="font-style:italic">BAC</span> given points <span style="font-style:italic">A</span>, <span style="font-style:italic">B</span> and <span style="font-style:italic">C</span> (see Section <a href="cascmd_en880.html#ssec%3A2dangle">25.13.4</a>).</li><li class="li-itemize"><span style="font-family:monospace">area</span>, <span style="font-family:monospace">areaat</span>, <span style="font-family:monospace">areaatraw</span> —
+This finds the area of a circle or a polygon
+which is star-shaped with respect to its first vertex
+(see Section <a href="cascmd_en882.html#sec%3Aarea">25.13.6</a>).</li><li class="li-itemize"><span style="font-family:monospace">perimeter</span>, <span style="font-family:monospace">perimeterat</span>, <span style="font-family:monospace">perimeteratraw</span> —
+This finds the perimeter of a circle, circular arc or a polygon
+(see Section <a href="cascmd_en883.html#sec%3Aperim">25.13.7</a>).</li><li class="li-itemize"><span style="font-family:monospace">slope</span>, <span style="font-family:monospace">slopeat</span>, <span style="font-family:monospace">slopeatraw</span> —
+This finds the slope of a line, segment, or
+two points which determine a line
+(see Section <a href="cascmd_en884.html#sec%3Aslope">25.13.8</a>).
+</li></ul><p>These commands can also be used from the command line. They are like
+the measurement command but take an extra argument, the point to
+display the measurement. When using the version ending in
+<span style="font-family:monospace">at</span>, use names for the objects rather create the objects
+within the measurement command.</p><h4 id="sec2221" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">square</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1/4+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">/4,1/2-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">/2); </span></span><span style="font-weight:bold"><span style="color:#BF0000">areaat</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">,8/7+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">/4)</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en274.png">
+<img src="cascmd_en305.png">
 
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">L</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">blue</span></span><span style="font-weight:bold"><span style="color:#BF0000">); </span></span><span style="font-weight:bold"><span style="color:#BF0000">P</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">); </span></span><span style="font-weight:bold"><span style="color:#BF0000">Q</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">reflection</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">L</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">P</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">square</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1/4+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">/4,1/2-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">/2); </span></span><span style="font-weight:bold"><span style="color:#BF0000">areaatraw</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">,8/7+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">/4)</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en275.png">
+<img src="cascmd_en306.png">
 
-</div>
+</div><p>
+
+More sophisticated legends are created with the <span style="font-family:monospace">legend</span> command
+(see Section <a href="cascmd_en815.html#sssec%3Aaddlegend">25.3.3</a>).
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">square</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1/4+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">/4,1/2-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">/2); </span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">area</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">); </span></span><span style="font-weight:bold"><span style="color:#BF0000">legend</span></span><span style="font-weight:bold"><span style="color:#BF0000">(8/7+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">/4,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"Area(S)="</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">string</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">blue</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en307.png">
+
+</div><p>The <span style="font-family:monospace">extract_measure</span> command displays a measurement.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">extract_measure</span> takes
+<span style="font-style:italic">atcommand</span>, one of the <span style="font-family:monospace">at</span> or <span style="font-family:monospace">atraw</span>
+commands (which displays a measurement).
+</li><li class="li-itemize"><span style="font-family:monospace">extract_measure(</span><span style="font-style:italic">atcommand</span><span style="font-family:monospace">)</span>
+returns the measurement.
+</li></ul><h4 id="sec2222" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1); </span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">); </span></span><span style="font-weight:bold"><span style="color:#BF0000">C</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">extract_measure</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">angleat</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">C</span></span><span style="font-weight:bold"><span style="color:#BF0000">,0.2</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span><span style="color:#0000CC">arctan</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎜<br>
+⎜<br>
+⎝</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎟<br>
+⎟<br>
+⎠</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en876.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en878.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en876.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en878.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

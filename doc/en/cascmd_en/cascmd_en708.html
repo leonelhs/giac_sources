@@ -2,275 +2,87 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Defining symbolic transform pairs</title>
+<title>Finding and removing leading/trailing zeros</title>
 </head>
 <body >
-<a href="cascmd_en707.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en709.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en707.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en709.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:addtable" class="subsection">19.4.3  Defining symbolic transform pairs</h3>
-<p>Some algebraic transformations behave predictably under
-the Fourier or Laplace transform. For example, if <span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>−<span style="font-style:italic">a</span>), then
-<span style="color:red"><span style="font-style:italic">F</span></span>{<span style="font-style:italic">g</span>}(<span style="font-style:italic">s</span>)=<span style="font-style:italic">e</span><sup>−2π <span style="font-style:italic">i</span> <span style="font-style:italic">a</span> <span style="font-style:italic">s</span></sup><span style="color:red"><span style="font-style:italic">F</span></span>{<span style="font-style:italic">f</span>}(<span style="font-style:italic">s</span>). The
-<span style="font-family:monospace">addtable</span><a id="hevea_default1403"></a>
-command lets you assign a function name to the
-Fourier (see Section <a href="cascmd_en707.html#ssec%3Acfourier">19.4.2</a>) or Laplace<a id="hevea_default1404"></a>
-(see Section <a href="cascmd_en461.html#ssec%3Alaplace">12.4.2</a>) transform of another function name, without specifying the either
-function. This allows you to alter the original function and see the
-effect on the transform.
+<h3 id="ssec:trim-vector" class="subsection">20.2.2  Finding and removing leading/trailing zeros</h3>
+<p>You can find leading and/or trailing zeros in a vector and remove them by using the
+<span style="font-family:monospace">trim</span><a id="hevea_default1418"></a> command
+(see Section <a href="cascmd_en090.html#ssec%3Atrim-string">5.2.5</a>, Section <a href="cascmd_en1019.html#ssec%3Atrim-image">27.1.9</a> and Section <a href="cascmd_en1022.html#ssec%3Aaudio-clips-from-old">27.2.2</a>
+for other usages of <span style="font-family:monospace">trim</span>).
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">addtable</span><a id="hevea_default1405"></a> takes five arguments:
+<span style="font-family:monospace">trim</span> takes one mandatory argument and up to three optional arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">transform</span>, which can be <span style="font-family:monospace">fourier</span> or
-<span style="font-family:monospace">laplace</span> and indicates the type of transform.
-</li><li class="li-itemize"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>), where <span style="font-style:italic">f</span> is a symbol representing an
-unspecified function of the variable <span style="font-style:italic">x</span>.
-</li><li class="li-itemize"><span style="font-style:italic">F</span>(<span style="font-style:italic">s</span>), where <span style="font-style:italic">F</span> is a symbol representing the
-transform of <span style="font-style:italic">f</span> and <span style="font-style:italic">s</span> is the new variable.
-</li><li class="li-itemize"><span style="font-style:italic">x</span>, the variable used by <span style="font-style:italic">f</span>.
-</li><li class="li-itemize"><span style="font-style:italic">s</span>, the variable used by <span style="font-style:italic">F</span>.
+<span style="font-style:italic">v</span>, a vector of real or complex numbers.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">threshold</span>, a positive real number specifying the
+threshold for zeros (by default, <span style="font-style:italic">threshold</span>=<span style="font-family:monospace">epsilon()</span>, the working precision).
+</li><li class="li-itemize">Optionally, either <span style="font-family:monospace">left</span> or <span style="font-family:monospace">right</span>, the symbol specifiying
+one-sided trimming.
+</li><li class="li-itemize">Optionally, <span style="font-family:monospace">index</span>, the symbol.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">addtable(</span><span style="font-style:italic">transform</span>,<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>),<span style="font-style:italic">F</span>(<span style="font-style:italic">s</span>),<span style="font-style:italic">x</span>,<span style="font-style:italic">s</span><span style="font-family:monospace">)</span>
-returns 1 if <span style="font-style:italic">F</span> is assigned as the transform of <span style="font-style:italic">f</span>, and 0
-otherwise. In the case that <span style="font-style:italic">F</span> is assigned as the transform
-of <span style="font-style:italic">f</span>, then the transform (<span style="font-family:monospace">fourier</span> or <span style="font-family:monospace">laplace</span>) of
-manipulations of <span style="font-style:italic">f</span> will be returned in terms of <span style="font-style:italic">F</span> and conversely.
-</li></ul><h4 id="sec1796" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">addtable</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">fourier</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">Y</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">trim(</span><span style="font-style:italic">v</span> ⟨,<span style="font-style:italic">threshold</span>
+ ⟩ ⟨,<span style="font-family:monospace">left</span>|<span style="font-family:monospace">right</span> ⟩ ⟨,<span style="font-family:monospace">index</span> ⟩<span style="font-family:monospace">)</span>
+finds the index <span style="font-style:italic">l</span> of the first nonzero element in <span style="font-style:italic">v</span> and the index <span style="font-style:italic">u</span> of the first
+trailing zero in <span style="font-style:italic">v</span>. A number <span style="font-style:italic">z</span> is considered to be zero if |<span style="font-style:italic">z</span>|≤<span style="font-style:italic">threshold</span>.
+If <span style="font-family:monospace">index</span> is given, then the return value is either <span style="font-style:italic">l</span> if <span style="font-family:monospace">left</span> is given,
+<span style="font-style:italic">u</span> if <span style="font-family:monospace">right</span> is given, or (<span style="font-style:italic">l</span>,<span style="font-style:italic">u</span>−<span style="font-style:italic">l</span>) otherwise (the last sequence contains the
+start and length of the truncated vector). If <span style="font-family:monospace">index</span> is omitted, then
+the return value is the portion of <span style="font-style:italic">v</span> between <span style="font-style:italic">v</span>[<span style="font-style:italic">l</span>] (inclusive) and <span style="font-style:italic">v</span>[<span style="font-style:italic">u</span>] (exclusive);
+if <span style="font-family:monospace">left</span> is given, then <span style="font-style:italic">u</span>=<span style="font-family:monospace">length(</span><span style="font-style:italic">v</span><span style="font-family:monospace">)</span>, and if <span style="font-family:monospace">right</span> is
+given, then <span style="font-style:italic">l</span>=0.
+</li></ul><h4 id="sec1812" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=[0,0,1</span></span><span style="font-weight:bold"><span style="color:#BF0000">e</span></span><span style="font-weight:bold"><span style="color:#BF0000">-16,0,-1</span></span><span style="font-weight:bold"><span style="color:#BF0000">e</span></span><span style="font-weight:bold"><span style="color:#BF0000">-13,1,2,3,0,0,0]:;</span></span></td></tr>
+</table><p>To remove leading zeros from <span style="font-style:italic">v</span>:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">trim</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">left</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">1,2,3,0,0,0</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+To remove leading and trailing zeros with threshold set to 10<sup>−14</sup> (the default is the value
+of <span style="font-family:monospace">epsilon()</span>, which is 10<sup>−12</sup> in this case):
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">trim</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1</span></span><span style="font-weight:bold"><span style="color:#BF0000">e</span></span><span style="font-weight:bold"><span style="color:#BF0000">-14)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">−1.0×10</span><sup><span style="color:#0000CC">−13</span></sup><span style="color:#0000CC">,1,2,3</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+To return the start and length of the nonzero part of <span style="font-style:italic">v</span>:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">d</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">n</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">trim</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">index</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-1
+5,3
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">F</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">fourier</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">e</span></span></td><td class="dcell"><table class="display"><tr><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">i</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">s</span></span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">a</span></span></td></tr>
-</table></td></tr>
-<tr><td class="dcell"><span style="color:#0000CC">&nbsp;</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">Y</span></span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎜<br>
-⎜<br>
-⎝</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">s</span></span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">a</span></span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎟<br>
-⎟<br>
-⎠</span></td></tr>
-</table></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎪<br>
-⎪</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">a</span></span></td><td class="dcell"><span style="color:#0000CC">⎪<br>
-⎪</span></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ifourier</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">F</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span><span style="color:#0000CC"><span style="font-style:italic">y</span></span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">fourier</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">Y</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-2 π  </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC">−</span><span style="color:#0000CC"><span style="font-style:italic">s</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">fourier</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)+</span></span><span style="font-weight:bold"><span style="color:#BF0000">Int</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">..</span></span><span style="font-weight:bold"><span style="color:#BF0000">inf</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">Y</span></span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">s</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC">π  </span><span style="color:#0000CC"><span style="font-style:italic">s</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC">δ</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">s</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">s</span></span><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">i</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td></tr>
-</table></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">s</span></span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">addtable</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">fourier</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">g</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">G</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-1
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">fourier</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">g</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">/2,3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-2 </span><span style="color:#0000CC"><span style="font-style:italic">G</span></span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC">2 </span><span style="color:#0000CC"><span style="font-style:italic">s</span></span><span style="color:#0000CC">,3 </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><h5 id="sec1797" class="paragraph">ODE solving with Fourier transforms.</h5>
-<p>
-Fourier transforms can be used for solving (partial) differential
-equations. For example, to obtain a particular solution to the equation
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>)+<span style="font-style:italic">y</span>′′(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>2</sup>θ(<span style="font-style:italic">x</span>),
-</td></tr>
 </table><p>
-where  θ  is the Heaviside function, you can first
-transform both sides of the above equation. Assuming that the
-symbolic transform pair <span style="color:red"><span style="font-style:italic">F</span></span>{<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>)}=<span style="font-style:italic">Y</span>(<span style="font-style:italic">s</span>) has been
-defined by using <span style="font-family:monospace">addtable</span> as above, then:
+Now, enter
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">L</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">fourier</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)+</span></span><span style="font-weight:bold"><span style="color:#BF0000">diff</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">R</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">fourier</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">Heaviside</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-−</span><span style="color:#0000CC"><span style="font-style:italic">Y</span></span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">s</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">s</span></span><span style="color:#0000CC">+1</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">s</span></span><span style="color:#0000CC">−1</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC">,
-−π  </span><span style="color:#0000CC">δ</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">s</span></span><span style="color:#0000CC">,2</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC">+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2 </span><span style="color:#0000CC"><span style="font-style:italic">i</span></span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">s</span></span><sup><span style="color:#0000CC">3</span></sup></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-Then you can solve the equation <span style="font-style:italic">L</span>=<span style="font-style:italic">R</span> for <span style="font-style:italic">Y</span>(<span style="font-style:italic">s</span>). Generally, you should
-apply <span style="font-family:monospace">csolve</span> instead of <span style="font-family:monospace">solve</span>.
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">sol</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">csolve</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">L</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">R</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">Y</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">))[0]</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">π  </span><span style="color:#0000CC"><span style="font-style:italic">s</span></span><sup><span style="color:#0000CC">3</span></sup><span style="color:#0000CC"> </span><span style="color:#0000CC">δ</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">s</span></span><span style="color:#0000CC">,2</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC">−2 </span><span style="color:#0000CC"><span style="font-style:italic">i</span></span></td></tr>
-</table></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">s</span></span><sup><span style="color:#0000CC">3</span></sup><span style="color:#0000CC"> </span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">s</span></span><span style="color:#0000CC">+1</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">s</span></span><span style="color:#0000CC">−1</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-Finally, you can apply <span style="font-family:monospace">ifourier</span> to obtain <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>).
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">expand</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">ifourier</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sol</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">sign</span></span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC">+2 </span><span style="color:#0000CC"><span style="font-style:italic">sign</span></span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC">cos</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">−2 </span><span style="color:#0000CC"><span style="font-style:italic">sign</span></span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC">−2</span></td></tr>
-</table></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-The above solution can be combined with solutions of the corresponding
-homogeneous equation to obtain the general solution.</p><p>For an another example, solve the Airy equation <span style="font-style:italic">y</span>′′−<span style="font-style:italic">x</span> <span style="font-style:italic">y</span>=0.
-Its Fourier transform is a first-order linear differential equation in <span style="font-style:italic">Y</span>:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">eq</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">fourier</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">diff</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2)-</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">)=0</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-−</span><span style="color:#0000CC"><span style="font-style:italic">i</span></span><span style="color:#0000CC"> </span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">d</span></span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">d</span></span><span style="color:#0000CC"><span style="font-style:italic">s</span></span></td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">Y</span></td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">s</span></td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">−<span style="font-style:italic">s</span><sup>2</sup> <span style="font-style:italic">Y</span></td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">s</span></td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">=0
-</td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-This equation can be solved by using <span style="font-family:monospace">dsolve</span>:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">dsolve</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">eq</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">Y</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><sub><span style="color:#0000CC">0</span></sub><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">e</span></span></td><td class="dcell"><table class="display"><tr><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">i</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">s</span></span><sup><span style="color:#0000CC">3</span></sup></td></tr>
-</table></td></tr>
-<tr><td class="dcell"><span style="color:#0000CC">&nbsp;</span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-The above result is the Fourier transform of <span style="font-style:italic">y</span>,
-i.e. <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">c</span><sub>0</sub><span style="color:red"><span style="font-style:italic">F</span></span><sup>−1</sup>{<span style="font-style:italic">e</span><sup>1/3 <span style="font-style:italic">i</span> <span style="font-style:italic">s</span><sup>3</sup></sup>}(<span style="font-style:italic">x</span>).
-For <span style="font-style:italic">c</span><sub>0</sub>=1 this is the Airy function of the first kind.
-Indeed:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">fourier</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">Airy_Ai</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span><span style="color:#0000CC"><span style="font-style:italic">e</span></span></td><td class="dcell"><table class="display"><tr><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">i</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">s</span></span><sup><span style="color:#0000CC">3</span></sup></td></tr>
-</table></td></tr>
-<tr><td class="dcell"><span style="color:#0000CC">&nbsp;</span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">mid</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">d</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">n</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>to obtain the trimmed variant of <span style="font-style:italic">v</span>.</p>
 <hr>
-<a href="cascmd_en707.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en709.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en707.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en709.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

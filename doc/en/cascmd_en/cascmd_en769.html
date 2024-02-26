@@ -2,81 +2,65 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Switch statement</title>
+<title>Local variables</title>
 </head>
 <body >
-<a href="cascmd_en768.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en770.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en768.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en770.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1951" class="subsection">23.3.2  Switch statement</h3>
-<p>The <span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">switch</span></span></span><a id="hevea_default1560"></a>
-statement can be used when you want the value of a
-block to depend on an integer. It takes one argument, an expression
-which evaluates to an integer. It should be followed by a sequence of
-<span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">case</span></span></span><a id="hevea_default1561"></a> statements, which takes
-the form <span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">case</span></span></span> followed
-by an integer and then a colon, which is followed by a code block to
-be executed if the expression equals the integer. At the end is an
-optional <span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">default</span></span></span><a id="hevea_default1562"></a>
-statement, which is followed by a code block to be executed if the
-expression does not equal any of the given integers.
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">switch</span></span></span><span style="font-family:monospace">(</span><span style="font-style:italic">n</span><span style="font-family:monospace">) {</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">  </span><span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">case</span></span></span> <span style="font-style:italic">n</span><sub>1</sub>: <span style="font-style:italic">block </span><span style="font-style:italic">n</span><sub>1</sub></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">  </span><span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">case</span></span></span> <span style="font-style:italic">n</span><sub>2</sub>: <span style="font-style:italic">block </span><span style="font-style:italic">n</span><sub>2</sub></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" >    …</td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">  </span><span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">case</span></span></span> <span style="font-style:italic">n</span><sub><span style="font-style:italic">k</span></sub>: <span style="font-style:italic">block </span><span style="font-style:italic">n</span><sub><span style="font-style:italic">k</span></sub></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">  </span><span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">default</span></span></span>: <span style="font-style:italic">default_block</span>
-</td></tr>
-</table>
-</div><p>
-Recall that the blocks need to be delimited by braces or by
-<span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">begin</span></span></span> and <span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">end</span></span></span>.</p><h4 id="sec1952" class="subsubsection">Example</h4>
-<p>
-As an example of a program which performs an operation on the first
-two variables depending on the third, you could enter (see
-Section <a href="cascmd_en751.html#ssec%3Aproged">23.1.1</a>):
+<h3 id="sec1974" class="subsection">24.1.3  Local variables</h3>
+<p>Local variables in a function definition can be given initial values
+in the line they are declared in by putting their initialization in
+parentheses; for example,
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> oper(a,b,c):={
-   <span style="color:#0000CC"><span style="font-weight:bold">switch</span></span> (c) {
-     <span style="color:#0000CC"><span style="font-weight:bold">case</span></span> 1:  { a:=a+b; <span style="color:#0000CC"><span style="font-weight:bold">break</span></span>; }
-     <span style="color:#0000CC"><span style="font-weight:bold">case</span></span> 2:  { a:=a-b; <span style="color:#0000CC"><span style="font-weight:bold">break</span></span>; }
-     <span style="color:#0000CC"><span style="font-weight:bold">case</span></span> 3:  { a:=a*b; <span style="color:#0000CC"><span style="font-weight:bold">break</span></span>; }
-     <span style="color:#0000CC"><span style="font-weight:bold">default</span></span>: { a:=a^b; }
-   }
-   <span style="color:#0000CC"><span style="font-weight:bold">return</span></span> a;
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> <span style="color:#0000CC"><span style="font-weight:bold">local</span></span> a,b;
+ a:=1;</td></tr>
+</table><p>is the same as
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> <span style="color:#0000CC"><span style="font-weight:bold">local</span></span> (a:=1), b;</td></tr>
+</table><p>Local variables should be given values within the function definition.
+If you want to use a local variable as a symbolic variable, then you
+can indicate that with the <span style="font-family:monospace">assume</span><a id="hevea_default1539"></a> command
+(see Section <a href="cascmd_en069.html#ssec%3Aabout">3.3.8</a>). For
+example, if you define a function <span style="font-family:monospace">myroots</span> by
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> myroots (a):={
+   <span style="color:#0000CC"><span style="font-weight:bold">local</span></span> x;
+   <span style="color:#0000CC"><span style="font-weight:bold">return</span></span> solve(x^2=a,x);
  }</td></tr>
-</table><p>Then:
+</table><p>then calling
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">oper</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,1)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">myroots</span></span><span style="font-weight:bold"><span style="color:#BF0000">(4)</span></span></td></tr>
+</table><p>will simply return the empty list. You could leave <span style="font-family:monospace">x</span>
+undeclared, but that would make <span style="font-family:monospace">x</span> a global variable and could
+interact with other functions in unexpected ways. You can get the
+behavior you probably expected by explicitly assuming <span style="font-family:monospace">x</span> to be a
+symbol<a id="hevea_default1540"></a>;
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> myroots(a):={
+   <span style="color:#0000CC"><span style="font-weight:bold">local</span></span> x;
+   assume(x,symbol);
+   <span style="color:#0000CC"><span style="font-weight:bold">return</span></span> solve(x^2=a,x);
+ }</td></tr>
+</table><p>(Alternatively, you could use <span style="font-family:monospace">purge(x)</span><a id="hevea_default1541"></a> instead
+of <span style="font-family:monospace">assume(x,symbol)</span>.) Now if you enter
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">myroots</span></span><span style="font-weight:bold"><span style="color:#BF0000">(4)</span></span></td></tr>
+</table><p>you will get
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-5
+[−2,2]
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><p>
-since the third argument is <span style="font-family:monospace">1</span>, and so <span style="font-family:monospace">oper(a,b,c)</span>
-will return <span style="font-style:italic">a</span>+<span style="font-style:italic">b</span>, and:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">oper</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,2)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-−1
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-since the third argument is <span style="font-family:monospace">2</span> and so <span style="font-family:monospace">oper(a,b,c)</span>
-will return <span style="font-style:italic">a</span>−<span style="font-style:italic">b</span>.</p>
+</table>
 <hr>
-<a href="cascmd_en768.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en770.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en768.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en770.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

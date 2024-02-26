@@ -28,7 +28,7 @@ namespace xcas {
 
 #ifdef HAVE_LIBFLTK
 
-  Fl_Font cst_greek_translate(std::string & s);
+  Fl_Font cst_greek_translate(std::string & s,bool islabel=false);
   // utility for gen embedded widget memory desallocation
   void fltk_fl_widget_delete_function(void * ptr);
 

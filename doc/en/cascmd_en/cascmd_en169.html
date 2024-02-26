@@ -2,79 +2,51 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>List of prime factors</title>
+<title>Converting a number into an interval</title>
 </head>
 <body >
-<a href="cascmd_en168.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en170.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en168.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en170.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec335" class="subsection">6.1.5  List of prime factors</h3>
-<p>The <span style="font-family:monospace">ifactors</span><a id="hevea_default280"></a>
-command decomposes an integer into prime factors.
+<h3 id="ssec:numb2intvl" class="subsection">6.6.8  Converting a number into an interval</h3>
+<p>The <span style="font-family:monospace">convert</span> command (see Section <a href="cascmd_en295.html#ssec%3Aconvert">10.1.10</a>)
+can convert an expression which evaluates
+to a number to the smallest interval which contains the number.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">ifactors</span> takes
-<span style="font-style:italic">n</span>, an integer or a list of integers.
-</li><li class="li-itemize"><span style="font-family:monospace">ifactors(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> decomposes the integer <span style="font-style:italic">n</span> (or the integers
-of the list) into prime factors, given as a list (or
-a list of lists) in which each prime factor is followed by its
-multiplicity.
-</li></ul><h4 id="sec336" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ifactors</span></span><span style="font-weight:bold"><span style="color:#BF0000">(90)</span></span></td></tr>
+<span style="font-family:monospace">convert</span><a id="hevea_default284"></a>
+takes two mandatory arguments and one optional argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">expr</span>, a number which evaluates to a number.
+</li><li class="li-itemize"><span style="font-style:italic">interval</span>, a reserved word.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">n</span>, an integer greater than 15 giving the
+desired number of digits.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">convert(</span><span style="font-style:italic">expr</span>,<span style="font-family:monospace">interval</span> ⟨,<span style="font-style:italic">n</span> ⟩<span style="font-family:monospace">)</span>
+returns the smallest interval containing the value of <span style="font-style:italic">expr</span>.
+</li></ul><h4 id="sec339" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">convert</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3)+1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">interval</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">2,1,3,2,5,1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+[1.14112000805985..1.14112000805990]
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><p>
-since 90=2<sup>1</sup>· 3<sup>2</sup>· 5<sup>1</sup>.
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ifactors</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-90)</span></span></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">convert</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3)+1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">interval</span></span><span style="font-weight:bold"><span style="color:#BF0000">,20)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">−1,1,2,1,3,2,5,1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ifactors</span></span><span style="font-weight:bold"><span style="color:#BF0000">(31+22*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">i</span></span><span style="color:#0000CC">,1,2−</span><span style="color:#0000CC"><span style="font-style:italic">i</span></span><span style="color:#0000CC">,1,4−</span><span style="color:#0000CC"><span style="font-style:italic">i</span></span><span style="color:#0000CC">,2</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ifactors</span></span><span style="font-weight:bold"><span style="color:#BF0000">([36,52])</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">13</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1
-</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎦</span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+[1.1411200080598672220..1.1411200080598672222]
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
 <hr>
-<a href="cascmd_en168.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en170.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en168.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en170.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

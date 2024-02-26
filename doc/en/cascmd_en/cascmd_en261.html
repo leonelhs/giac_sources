@@ -2,74 +2,42 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Eliminating one or more variables from a list of equations</title>
+<title>Zeros of an expression</title>
 </head>
 <body >
-<a href="cascmd_en260.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en262.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en260.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en262.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec588" class="subsection">8.1.17  Eliminating one or more variables from a list of equations</h3>
-<p>The <span style="font-family:monospace">eliminate</span><a id="hevea_default472"></a> command
-eliminates variables from a list of equations.
+<h3 id="sec591" class="subsection">9.1.11  Zeros of an expression</h3>
+<p>The <span style="font-family:monospace">zeros</span><a id="hevea_default478"></a> command finds the zeros
+of an expression.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">eliminate</span> takes two arguments:
+<span style="font-family:monospace">zeros</span> takes one mandatory argument and one optional
+argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">eqns</span>, a list of equations.
-</li><li class="li-itemize"><span style="font-style:italic">vars</span>, the variable or list of variables to eliminate.
-The equations can be given as expressions, in which case they will be
-assumed to be 0.
+<span style="font-style:italic">expr</span>, an expression.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span>, a variable name to use
+(which by default will be <span style="font-family:monospace">x</span>).
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">eliminate(</span><span style="font-style:italic">eqns</span>,<span style="font-style:italic">vars</span><span style="font-family:monospace">)</span>
-returns the equations with the variables <span style="font-style:italic">vars</span> eliminated or
-an indication that <span style="font-variant:small-caps">Xcas</span> cannot eliminate them.
-</li></ul><h4 id="sec589" class="subsubsection">Examples</h4>
+</li><li class="li-itemize"><span style="font-family:monospace">zeros(</span><span style="font-style:italic">expr</span> ⟨,<span style="font-style:italic">x</span> ⟩<span style="font-family:monospace">)</span>
+returns a list of
+values of the variable where the expression vanishes. The list may
+be incomplete in exact mode if the expression is not a polynomial or
+if intermediate factorizations have irreducible factors of order
+strictly greater than 2.<p>In real mode, (which means the <span style="font-family:sans-serif">complex</span> box is unchecked in the CAS
+configuration (see Section <a href="cascmd_en030.html#ssec%3Aconfcomp">2.5.7</a>) or with
+<span style="font-family:monospace">complex_mode:=0</span>), only reals zeros are returned. With
+(<span style="font-family:monospace">complex_mode:=1</span>), real and complex zeros are returned.
+<span style="font-family:monospace">cZeros</span> behaves like <span style="font-family:monospace">zeros</span>, except that it returns
+complex zeros whether in real or complex mode.
+</p></li></ul><h4 id="sec592" class="subsubsection">Examples</h4>
 <p>
-Assuming the variables used haven’t been set to any values:
+Input in real mode:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">eliminate</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">v0</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">y0</span></span><span style="font-weight:bold"><span style="color:#BF0000">-</span></span><span style="font-weight:bold"><span style="color:#BF0000">g</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2], </span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">g</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">v</span></span><sub><span style="color:#0000CC">0</span></sub><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">−</span><span style="color:#0000CC"><span style="font-style:italic">v</span></span><sub><span style="color:#0000CC">0</span></sub><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><sub><span style="color:#0000CC">0</span></sub></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">eliminate</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">-2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2=</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2],[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">2 </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">−4 </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><sup><span style="color:#0000CC">3</span></sup><span style="color:#0000CC">−4 </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">+4 </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">+2 </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><span style="color:#0000CC">+2 </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">−4</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>If the variable(s) cannot be eliminated, then <span style="font-family:monospace">eliminate</span>
-returns <span style="font-family:monospace">[1]</span> or <span style="font-family:monospace">[-1]</span>. If <span style="font-family:monospace">eliminate</span> returns
-an empty list, that means the equations determine the values of the
-variables to be eliminated.
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=2;</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=-5</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">eliminate</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1-10*</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2],</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-since <span style="font-family:monospace">t</span> cannot be eliminated from both equations.
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=2;</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=-9</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">eliminate</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1-10*</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2],</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">zeros</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+4)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
@@ -80,27 +48,108 @@ since <span style="font-family:monospace">t</span> cannot be eliminated from bot
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table><p>
-since the first equation gives <span style="font-family:monospace">t</span>=1, which satisfies the
-second equation.
+Input in complex mode:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=2; </span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=-9</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">eliminate</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1-10*</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">-</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">],</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">zeros</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+4)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
 </span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">1,</span><span style="color:#0000CC"><span style="font-style:italic">z</span></span><span style="color:#0000CC">+8</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">−2</span><span style="color:#0000CC"><span style="font-style:italic">i</span></span><span style="color:#0000CC">,2</span><span style="color:#0000CC"><span style="font-style:italic">i</span></span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
 ⎦</span></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table><p>
-since the first equation gives <span style="font-family:monospace">t</span>=1, which satisfies the
-second equation, and so that leaves <span style="font-family:monospace">z</span>=2−9−1=−8, or
-<span style="font-family:monospace">z</span>+8=0.</p>
+Input in real or complex mode:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cZeros</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">−2</span><span style="color:#0000CC"><span style="font-style:italic">i</span></span><span style="color:#0000CC">,2</span><span style="color:#0000CC"><span style="font-style:italic">i</span></span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Input in real mode:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">zeros</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">ln</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)^2-2)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">e</span></span></td><td class="dcell"><table class="display"><tr><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="dcell"><span style="color:#0000CC">&nbsp;</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">,</span><span style="color:#0000CC"><span style="font-style:italic">e</span></span></td><td class="dcell"><table class="display"><tr><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">−</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="dcell"><span style="color:#0000CC">&nbsp;</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Input in real mode:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">zeros</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">ln</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">)^2-2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">e</span></span></td><td class="dcell"><table class="display"><tr><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="dcell"><span style="color:#0000CC">&nbsp;</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">,</span><span style="color:#0000CC"><span style="font-style:italic">e</span></span></td><td class="dcell"><table class="display"><tr><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">−</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="dcell"><span style="color:#0000CC">&nbsp;</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Input in real mode:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">zeros</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">*(</span></span><span style="font-weight:bold"><span style="color:#BF0000">exp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">))^2-2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-2*(</span></span><span style="font-weight:bold"><span style="color:#BF0000">exp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">))^2+4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎢<br>
+⎣</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">ln</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">2</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td></tr>
+</table></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">,2</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en260.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en262.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en260.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en262.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

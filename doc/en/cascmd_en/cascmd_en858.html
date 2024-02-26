@@ -2,157 +2,79 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Coordinates of a point, vector or line in the plane</title>
+<title>Circles and arcs in the plane</title>
 </head>
 <body >
-<a href="cascmd_en857.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en859.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en857.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en859.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:2dcoordinates" class="subsection">24.12.4  Coordinates of a point, vector or line in the plane</h3>
-<p>See Section <a href="cascmd_en950.html#ssec%3A3dcoordinates">25.10.4</a> for coordinates in three-dimensional
-geometry.</p><p>The <span style="font-family:monospace">coordinates</span><a id="hevea_default1757"></a>
-finds the coordinates of a point or two points that determine a line.
+<h3 id="ssec:2dcircles" class="subsection">25.10.1  Circles and arcs in the plane</h3>
+<p>See also Section <a href="cascmd_en859.html#ssec%3A2darcs">25.10.2</a>.</p><p>See Section <a href="cascmd_en957.html#sec%3A3dcircles">26.9.1</a> for circles in space.</p><p>The <span style="font-family:monospace">circle</span><a id="hevea_default1746"></a>
+command creates circles and arcs. You can specify the
+circle in different ways.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">coordinates</span> takes
-<span style="font-style:italic">X</span>, either a point, a sequence or list of points, or a line.
-</li><li class="li-itemize"><span style="font-family:monospace">coordinates(</span><span style="font-style:italic">X</span><span style="font-family:monospace">)</span> returns:
+<span style="font-family:monospace">circle</span> can take one argument:
+<span style="font-style:italic">eqn</span>, the equation of a circle with variables <span style="font-style:italic">x</span> and
+<span style="font-style:italic">y</span> (or an expression assumed to be set to 0).<p><span style="font-family:monospace">circle(</span><span style="font-style:italic">eqn</span><span style="font-family:monospace">)</span> returns and draws the circle. For example:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">circle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en283.png">
+
+</div></li><li class="li-itemize"><span style="font-family:monospace">circle</span> can take two arguments:
 <ul class="itemize"><li class="li-itemize">
-a list consisting of the abscissa and ordinate of <span style="font-style:italic">X</span>, if
-<span style="font-style:italic">X</span> is a point or a vector, or a sequence or list of such lists,
-if <span style="font-style:italic">X</span> is a sequence or list of points.
-</li><li class="li-itemize">a list of two points on the line <span style="font-style:italic">X</span>, in the order
-determined by the direction of the line, if <span style="font-style:italic">X</span> is a line.
+<span style="font-style:italic">P</span>, a point.
+</li><li class="li-itemize">α, a complex number.
 </li></ul>
-</li></ul><h4 id="sec2154" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">coordinates</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>or:
+<span style="font-family:monospace">circle(</span><span style="font-style:italic">P</span>,α<span style="font-family:monospace">)</span> returns and draws the circle centered
+at <span style="font-style:italic">P</span> and whose radius is |α|. For example:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">coordinates</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
-</table><p>or:
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">circle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">coordinates</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">vector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+<img src="cascmd_en284.png">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">1,2</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">coordinates</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)-</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
-</table><p>or:
+</div></li><li class="li-itemize"><span style="font-family:monospace">circle</span> can take two arguments:
+<span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>, two points (where <span style="font-style:italic">B</span> must be the value of
+<span style="font-family:monospace">point</span> and not simply the affix).<p><span style="font-family:monospace">circle(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span><span style="font-family:monospace">)</span> returns and draws the circle whose
+diameter is <span style="font-style:italic">AB</span>. For example:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">coordinates</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">vector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
-</table><p>or:
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">circle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
+</table><div class="center">
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">coordinates</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">vector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)))</span></span></td></tr>
-</table><p>or:
+<img src="cascmd_en285.png">
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">coordinates</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">vector</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,1],[1,2]))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+</div></li><li class="li-itemize"><span style="font-family:monospace">circle</span> can take four mandatory arguments and two
+optional arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">C</span>, a point.
+</li><li class="li-itemize"><span style="font-style:italic">r</span>, a complex number.
+</li><li class="li-itemize"><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>, two real numbers.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">var</span><sub>1</sub>,<span style="font-style:italic">var</span><sub>2</sub>, variable names.
+</li></ul>
+<span style="font-family:monospace">circle(</span><span style="font-style:italic">C</span>,<span style="font-style:italic">r</span>,<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span><span style="font-family:monospace">)</span> returns and draws an arc of the
+circle with center <span style="font-style:italic">C</span> and radius |<span style="font-style:italic">r</span>|, with central angles <span style="font-style:italic">a</span>
+and <span style="font-style:italic">b</span>. The angles start on the axis defined by <span style="font-style:italic">C</span> and <span style="font-style:italic">C</span>+<span style="font-style:italic">r</span>.<p>If the arguments <span style="font-style:italic">var</span><sub>1</sub> and <span style="font-style:italic">var</span><sub>2</sub> are given,
+they will be assigned to the ends of the arc.</p><p>For example:
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">1,1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">d</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>or:
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">circle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,1,0,</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">/4)</span></span></td></tr>
+</table><div class="center">
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">d</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,2))</span></span></td></tr>
-</table><p>then:
+<img src="cascmd_en286.png">
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">coordinates</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">d</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">circle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">),0,</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">/4)</span></span></td></tr>
+</table><div class="center">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">−1+</span><span style="color:#0000CC"><span style="font-style:italic">i</span></span><span style="color:#0000CC">,1+2 </span><span style="color:#0000CC"><span style="font-style:italic">i</span></span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">coordinates</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">/2+3/2))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+<img src="cascmd_en287.png">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3 </span><span style="color:#0000CC"><span style="font-style:italic">i</span></span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">,1+2 </span><span style="color:#0000CC"><span style="font-style:italic">i</span></span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎥<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">coordinates</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">+3=0))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3 </span><span style="color:#0000CC"><span style="font-style:italic">i</span></span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">,</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">−4+</span><span style="color:#0000CC"><span style="font-style:italic">i</span></span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎥<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">coordinates</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>or:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">coordinates</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">0,1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td><td class="dcell"><span style="color:#0000CC">,</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">1,2</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-Note that if the argument is a list of real numbers, it is
-interpreted as a list of points on the real axis.
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">coordinates</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2])</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎦</span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table>
+</div></li></ul>
 <hr>
-<a href="cascmd_en857.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en859.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en857.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en859.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

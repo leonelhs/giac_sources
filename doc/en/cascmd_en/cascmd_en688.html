@@ -2,35 +2,44 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>General</title>
+<title>Kolmogorov-Smirnov distribution</title>
 </head>
 <body >
-<a href="cascmd_en687.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en689.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en687.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en689.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1748" class="subsection">18.5.1  General</h3>
-<p>Given a random variable <span style="font-style:italic">X</span>, you may want to know whether some
-effective parameter <span style="font-style:italic">p</span> is the same as some expected value <span style="font-style:italic">p</span><sub>0</sub>. You
-will then want to test the hypothesis <span style="font-style:italic">p</span>=<span style="font-style:italic">p</span><sub>0</sub>, which will be the
-null hypothesis <span style="font-style:italic">H</span><sub>0</sub>. The alternative hypothesis will be <span style="font-style:italic">H</span><sub>1</sub>. The
-tests are:
-</p><dl class="description"><dt class="dt-description">
-<span style="font-weight:bold">Two-tailed test</span></dt><dd class="dd-description"> — This test will reject the hypothesis <span style="font-style:italic">H</span><sub>0</sub>
-if the relevant statistic is outside of a determined interval.
-This is denoted by <span style="font-family:monospace">’!=’</span>.
-</dd><dt class="dt-description"><span style="font-weight:bold">Left-tailed test</span></dt><dd class="dd-description"> — This test will reject the hypothesis <span style="font-style:italic">H</span><sub>0</sub>
-if the relevant statistic is less than a specific value.
-This is denoted by <span style="font-family:monospace">’&lt;’</span>.
-</dd><dt class="dt-description"><span style="font-weight:bold">Right-tailed test</span></dt><dd class="dd-description"> — This test will reject the hypothesis <span style="font-style:italic">H</span><sub>0</sub>
-if the relevant statistic is greater than a specific value.
-This is denoted by <span style="font-family:monospace">’&gt;’</span>.
-</dd></dl>
+<h3 id="ssec:kolmogorovd" class="subsection">19.4.17  Kolmogorov-Smirnov distribution</h3>
+<p>The density function for the Kolmogorov-Smirnov distribution is given by
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><a id="eq:kolm"></a>
+<span style="font-family:monospace">kolmogorovd</span>(<span style="font-style:italic">x</span>)=1−2</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"> (−1)<sup><span style="font-style:italic">k</span>−1</sup> <span style="font-style:italic">e</span><sup>−<span style="font-style:italic">k</span><sup>2</sup> <span style="font-style:italic">x</span><sup>2</sup></sup>
+    (12)</td></tr>
+</table><p>
+The <span style="font-family:monospace">kolmogorovd</span><a id="hevea_default1395"></a>
+command computes this density function.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">kolmogorovd</span> takes
+<span style="font-style:italic">x</span>, a real number.
+</li><li class="li-itemize"><span style="font-family:monospace">kolmogorovd(</span><span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns the density function of the
+Kolmogorov-Smirnov distribution at <span style="font-style:italic">x</span>, given by (<a href="#eq%3Akolm">12</a>).
+</li></ul><h4 id="sec1766" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">kolmogorovd</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1.36)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.950514123245
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en687.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en689.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en687.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en689.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

@@ -2,86 +2,68 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Generating random vectors and lists</title>
+<title>Exponential regression</title>
 </head>
 <body >
-<a href="cascmd_en660.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en662.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en660.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en662.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:randvector" class="subsection">18.3.5  Generating random vectors and lists</h3>
-<p>The <span style="font-family:monospace">randvector</span><a id="hevea_default1293"></a>
-command creates random vectors (see also Section <a href="cascmd_en353.html#ssec%3Aranm1">10.1.28</a>).
+<h3 id="sec1603" class="subsection">19.2.5  Exponential regression</h3>
+<p>You might expect a set of points to lie on an exponential curve
+<span style="font-style:italic">y</span>=<span style="font-style:italic">b</span> <span style="font-style:italic">a</span><sup><span style="font-style:italic">x</span></sup>.
+The <span style="font-family:monospace">exponential_regression</span><a id="hevea_default1292"></a>
+command finds the values of <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> which give you the best fit exponential.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">randvector</span> takes one mandatory argument and one
-optional argument:
+<span style="font-family:monospace">exponential_regression</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">n</span>, an integer.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">X</span>, which can be an integer or a random
-variable. In place of a random variable, the specifications for a
-distribution can be used. (See Section <a href="cascmd_en660.html#ssec%3Arandvar">18.3.4</a> for random
-variables and their specifications.)
+<span style="font-style:italic">xcoords</span>, a list of <span style="font-style:italic">x</span>-coordinates.
+</li><li class="li-itemize"><span style="font-style:italic">ycoords</span>, a list of <span style="font-style:italic">y</span>-coordinates.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">randvector(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">X</span><span style="font-family:monospace">)</span> returns a vector of size <span style="font-style:italic">n</span>
-containing random integers:
-<ul class="itemize"><li class="li-itemize">
-with no second argument, distributed uniformly between
-−99 and +99.
-</li><li class="li-itemize">with a second argument of <span style="font-style:italic">X</span>, distributed uniformly
-between 0 and <span style="font-style:italic">k</span>−1.
-</li><li class="li-itemize">with a second argument the specification of a distribution,
-distributed according to this distribution.
-</li></ul>
-</li></ul><h4 id="sec1611" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randvector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">−64,−30,70</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randvector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3,5)</span></span></td></tr>
+You can combine two arguments into a matrix with two columns (each
+list becomes a column of the matrix).
+</li><li class="li-itemize"><span style="font-family:monospace">exponential_regression(</span><span style="font-style:italic">xcoords</span>,<span style="font-style:italic">ycoords</span><span style="font-family:monospace">)</span>
+returns a sequence <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span> of the numbers in the best fit exponential
+<span style="font-style:italic">y</span>=<span style="font-style:italic">ba</span><sup><span style="font-style:italic">x</span></sup>.
+</li></ul><h4 id="sec1604" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">evalf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">exponential_regression</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[1,1],[2,4],[3,9],[4,16]]))</span></span></td></tr>
 </table><p>or:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randvector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3,'</span></span><span style="font-weight:bold"><span style="color:#BF0000">rand</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5)')</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">evalf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">exponential_regression</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,3,4],[1,4,9,16]))</span></span></td></tr>
+</table><p>(where the <span style="font-family:monospace">evalf</span> is used to get a numeric approximation to an
+exact expression, see Section <a href="cascmd_en209.html#ssec%3Aevalf">7.3.1</a>).</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">2,4,2</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+2.49146187923,0.5
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randvector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3,'</span></span><span style="font-weight:bold"><span style="color:#BF0000">randnorm</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1)')</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+</table><p>
+so the best fit exponential curve will be <span style="font-style:italic">y</span>=0.5·(2.49146187923)<sup><span style="font-style:italic">x</span></sup>.</p><p>The <span style="font-family:monospace">exponential_regression_plot</span><a id="hevea_default1293"></a>
+command draws the best fit exponential.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">exponential_regression_plot</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">xcoords</span>, a list of <span style="font-style:italic">x</span>-coordinates.
+</li><li class="li-itemize"><span style="font-style:italic">ycoords</span>, a list of <span style="font-style:italic">y</span>-coordinates.
+</li></ul>
+You can combine two arguments into a matrix with two columns (each
+list becomes a column of the matrix).
+</li><li class="li-itemize"><span style="font-family:monospace">exponential_regression_plot(</span><span style="font-style:italic">xcoords</span>,<span style="font-style:italic">ycoords</span><span style="font-family:monospace">)</span>
+draws the best fit exponential, and puts the equation and <span style="font-style:italic">R</span><sup>2</sup>
+value above the graph.
+</li></ul><h4 id="sec1605" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">exponential_regression_plot</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,3,4],[1,4,9,16])</span></span></td></tr>
+</table><div class="center">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">−0.361127118455,−0.018325111754,1.11875485898</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randvector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3,2..4)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+<img src="cascmd_en145.png">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">3.18034843914,2.48592940345,2.57507958449</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table>
+</div>
 <hr>
-<a href="cascmd_en660.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en662.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en660.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en662.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

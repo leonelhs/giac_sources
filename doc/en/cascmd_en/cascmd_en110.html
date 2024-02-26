@@ -2,71 +2,43 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Transforming sequences into lists and lists into sequences
-</title>
+<title>Getting the first element of a sequence or list</title>
 </head>
 <body >
-<a href="cascmd_en109.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en111.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en109.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en111.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec:makesuiteop" class="subsection">5.1.10  Transforming sequences into lists and lists into sequences
-</h3>
-<p>To transform a sequence into list, you can put square brackets
-(<span style="font-family:monospace">[]</span><a id="hevea_default196"></a>) around the sequence.
-The <span style="font-family:monospace">makevector</span> and <span style="font-family:monospace">nop</span><a id="hevea_default197"></a>
-commands have the same effect.
+<h3 id="sec205" class="subsection">6.1.4  Getting the first element of a sequence or list</h3>
+<p>The <span style="font-family:monospace">head</span><a id="hevea_default199"></a> command
+finds the first element of a sequence or list.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">makevector</span> (or <span style="font-family:monospace">nop</span>) takes
-<span style="font-style:italic">S</span>, a sequence.
-</li><li class="li-itemize"><span style="font-family:monospace">makevector(</span><span style="font-style:italic">S</span><span style="font-family:monospace">)</span> (or <span style="font-family:monospace">nop(</span><span style="font-style:italic">S</span><span style="font-family:monospace">)</span>) returns the
-list with the same elements as <span style="font-style:italic">S</span> in the same order.
-</li></ul><p>The <span style="font-family:monospace">makesuite</span><a id="hevea_default198"></a>
-command transforms a list into a sequence.
-Note that <span style="font-family:monospace">op</span><a id="hevea_default199"></a> (see Section <a href="cascmd_en237.html#ssec%3Aop">7.2.3</a>)
-can do the same thing.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">makesuite</span> takes
-<span style="font-style:italic">L</span>, a list.
-</li><li class="li-itemize"><span style="font-family:monospace">makesuite(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns the sequence with the same
-elements as <span style="font-style:italic">L</span> and the same order.
-</li></ul><h4 id="sec203" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[</span></span><span style="font-weight:bold"><span style="color:#BF0000">seq</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3,</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1..4)]</span></span></td></tr>
-</table><p>or:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[(</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3)</span></span><span style="font-weight:bold"><span style="color:#BF0000">$</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1..4)]</span></span></td></tr>
-</table><p>or:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">nop</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3</span></span><span style="font-weight:bold"><span style="color:#BF0000">$</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1..4))</span></span></td></tr>
-</table><p>or:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">makevector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3</span></span><span style="font-weight:bold"><span style="color:#BF0000">$</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">j</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1..4))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">1,8,27,64</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">makesuite</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,1,2])</span></span></td></tr>
-</table><p>or:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">op</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,1,2])</span></span></td></tr>
+<span style="font-family:monospace">head</span> takes
+<span style="font-style:italic">S</span>, a sequence or list.
+</li><li class="li-itemize"><span style="font-family:monospace">head(</span><span style="font-style:italic">S</span><span style="font-family:monospace">)</span> returns the first element of <span style="font-style:italic">S</span>.
+</li></ul><h4 id="sec206" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">head</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">C</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">D</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0,1,2
+</span><span style="color:#0000CC"><span style="font-style:italic">A</span></span><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">head</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,1,2,3])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
 <hr>
-<a href="cascmd_en109.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en111.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en109.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en111.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

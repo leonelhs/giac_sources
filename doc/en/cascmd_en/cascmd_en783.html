@@ -2,150 +2,99 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Creating symbols from strings</title>
+<title>Difference between operators := and =&lt;</title>
 </head>
 <body >
-<a href="cascmd_en782.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en784.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en782.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en784.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1989" class="subsection">23.5.6  Creating symbols from strings</h3>
-<p>Variable and function names are symbols, namely sequences of
-characters, which are different from strings. For example, you can
-have a variable named <span style="font-family:monospace">abc</span>, but not <span style="font-family:monospace">"abc"</span>.
-The <span style="font-family:monospace">make_symbol</span><a id="hevea_default1595"></a>
-command turns a string into a symbol; for example
-<span style="font-family:monospace">make_symbol("abc")</span> is the symbol <span style="font-family:monospace">abc</span>.</p><h4 id="sec1990" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">make_symbol</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"abc"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">):=3</span></span></td></tr>
-</table><p>then:
+<h3 id="ssec:assignmentdiffs" class="subsection">24.2.10  Difference between operators <span style="font-family:monospace">:=</span> and <span style="font-family:monospace">=&lt;</span></h3>
+<p>The <span style="font-family:monospace">:=</span> and <span style="font-family:monospace">=&lt;</span> assignment operators have different
+effects when they are used to modify an element of a list contained in
+a variable, since <span style="font-family:monospace">=&lt;</span> modifies the element by reference.
+Otherwise, they will have the same effect.</p><h4 id="sec2004" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=[1,2,3]</span></span></td></tr>
+</table><p>Now
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">abc</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">[1]:=5</span></span></td></tr>
+</table><p>and
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-3
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-The variable <span style="font-family:monospace">abc</span> will have the value <span style="font-family:monospace">3</span>.
-Similarly for functions:
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">[1]=&lt;5</span></span></td></tr>
+</table><p>both change <span style="font-family:monospace">A[1]</span> to 5:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">make_symbol</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"sin"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)(</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">/4)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-which is equal to sinπ/4.</p>
-<h5 id="sec1991" class="paragraph">Creating arrays of symbols.</h5>
-<p>
-The <span style="font-family:monospace">symbol_array</span><a id="hevea_default1596"></a>
-command is used for creating multidimensional arrays of symbols.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">symbol_array</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">str</span>, a template string for symbol names.
-</li><li class="li-itemize"><span style="font-style:italic">dim</span>=<span style="font-style:italic">n</span><sub>1</sub>,<span style="font-style:italic">n</span><sub>2</sub>,…,<span style="font-style:italic">n</span><sub><span style="font-style:italic">m</span></sub>, a sequence of <span style="font-style:italic">m</span> positive integers.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">symbol_array(</span><span style="font-style:italic">str</span>,<span style="font-style:italic">dim</span><span style="font-family:monospace">)</span>
-returns an array with <span style="font-style:italic">m</span> dimensions <span style="font-style:italic">n</span><sub>1</sub>,<span style="font-style:italic">n</span><sub>2</sub>,…,<span style="font-style:italic">n</span><sub><span style="font-style:italic">m</span></sub> with indexed symbols as elements.
-Symbols are created from the template string <span style="font-style:italic">str</span> by appending indices. Template string may contain
-<span style="font-style:italic">m</span> instances of the character <span style="font-family:monospace">’%’</span>, <span style="font-style:italic">k</span>th of which serves as the placeholder for the <span style="font-style:italic">k</span>th
-dimension index. If placeholders are omitted, indices are simply appended in case <span style="font-style:italic">m</span>=1,
-while in case <span style="font-style:italic">m</span>&gt;1 they are separated from <span style="font-style:italic">str</span> and each other by the underscore (<span style="font-family:monospace">’_’</span>).
-</li><li class="li-itemize">The indices are in accordance with the current syntax mode (they are either 0- or 1-based).
-</li></ul><h4 id="sec1992" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">symbol_array</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"x"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,5)</span></span></td></tr>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
 </span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">0</span></sub><span style="color:#0000CC">,</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">1</span></sub><span style="color:#0000CC">,</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">2</span></sub><span style="color:#0000CC">,</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">3</span></sub><span style="color:#0000CC">,</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">4</span></sub></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">1,5,3</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
 ⎦</span></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">symbol_array</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"a"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,2,3)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><sub><span style="color:#0000CC">0,0</span></sub></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><sub><span style="color:#0000CC">0,1</span></sub></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><sub><span style="color:#0000CC">0,2</span></sub></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><sub><span style="color:#0000CC">1,0</span></sub></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><sub><span style="color:#0000CC">1,1</span></sub></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><sub><span style="color:#0000CC">1,2</span></sub></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎦</span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">maple_mode</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">symbol_array</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"a%%"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,2,3)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-[[</span><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">11,</span><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">12,</span><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">13],[</span><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">21,</span><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">22,</span><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">23]]
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">maple_mode</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">symbol_array</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"a%b%c%"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,2,3,4)</span></span></td></tr>
+</table><p>
+but they do it in different ways. The command
+<span style="font-family:monospace">A[1]=&lt;5</span> changes the middle value in the list that
+<span style="font-family:monospace">A</span> originally pointed to, and so any other variable pointing
+to the list will be changed, but <span style="font-family:monospace">A[1]:=5</span> will create a
+duplicate list with the middle element of 5, and so any other variable
+pointing to the original list won’t be affected.</p><h4 id="sec2005" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=[0,1,2,3,4]:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">[3]=&lt;33:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
 </span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">3</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">3</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">2</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">2</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">2</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">2</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">3</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎥<br>
-⎦</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">,</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">0</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">3</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">3</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">2</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">2</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">2</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">2</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">3</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎥<br>
-⎦</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎥<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">0,1,2,33,4</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td><td class="dcell"><span style="color:#0000CC">,</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">0,1,2,33,4</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
 ⎦</span></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">[1][2][3]</span></span></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=[0,1,2,3,4]:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">[3]:=33:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">1</span><span style="color:#0000CC"><span style="font-style:italic">b</span></span><span style="color:#0000CC">2</span><span style="color:#0000CC"><span style="font-style:italic">c</span></span><span style="color:#0000CC">3</span><span style="color:#0000CC">
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">0,1,2,3,4</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td><td class="dcell"><span style="color:#0000CC">,</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">0,1,2,33,4</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+If <span style="font-family:monospace">B</span> is set equal to a copy of <span style="font-family:monospace">A</span> instead of
+<span style="font-family:monospace">A</span>, then changing <span style="font-family:monospace">B</span> won’t affect <span style="font-family:monospace">A</span>.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=[0,1,2,3,4];</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">copy</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">[3]=&lt;33;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">0,1,2,3,4</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td><td class="dcell"><span style="color:#0000CC">,</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">0,1,2,33,4</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
 <hr>
-<a href="cascmd_en782.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en784.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en782.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en784.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

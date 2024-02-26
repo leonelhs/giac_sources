@@ -2,53 +2,47 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>3D parametric surface</title>
+<title>Intersection of a 2D graph with the axis</title>
 </head>
 <body >
-<a href="cascmd_en622.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en624.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en622.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en624.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:3dplotparam" class="subsection">17.7.2  3D parametric surface</h3>
-<p>To draw a parametric surface in ℝ<sup>3</sup>:
-<a id="hevea_default1190"></a>
+<h3 id="sec1509" class="subsection">18.3.7  Intersection of a 2D graph with the axis</h3>
+<p>You can find the intersection of the graph <span style="font-style:italic">y</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) of a function with
+the axes using the commands covered so far.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">plotparam</span> takes two mandatory arguments and two optional
-arguments:
+Finding the intersection of the graph with the
+<span style="font-style:italic">y</span>-axis is simply evaluating
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    <span style="font-style:italic">f</span>(0),
+</td></tr>
+</table>
+indeed the point with coordinates (0,<span style="font-style:italic">f</span>(0)) is the intersection point
+of the graph of <span style="font-style:italic">f</span> with the <span style="font-style:italic">y</span>-axis.
+</li><li class="li-itemize">Finding the intersection of the graph of <span style="font-style:italic">f</span> with the <span style="font-style:italic">x</span>-axis
+requires solving the equation <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=0.
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">exprs</span>, a list of three expressions involving two
-parameters.
-</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a list of the parameters, optionally with a range
-<span style="font-style:italic">var</span>=<span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>.
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">ustep=</span><span style="font-style:italic">n</span>, to set the discretization
-step of the first parameter.
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">vstep=</span><span style="font-style:italic">m</span>, to set the discretization
-step of the second parameter.
+If <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) is polynomial-like, then you can find the
+the exact values of the abscissa of these points with
+<span style="font-family:monospace">solve</span> (see Section <a href="cascmd_en277.html#ssec%3Asolve">9.3.6</a>).
+
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">solve</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table>returns the solution.
+<a id="hevea_default1183"></a>
+<a id="hevea_default1184"></a>
+</li><li class="li-itemize">Otherwise, you can find numeric approximations of these
+abscissa. First, look at the graph for an initial guess <span style="font-style:italic">x</span><sub>0</sub> or a
+range with an intersection and then refine it with
+<span style="font-family:monospace">fsolve</span> (see Section <a href="cascmd_en753.html#sec%3Afsolve">22.3.2</a>).<p><span style="font-family:monospace">fsolve(</span><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>),<span style="font-style:italic">x</span>,<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">method</span><span style="font-family:monospace">)</span>
+returns a numeric approximation of a solution.
+</p></li></ul>
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">plotparam(</span><span style="font-style:italic">exprs</span>,<span style="font-style:italic">vars</span> ⟨,<span style="font-family:monospace">ustep=</span><span style="font-style:italic">n</span>,<span style="font-family:monospace">vstep=</span><span style="font-style:italic">m</span> ⟩<span style="font-family:monospace">)</span>
-draws the parametric representation of the surface.
-</li></ul><h4 id="sec1490" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotparam</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">cos</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">],[</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en076.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotparam</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">cos</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">],[</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..3])</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en077.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotparam</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">cos</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">],[</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..3],</span></span><span style="font-weight:bold"><span style="color:#BF0000">ustep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0.5,</span></span><span style="font-weight:bold"><span style="color:#BF0000">vstep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0.5)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en078.png">
-
-</div>
 <hr>
-<a href="cascmd_en622.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en624.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en622.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en624.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

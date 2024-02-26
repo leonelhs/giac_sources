@@ -2,70 +2,108 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Triangular window function</title>
+<title>Empirical mode decomposition</title>
 </head>
 <body >
-<a href="cascmd_en722.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en724.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en722.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en724.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1835" class="subsection">19.5.13  Triangular window function</h3>
-<p>The <span style="font-family:monospace">triangle_window</span><a id="hevea_default1422"></a>
-command applies the triangle window function to a sequence or its segment.
+<h3 id="ssec:emd" class="subsection">20.4.8  Empirical mode decomposition</h3>
+<p><em>Empirical mode decomposition</em> (EMD) is an adaptive method for
+decomposing a nonstationary real signal into a sequence of
+<em>intrinsic mode functions</em> (IMFs). Each IMF will represent an
+intrinsic oscillation of the input signal and satisfies the following
+two conditions:
+</p><ol class="enumerate" type=1><li class="li-enumerate">
+The number of local extrema must be equal to the number of
+zero crossings or differ from it by at most one.
+</li><li class="li-enumerate">The mean value of two envelopes interpolating local minima and
+local maxima, respectively, must be zero at any time.
+</li></ol><p>
+The sequence of IMFs represents a nearly orthogonal basis for the input signal.</p><p>An IMF is extracted from the input signal by a technique referred to as
+<em>sifting</em>. In each iteration, the mean of the upper and lower envelope
+is subtracted from the input signal. The process ends when the variance
+of the mean vector is below a predefined threshold <span style="font-style:italic">v</span><sub>0</sub>. Then
+the obtained IMF is subtracted from the original signal and the procedure
+is iteratively repeated until the number of local extrema goes below
+a predefined threshold (usually 2); the rest of the signal is
+called the <em>residue</em> or <em>trend</em> (it is not an IMF).</p><p>The <span style="font-family:monospace">emd</span><a id="hevea_default1447"></a> command computes empirical mode
+decomposition (GSL is required for cubic spline interpolation).
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">triangle_window</span> takes one mandatory argument
-and one to three optional arguments:
+<span style="font-family:monospace">emd</span> takes one mandatory argument and a sequence of
+optional arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-weight:bold"><span style="font-style:italic">v</span></span>, a real vector with length <span style="font-style:italic">n</span>.
-</li><li class="li-itemize">Optionally, one of:
+<span style="font-style:italic">x</span>, a vector of real numbers representing the input signal.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">opts</span>, a sequence of options each of
+which is one of:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">d</span>, an integer in {−1,0,1} (by default, <span style="font-style:italic">d</span>=0).
-</li><li class="li-itemize"><span style="font-style:italic">m</span>,<span style="font-style:italic">N</span> ⟨,<span style="font-style:italic">d</span>⟩, a sequence of two integers
-and optionally an integer <span style="font-style:italic">d</span>∈{−1,0,1} (by default, <span style="font-style:italic">m</span>=0 and <span style="font-style:italic">N</span>=<span style="font-style:italic">n</span>).
+<span style="font-family:monospace">threshold=</span><span style="font-style:italic">t</span>, where <span style="font-style:italic">t</span> is a positive
+real number specifying the variance threshold <span style="font-style:italic">v</span><sub>0</sub>
+(by default, <span style="font-style:italic">th</span>=0.1).
+</li><li class="li-itemize"><span style="font-family:monospace">limit=</span><span style="font-style:italic">n</span>, where <span style="font-style:italic">n</span> is a positive integer
+specifying the maximum number of IMFs to be extracted
+(by default, <span style="font-style:italic">n</span> is unset, meaning that all IMFs are extracted).
+</li><li class="li-itemize"><span style="font-family:monospace">extrema=</span><span style="font-style:italic">m</span>, where <span style="font-style:italic">m</span> is a positive integer
+specifying the minimal number of local extrema that an IMF must
+contain (by default, <span style="font-style:italic">m</span>=2).
+</li><li class="li-itemize"><span style="font-family:monospace">residue=</span><span style="font-style:italic">bool</span>, where <span style="font-style:italic">bool</span> is a boolean
+value which specifies whether to return the residue
+(<span style="font-style:italic">bool</span>=<span style="font-family:monospace">true</span>, the default) or not
+(<span style="font-style:italic">bool</span>=<span style="font-family:monospace">false</span>).
 </li></ul>
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">triangle_window</span>
-returns the elementwise product of [<span style="font-style:italic">v</span><sub><span style="font-style:italic">m</span></sub>,<span style="font-style:italic">v</span><sub><span style="font-style:italic">m</span>+1</sub>,…,<span style="font-style:italic">v</span><sub><span style="font-style:italic">m</span>+<span style="font-style:italic">N</span>−1</sub>]
-and the vector <span style="font-style:italic">w</span> of length <span style="font-style:italic">N</span> defined by
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    <span style="font-style:italic">w</span><sub><span style="font-style:italic">k</span></sub>=1−</td><td class="dcell">⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">k</span>−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span>−1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span>+<span style="font-style:italic">d</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td></tr>
-</table></td><td class="dcell">⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪</td><td class="dcell">,
-   <span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">N</span>−1.
-</td></tr>
-</table>
-</li></ul><p>
-The case <span style="font-style:italic">d</span>=−1 is called the Bartlett window function.</p><h4 id="sec1836" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">listplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">triangle_window</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1</span></span><span style="font-weight:bold"><span style="color:#BF0000">$1000</span></span><span style="font-weight:bold"><span style="color:#BF0000">],1))</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en155.png">
-
-</div>
-<hr>
-<a href="cascmd_en722.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en724.html"><img src="next_motif.svg" alt="Next"></a>
+</li><li class="li-itemize">If <span style="font-family:monospace">residue</span>=<span style="font-family:monospace">true</span>, then
+<span style="font-family:monospace">emd(</span><span style="font-style:italic">x</span> ⟨,<span style="font-style:italic">opts</span> ⟩<span style="font-family:monospace">)</span> returns a sequence
+of two objects: the list of IMFs and the residue, respectively. If <span style="font-family:monospace">limit</span>
+option is set, then the second element of the returned sequence is the
+unprocessed part of the input signal <span style="font-style:italic">x</span>. The returned IMFs and the residue
+always sum up to <span style="font-style:italic">x</span>.
+</li><li class="li-itemize">If <span style="font-family:monospace">residue</span>=<span style="font-family:monospace">false</span>, then
+<span style="font-family:monospace">emd(</span><span style="font-style:italic">x</span> ⟨,<span style="font-style:italic">opts</span> ⟩<span style="font-family:monospace">)</span> returns
+only the list of computed IMFs.
+</li></ul><p>A convenient way to visualize intrinsic mode functions is
+to use the <span style="font-family:monospace">plotimf</span><a id="hevea_default1448"></a>
+command, which plots (a selection of) IMFs in a stacked layout,
+optionally including the input signal and/or the residue.
+<span style="font-family:monospace">imfplot</span><a id="hevea_default1449"></a> is a synonym
+for <span style="font-family:monospace">plotimf</span>.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">plotimf</span> takes one mandatory argument and a sequence of
+optional arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">imfs</span>, a list of intrinsic mode functions obtained by
+the <span style="font-family:monospace">emd</span> command.
+</li><li class="li-itemize">Optionally, either <span style="font-style:italic">n</span>, a positive integer specifying that only the first
+<span style="font-style:italic">n</span> IMFs should be displayed, or <span style="font-style:italic">opts</span>, a sequence of options
+each of which is one of the following:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">count=</span><span style="font-style:italic">n</span>, an alternative way to specify the parameter <span style="font-style:italic">n</span> (see above).
+</li><li class="li-itemize"><span style="font-family:monospace">index=</span><span style="font-style:italic">ind</span>, where <span style="font-style:italic">ind</span> is an integer <span style="font-style:italic">k</span>,
+a range <span style="font-style:italic">k</span><sub>1</sub><span style="font-family:monospace">..</span><span style="font-style:italic">k</span><sub>2</sub> where <span style="font-style:italic">k</span><sub>1</sub> and <span style="font-style:italic">k</span><sub>2</sub> are integers, or a list
+of integers and/or ranges, specifying the indices determining a selection of
+IMFs. If this option is set, only IMFs with specified indices are shown.
+</li><li class="li-itemize"><span style="font-family:monospace">max=</span><span style="font-style:italic">bool</span>, where <span style="font-style:italic">bool</span> is a boolean value
+specifying whether to display the upper <span style="font-style:italic">y</span>-bound for each IMF plot
+(<span style="font-style:italic">bool</span>=<span style="font-family:monospace">true</span>, the default) or not (<span style="font-style:italic">bool</span>=<span style="font-family:monospace">false</span>).
+</li><li class="li-itemize"><span style="font-family:monospace">residue=</span><span style="font-style:italic">res</span>, where <span style="font-style:italic">res</span> is the residual signal.
+If this option is set, then <span style="font-style:italic">res</span> is plotted below the IMFs.
+</li><li class="li-itemize"><span style="font-family:monospace">input=</span><span style="font-style:italic">orig</span>, where <span style="font-style:italic">orig</span> is the original signal.
+If this option is set, then <span style="font-style:italic">orig</span> is plotted above the IMFs.
+</li><li class="li-itemize"><span style="font-family:monospace">display=</span><span style="font-style:italic">disp</span> or <span style="font-family:monospace">color=</span><span style="font-style:italic">disp</span>, where
+<span style="font-style:italic">disp</span> specifies individual graphic attributes which are to be used in
+each plot (such as the color, line style, and the like, see Section <a href="cascmd_en610.html#ssec%3Aindattr">18.1.2</a>).
+By default, plots are drawn in blue.
+</li></ul>
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">plotimf(</span><span style="font-style:italic">imfs</span> ⟨,<span style="font-style:italic">n</span> ⟩<span style="font-family:monospace">)</span> and 
+<span style="font-family:monospace">plotimf(</span><span style="font-style:italic">imfs</span>,<span style="font-style:italic">opts</span><span style="font-family:monospace">)</span>
+return a graphical object containing plots of the selected EMD components.
+</li></ul><hr>
+<a href="cascmd_en722.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en724.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

@@ -2,54 +2,387 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Table of variations of a function</title>
+<title>Context-dependent functions.</title>
 </head>
 <body >
-<a href="cascmd_en243.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en245.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en243.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en245.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec550" class="subsection">7.4.2  Table of variations of a function</h3>
-<p>The table of variations of a function consists of
-</p><ol class="enumerate" type=1><li class="li-enumerate">
-The first row, for the variable, which gives the endpoints of
-subintervals of the domain, as well as any critical points and
-inflection points.
-</li><li class="li-enumerate">The second row, for the derivative, which gives the values of the
-derivative at the values in the first row (or limits as the variable
-approaches one of the values) and between them the sign (+ or −)
-of the derivative in the corresponding subinterval.
-</li><li class="li-enumerate">The third row, for the function, which gives the values of the
-function at the values in the first row, and between them whether
-the function is increasing or decreasing in the corresponding
-subinterval.
-</li><li class="li-enumerate">The fourth row, for the second derivative, which
-gives the values of the second derivative at the values in the
-first row, and between them whether the second derivative is
-positive or negative (and hence whether the graph is concave up or
-concave down) in the subinterval.
-</li></ol><p>The <span style="font-family:monospace">tabvar</span><a id="hevea_default449"></a> command finds the
-table of variations of a function.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">tabvar</span> takes one mandatory argument and one
-optional argument.
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span>, an expression of a single variable.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span>, the variable (by default, <span style="font-style:italic">x</span>=<span style="font-family:monospace">x</span>).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">tabvar(</span><span style="font-style:italic">expr</span> ⟨,<span style="font-style:italic">x</span> ⟩<span style="font-family:monospace">)</span> returns the
-table of variations of the function <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">expr</span> and
-draws the graph on the <span style="font-family:monospace">DispG</span> screen, accessible
-with the menu
-<span style="font-family:sans-serif">Cfg</span> ▸ <span style="font-family:sans-serif">Show</span> ▸ <span style="font-family:sans-serif">DispG</span>.
-</li></ul><h4 id="sec551" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">tabvar</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
-plotfunc(x</span></span></span><code><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">^</span></span></span></code><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">2-x-2,x=((-3.393824) .. 4.574184))<br>
- Inside Xcas you can see the function with Cfg&gt;Show&gt;DispG.
-</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+<h3 id="sec520" class="subsection">8.3.1  Context-dependent functions.</h3>
+<h5 id="sssec:contextplus" class="paragraph">The <span style="font-family:monospace">+</span> operator.</h5>
+<p>
+The <span style="font-family:monospace">+</span><a id="hevea_default407"></a> operator is infixed and
+<span style="font-family:monospace">’+’</span> is its prefixed version. The <span style="font-family:monospace">+</span> operator
+will add numbers (see Section <a href="cascmd_en210.html#ssec%3Ausualinfix">7.3.2</a>), concatenate strings (see
+Section <a href="cascmd_en098.html#ssec%3Aplusconcat">5.2.13</a>), and convert a number to a string if
+necessary. Addition makes sense for other objects, and <span style="font-family:monospace">+</span> can
+flexibly deal with them; the result of using the <span style="font-family:monospace">+</span> operator
+depends on the nature of its arguments.</p><h4 id="sec522" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">1+2+3+4</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'+'(1,2,3,4)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,2)+(3,4)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,2,3)+4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+10
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+(See Section <a href="cascmd_en115.html#ssec%3Aplusseq">6.1.9</a>.)
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">+2+3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'+'(1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2,3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+3+4 </span><span style="color:#0000CC"><span style="font-style:italic">i</span></span><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[1,2,3]+[4,1]</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[1,2,3]+[4,1,0]</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'+'([1,2,3],[4,1])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">5,3,3</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[1,2]+[3,4]</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'+'([1,2],[3,4])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">4,6</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[[1,2],[3,4]]+[[1,2],[3,4]]</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">4</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    6</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">8
+</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[1,2,3]+4</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'+'([1,2,3],4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+▯ 1,2,7▯
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+(This is a polynomial; see Section <a href="cascmd_en332.html#ssec%3Aspoly">11.1.1</a>.)
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[1,2,3]+(4,1)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'+'([1,2,3],4,1)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+▯ 1,2,8 ▯
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"Hel"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"lo"</span></span></span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'+'(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"Hel"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"lo"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC">“Hello”</span><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="sec523" class="paragraph">The <span style="font-family:monospace">-</span>, <span style="font-family:monospace">*</span> and <span style="font-family:monospace">/</span> operators.</h5>
+<p>
+The <span style="font-family:monospace">-</span><a id="hevea_default408"></a>, <span style="font-family:monospace">*</span><a id="hevea_default409"></a> and
+<span style="font-family:monospace">/</span><a id="hevea_default410"></a> operators (and their
+prefixed versions <span style="font-family:monospace">’-’</span>, <span style="font-family:monospace">’*’</span> and <span style="font-family:monospace">’/’</span>), like
+the <span style="font-family:monospace">+</span> operator, are flexible and operate on compound objects
+(such as lists and sequences), but do not concatenate strings.</p><h4 id="sec524" class="subsubsection">Examples of <span style="font-family:monospace">-</span> and <span style="font-family:monospace">’-’</span>.</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,2)-(3,4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+−4
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,2,3)-4</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+2
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[1,2,3]-[4,1]</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[1,2,3]-[4,1,0]</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'-'([1,2,3],[4,1])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">−3,1,3</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[1,2]-[3,4]</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'-'([1,2],[3,4])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">−2,−2</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[[3,4],[1,2]]-[[1,2],[3,4]]</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    −2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−2
+</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[1,2,3]-4</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'-'([1,2,3],4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+▯ 1,2,−1▯
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[1,2,3]-(4,1)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+▯ 1,2,−2 ▯
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><h4 id="sec525" class="subsubsection">Examples of <span style="font-family:monospace">*</span> and <span style="font-family:monospace">’*’</span>.</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,2)*(3,4)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,2,3)*4</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">1*2*3*4</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'*'(1,2,3,4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+24
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">1*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">*2*3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'*'(1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2,3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+−6
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[10,2,3]*[4,1]</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[10,2,3]*[4,1,0]</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'*'([10,2,3],[4,1])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+42
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+These compute the scalar product.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[1,2]*[3,4]</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'*'([1,2],[3,4])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+11
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+These compute the scalar product.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[[1,2],[3,4]]*[[1,2],[3,4]]</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    7</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">10</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    15</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">22
+</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[1,2,3]*4</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'*'([1,2,3],4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">4,8,12</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[1,2,3]*(4,2)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'*'([1,2,3],4,2)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[1,2,3]*8</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">8,16,24</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,2)+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">*(2,3)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">1+2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">*2*3</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+3+6 </span><span style="color:#0000CC"><span style="font-style:italic">i</span></span><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><h4 id="sec526" class="subsubsection">Examples of <span style="font-family:monospace">/</span> and <span style="font-family:monospace">’/’</span>.</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[10,2,3]/[4,1]</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎢<br>
+⎣</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">5</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">,2</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[1,2]/[3,4]</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'/'([1,2],[3,4])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎢<br>
+⎣</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">,</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">1/[[1,2],[3,4]]</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'/'(1,[[1,2],[3,4]]</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
@@ -58,29 +391,17 @@ plotfunc(x</span></span></span><code><span style="font-family:sans-serif"><span 
 ⎢<br>
 ⎢<br>
 ⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−∞</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">&nbsp;</span></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
+⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    −2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">    </span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
 <tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
 <tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">&nbsp;</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">+∞ </span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">′=2 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">−1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−∞</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">+</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">+∞ </span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">=</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">−</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">−2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">+∞</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">↓</span></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">−</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">9</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">4</span></td></tr>
 </table></td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">↑</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">+∞ </span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">′′</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">+(⋃)</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">+(⋃)</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2
-</span></td></tr>
+</table></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">−</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
+</table></td></tr>
+</table></td></tr>
 </table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
 ⎥<br>
 ⎥<br>
 ⎥<br>
@@ -89,65 +410,43 @@ plotfunc(x</span></span></span><code><span style="font-family:sans-serif"><span 
 </table></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">tabvar</span></span><span style="font-weight:bold"><span style="color:#BF0000">((2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">-1)/(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">-1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
-plotfunc((2*t-1)/(t-1),t=((-2.893824) .. 5.074184))<br>
- Inside Xcas you can see the function with Cfg&gt;Show&gt;DispG.
-</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[[1,2],[3,4]]*1/[[1,2],[3,4]]</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
 </span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
 ⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−∞</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">&nbsp;</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">&nbsp;</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">+∞ </span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">    </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">′=−</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">t</span></span><span style="color:#0000CC">−1</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><sup><span style="color:#0000CC">2</span></sup></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">||</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">||</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">    </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">=</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2 </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><span style="color:#0000CC">−1</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">t</span></span><span style="color:#0000CC">−1</span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">↓</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−∞</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">+∞</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">↓</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">′′</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−(⋂)</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">||</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">||</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">+
-(⋃)</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0
+⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1
 </span></td></tr>
 </table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
 ⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
+⎦</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[[1,2],[3,4]]/[[1,2],[3,4]]</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1
+</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
 ⎥<br>
 ⎦</span></td></tr>
 </table></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table><p>
-Note that in the second example the value 1 appears twice in the first row, so
-that both one-sided limits of <span style="font-family:monospace">y</span> can be displayed at the
-vertical asymptote <span style="font-style:italic">t</span>=1. The values of 2 for <span style="font-family:monospace">y</span> at −∞
-and ∞ indicate a horizontal asymptote of <span style="font-style:italic">y</span>=2.</p>
+(This is term-by-term division.)</p>
 <hr>
-<a href="cascmd_en243.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en245.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en243.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en245.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

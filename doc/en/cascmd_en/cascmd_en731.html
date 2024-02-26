@@ -2,37 +2,56 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Digits</title>
+<title>Cosine window</title>
 </head>
 <body >
-<a href="cascmd_en730.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en732.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en730.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en732.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1858" class="subsection">21.1.1  Digits</h3>
-<p>The <span style="font-family:monospace">Digits</span> variable (see Section <a href="cascmd_en024.html#ssec%3Asigdig">2.5.1</a>) is used to
-control how real numbers are represented and also how they are
-displayed. When the specified number
-of digits is less or equal to 14 (for example <span style="font-family:monospace">Digits:=14</span>), then
-hardware floating point numbers are used and they are displayed using
-the specified number of digits. When <span style="font-family:monospace">Digits</span> is larger than
-14, <span style="font-variant:small-caps">Xcas</span> uses the MPFR library, the representation is similar to
-hardware floats (cf. infra) but the number of bits of the mantissa is
-not fixed and the range of exponents is much larger. More precisely,
-the number of bits of the mantissa of a created MPFR float is
-<span style="font-family:monospace">ceil(Digits*log(10)/log(2))</span>.</p><p>Note that if you change the value of <span style="font-family:monospace">Digits</span>, this will affect
-the creation of new real numbers compiled from command lines or
-programs or by instructions like <span style="font-family:monospace">approx</span>, but it will not
-affect existing real numbers. Hence hardware floats may coexist with
-MPFR floats, and even in MPFR floats, some may have 100 bits of
-mantissa and some may have 150 bits of mantissa. If operations mix
-different kinds of floats, the most precise kind of floats are coerced
-to the less precise kind of floats.</p>
+<h3 id="sec1880" class="subsection">20.5.5  Cosine window</h3>
+<p>The <span style="font-family:monospace">cosine_window</span><a id="hevea_default1457"></a>
+command applies the cosine window function to a sequence or its segment.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">cosine_window</span> takes one mandatory argument
+and one to three optional arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-weight:bold"><span style="font-style:italic">v</span></span>, a real vector with length <span style="font-style:italic">n</span>.
+</li><li class="li-itemize">Optionally, one of:
+<ul class="itemize"><li class="li-itemize">
+α, a real number (by default, α=1).
+</li><li class="li-itemize"><span style="font-style:italic">m</span>,<span style="font-style:italic">N</span> ⟨,α⟩, a sequence of two integers
+and optionally a real number α (by default, <span style="font-style:italic">m</span>=0 and <span style="font-style:italic">N</span>=<span style="font-style:italic">n</span>).
+</li></ul>
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">cosine_window</span>
+returns the elementwise product of [<span style="font-style:italic">v</span><sub><span style="font-style:italic">m</span></sub>,<span style="font-style:italic">v</span><sub><span style="font-style:italic">m</span>+1</sub>,…,<span style="font-style:italic">v</span><sub><span style="font-style:italic">m</span>+<span style="font-style:italic">N</span>−1</sub>]
+and the vector <span style="font-style:italic">w</span> of length <span style="font-style:italic">N</span> defined by
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    <span style="font-style:italic">w</span><sub><span style="font-style:italic">k</span></sub>=sin<sup>α</sup></td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span> π</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span>−1</td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell">,
+   <span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">N</span>−1.
+</td></tr>
+</table>
+</li></ul><h4 id="sec1881" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">listplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">cosine_window</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1</span></span><span style="font-weight:bold"><span style="color:#BF0000">$1000</span></span><span style="font-weight:bold"><span style="color:#BF0000">],1.5))</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en187.png">
+
+</div>
 <hr>
-<a href="cascmd_en730.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en732.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en730.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en732.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

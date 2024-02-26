@@ -2,38 +2,163 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Bisector plane in space
-</title>
+<title>Finding an intersection point of two objects in space</title>
 </head>
 <body >
-<a href="cascmd_en927.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en929.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en927.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en929.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:3dperpbis" class="subsection">25.5.2  Bisector plane in space
-</h3>
-<p>See Section <a href="cascmd_en827.html#ssec%3A2dperpbis">24.6.10</a> for perpendicular bisectors in the plane.</p><p>The <span style="font-family:monospace">perpen_bisector</span><a id="hevea_default1844"></a>
-command finds the perpendicular bisector plane of a line segment.
+<h3 id="ssec:3dsingleintersection" class="subsection">26.3.3  Finding an intersection point of two objects in space</h3>
+<p>See Section <a href="cascmd_en822.html#ssec%3Asingle2dintersection">25.5.6</a> for single points of
+intersection of objects in the plane.</p><p>The <span style="font-family:monospace">single_inter</span><a id="hevea_default1834"></a>
+or <span style="font-family:monospace">line_inter</span><a id="hevea_default1835"></a>
+command finds an intersection point of two geometric objects.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">perpen_bisector</span> takes
-<span style="font-style:italic">seg</span>, a line segment (or the end points of the segment).
-</li><li class="li-itemize"><span style="font-family:monospace">perpen_bisector(</span><span style="font-style:italic">seg</span><span style="font-family:monospace">)</span>
-returns and draws the perpendicular bisector plane of <span style="font-style:italic">seg</span>.
-</li></ul><h4 id="sec2310" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">perpen_bisector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(4,4,4))</span></span></td></tr>
-</table><p>or:
+<span style="font-family:monospace">single_inter</span> takes two mandatory arguments and one
+optional argument.
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">obj</span><sub>1</sub>, <span style="font-style:italic">obj</span><sub>2</sub>, two geometric objects.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">pt</span>, a point or list of points.
+</li></ul>
+<span style="font-family:monospace">line_inter(</span><span style="font-style:italic">obj</span><sub>1</sub>,<span style="font-style:italic">obj</span><sub>2</sub> ⟨,<span style="font-style:italic">pt</span> ⟩<span style="font-family:monospace">)</span>
+returns one of the points of
+intersection of <span style="font-style:italic">obj</span><sub>1</sub> and <span style="font-style:italic">obj</span><sub>2</sub>.<p>If <span style="font-style:italic">pt</span> is a single point, then the command returns the point
+of intersection <em>closest</em> to <span style="font-style:italic">pt</span>.</p><p>If <span style="font-style:italic">pt</span> is a list of points, then the command tries to return
+a point not in <span style="font-style:italic">pt</span>.
+</p></li></ul><h4 id="sec2337" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">single_inter</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">plane</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1,1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,0,1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,1,0)),</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,1,1))):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">coordinates</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">perpen_bisector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">segment</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,0,0],[4,4,4])</span></span></td></tr>
-</table><div class="center">
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎢<br>
+⎣</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">,</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">,</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">single_inter</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sphere</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,0),1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,1,1))):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">coordinates</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-<img src="cascmd_en321.png">
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎢<br>
+⎣</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">,</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">,</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">B1</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">single_inter</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sphere</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,0),1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,1,1)),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,0,0)):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">coordinates</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">B1</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-</div>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎢<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">−</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">,−</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">,−</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">C</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">single_inter</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sphere</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,0),1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,0,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,1,1))):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">coordinates</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">C</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">1,0,0</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">C1</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">single_inter</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sphere</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,0),1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,0,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,1,1)),[</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,0,0)]):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">coordinates</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">C1</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎢<br>
+⎣</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">,</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">,</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en927.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en929.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en927.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en929.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

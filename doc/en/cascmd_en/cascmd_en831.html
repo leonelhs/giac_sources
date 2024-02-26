@@ -2,57 +2,71 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Isosceles triangles in the plane</title>
+<title>A point on a geometric object in the plane</title>
 </head>
 <body >
-<a href="cascmd_en830.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en832.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en830.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en832.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:2disotriangles" class="subsection">24.7.2  Isosceles triangles in the plane</h3>
-<p>See Section <a href="cascmd_en931.html#ssec%3A3disotriangles">25.6.2</a> for isosceles triangles in space.</p><p>The <span style="font-family:monospace">isosceles_triangle</span><a id="hevea_default1730"></a>
-command creates isosceles triangles.
+<h3 id="ssec:element" class="subsection">25.5.15  A point on a geometric object in the plane</h3>
+<p>The <span style="font-family:monospace">element</span><a id="hevea_default1717"></a>
+command is most useful in a two-dimensional
+geometry screen; it creates objects that are restricted to a geometric
+figure.</p><p><span style="font-family:monospace">element</span> takes different types of arguments.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">isosceles_triangle</span> takes three mandatory arguments
-and one optional argument:
+<span style="font-family:monospace">element</span> can take one mandatory argument and one
+optional argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>, two points.
-</li><li class="li-itemize">θ, an angle.
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">var</span>, a variable name.
+<span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>, a range of values.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">init</span> and <span style="font-style:italic">step</span>, an initial
+value (by default (<span style="font-style:italic">a</span>+<span style="font-style:italic">b</span>)/2) and step size (by default (<span style="font-style:italic">b</span>−<span style="font-style:italic">a</span>)/100).
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">isosceles_triangle(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,θ ⟨,<span style="font-style:italic">var</span> ⟩<span style="font-family:monospace">)</span>
-returns and draws the isosceles triangle <span style="font-style:italic">abc</span>, where <span style="font-style:italic">ab</span> and
-<span style="font-style:italic">ac</span> are equal sides and θ is the angle between <span style="font-style:italic">ab</span> and
-<span style="font-style:italic">ac</span>.<p>With the argument <span style="font-style:italic">var</span>, <span style="font-style:italic">c</span> will be assigned to
-<span style="font-style:italic">var</span>.
-</p></li></ul><h4 id="sec2095" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">isosceles_triangle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,-3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">/4)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en216.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">isosceles_triangle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,-3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">/4,</span></span><span style="font-weight:bold"><span style="color:#BF0000">C</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en217.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">normal</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">affix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">C</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-−</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">i</span></span><span style="color:#0000CC">
-</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table>
+</li><li class="li-itemize"><span style="font-family:monospace">element(</span><span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span> ⟨,<span style="font-style:italic">init</span>,<span style="font-style:italic">step</span> ⟩<span style="font-family:monospace">)</span>
+creates a parameter restricted to the interval from <span style="font-style:italic">a</span> to <span style="font-style:italic">b</span>, with the given
+initial value and whose value can be changed in the given step
+sizes.
+</li></ul><p>For example, the command <span style="font-family:monospace">t:=element(0..pi)</span> creates a
+parameter <span style="font-family:monospace">t</span> which can take on values between 0 and π
+and has initial value π/2. It also creates a slider labeled
+<span style="font-family:monospace">t</span> which can be used to change the values. The values of
+any later formulas involving <span style="font-family:monospace">t</span> will change with <span style="font-family:monospace">t</span>.</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">element</span> can take one mandatory argument and one
+optional argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">C</span>, a curve.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">init</span>, an initial value (by default
+1/2).
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">element(</span><span style="font-style:italic">C</span> ⟨,<span style="font-style:italic">init</span> ⟩<span style="font-family:monospace">)</span>
+creates a point which will be restricted to the curve, the
+initial position of the point is determined by setting the parameter
+(in the default parameterization of the object) to the initial
+value. If the point can be moved by the mouse (as it can when the
+geometry screen is in <span style="font-family:monospace">Pointer</span> mode), then the motion will
+be restricted to the geometric object.
+</li></ul><p>For example, the command <span style="font-family:monospace">A:=element(circle(0,2))</span> creates a
+point labeled <span style="font-family:monospace">A</span> whose position is restricted to the circle
+of radius 2 centered at the origin. Since the circle has default
+parameterization 2 <span style="font-style:italic">e</span><sup><span style="font-style:italic">i</span> <span style="font-style:italic">t</span></sup>, <span style="font-family:monospace">A</span> starts out at
+2 <span style="font-style:italic">e</span><sup><span style="font-style:italic">i</span>/2</sup>.</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">element</span> can take two mandatory arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">P</span>, a polygon or polygonal line with <span style="font-style:italic">n</span> sides.
+</li><li class="li-itemize"><span style="font-family:monospace">[floor(</span><span style="font-style:italic">t</span><span style="font-family:monospace">),frac(</span><span style="font-style:italic">t</span><span style="font-family:monospace">)]</span>, where <span style="font-style:italic">t</span> is a variable previously
+defined by <span style="font-style:italic">t</span><span style="font-family:monospace">=element(0..</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span>.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">element(</span><span style="font-style:italic">P</span><span style="font-family:monospace">,[floor(</span><span style="font-style:italic">t</span><span style="font-family:monospace">),frac(</span><span style="font-style:italic">t</span><span style="font-family:monospace">)])</span>
+creates a point restricted to the polygonal line. With the
+sides numbered starting at 0, the value of <span style="font-family:monospace">floor(</span><span style="font-style:italic">t</span><span style="font-family:monospace">)</span>
+determines which side the point is on, and the value of
+<span style="font-family:monospace">frac(</span><span style="font-style:italic">t</span><span style="font-family:monospace">)</span> determines how far along the side the point is.
+</li></ul>
 <hr>
-<a href="cascmd_en830.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en832.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en830.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en832.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

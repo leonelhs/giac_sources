@@ -2,60 +2,51 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Defining functions</title>
+<title>CST variable
+</title>
 </head>
 <body >
-<a href="cascmd_en070.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en072.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en070.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en072.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:deffuns" class="subsection">3.4.1  Defining functions</h3>
-<p>Similar to how you can assign a value to a variable (see
-Section <a href="cascmd_en062.html#ssec%3Aassign">3.3.2</a>), use the <span style="font-family:monospace">:=</span><a id="hevea_default105"></a> and
-<span style="font-family:monospace">=&gt;</span><a id="hevea_default106"></a> operators to define a function; both
+<h3 id="ssec:CST" class="subsection">3.3.10  <span style="font-family:monospace">CST</span> variable
+</h3>
+<p>The menu available with the <span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">cust</span></span></span> button in the bandeau on the
+onscreen keyboard (see Section <a href="index.html#sec%3Aswin">2.2</a>, item <a href="index.html#enum%3Akbd">2.2</a>) is
+defined with the <span style="font-family:monospace">CST</span><a id="hevea_default105"></a> variable.
+It is a list where each list item determines a menu item;
+a list item is either a builtin command
+name or a list itself consisting of a string to be displayed in the
+menu and the input to be entered when the item is selected.</p><p>For example, to create a custom defined menu with the builtin function
+<span style="font-family:monospace">diff</span>, a user defined function <span style="font-family:monospace">foo</span>, and a menu item
+to insert the number 22/7, enter:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">):=</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2</span></span></td></tr>
-</table><p>and
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">CST</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=[</span></span><span style="font-weight:bold"><span style="color:#BF0000">diff</span></span><span style="font-weight:bold"><span style="color:#BF0000">,[</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"foo"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">foo</span></span><span style="font-weight:bold"><span style="color:#BF0000">],[</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"My pi approx"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,22/7]]</span></span></td></tr>
+</table><p>Note that if the input to be entered is a variable and the variable
+has a value when <span style="font-family:monospace">CST</span> is defined, then <span style="font-family:monospace">CST</span> will
+contain the value of the variable. For example,
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2=&gt;</span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>give the name <span style="font-family:monospace">f</span> to the function which takes a value and
-returns the square of the value. In either case, if you then enter:
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">app</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=22/7:; </span></span><span style="font-weight:bold"><span style="color:#BF0000">CST</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=[</span></span><span style="font-weight:bold"><span style="color:#BF0000">diff</span></span><span style="font-weight:bold"><span style="color:#BF0000">,[</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"foo"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">foo</span></span><span style="font-weight:bold"><span style="color:#BF0000">],[</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"My pi approx"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">app</span></span><span style="font-weight:bold"><span style="color:#BF0000">]]</span></span></td></tr>
+</table><p>will be equivalent to the previous definition of <span style="font-family:monospace">CST</span>.
+However, if the variable does not have a value when <span style="font-family:monospace">CST</span> is
+defined, for example:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3)</span></span></td></tr>
-</table><p>you will get:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">CST</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=[</span></span><span style="font-weight:bold"><span style="color:#BF0000">diff</span></span><span style="font-weight:bold"><span style="color:#BF0000">,[</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"foo"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">foo</span></span><span style="font-weight:bold"><span style="color:#BF0000">],[</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"My pi approx"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">app</span></span><span style="font-weight:bold"><span style="color:#BF0000">]]:; </span></span><span style="font-weight:bold"><span style="color:#BF0000">app</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=22/7</span></span></td></tr>
+</table><p>then <span style="font-family:monospace">CST</span> will behave as the previous values to begin with,
+but in this case if the variable <span style="font-family:monospace">app</span> is changed, the
+the result of pressing the <span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">My pi approx</span></span></span>
+button will change also.</p><p>Since <span style="font-family:monospace">CST</span> is a list, a function can be added to the
+<span style="font-family:monospace">cust</span> menu by using the <span style="font-family:monospace">concat</span> command (see
+Section <a href="cascmd_en131.html#ssec%3Aconcat">6.3.12</a>):
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-9
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>You can define an anonymous function, namely a function without a
-name, with the <span style="font-family:monospace">-&gt;</span><a id="hevea_default107"></a> operator;
-for example, the squaring function
-can be defined by
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-&gt;</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2</span></span></td></tr>
-</table><p>use this form of the function to assign it a name; both
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-&gt;</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2</span></span></td></tr>
-</table><p>and
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-&gt;</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2=&gt;</span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span></td></tr>
-</table><p>are alternate ways to define <span style="font-family:monospace">f</span> as the squaring function.</p><p>You can similarly define functions of more than one variable. For
-example you could enter
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">hypot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">):=</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2)</span></span></td></tr>
-</table><p>or
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">hypot</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">)-&gt;</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2)</span></span></td></tr>
-</table><p>to define a function which takes the lengths of the two legs
-of a right triangle and returns the hypotenuse.</p>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">CST</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">concat</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">CST</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">evalc</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>will add the <span style="font-family:monospace">evalc</span> command to the <span style="font-family:monospace">cust</span> menu.</p>
 <hr>
-<a href="cascmd_en070.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en072.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en070.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en072.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

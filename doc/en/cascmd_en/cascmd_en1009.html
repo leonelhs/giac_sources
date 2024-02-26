@@ -2,35 +2,41 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Averaging channel data</title>
+<title>Dodecahedra</title>
 </head>
 <body >
-<a href="cascmd_en1008.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en1010.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en1008.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en1010.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:stereo2mono" class="subsection">26.2.5  Averaging channel data</h3>
-<p>The <span style="font-family:monospace">stereo2mono</span><a id="hevea_default1936"></a>
-command converts a multichannel audio clip to a single channel audio clip.
+<h3 id="sec2505" class="subsection">26.15.4  Dodecahedra</h3>
+<p>The <span style="font-family:monospace">dodecahedron</span><a id="hevea_default1919"></a>
+command creates a regular dodecahedron.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">stereo2mono</span> takes
-<span style="font-style:italic">A</span>, a multichannel audio clip.
-</li><li class="li-itemize"><span style="font-family:monospace">stereo2mono(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span> returns an audio clip with the input
-channels in <span style="font-style:italic">A</span> mixed down to a single channel.<p>Every sample in the output is the arithmetic mean of the samples at
-the same position in the input channels.
-</p></li></ul><h4 id="sec2491" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">soundsec</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">L</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">R</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">*440*</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">*445*</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">stereo2mono</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">createwav</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">L</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">R</span></span><span style="font-weight:bold"><span style="color:#BF0000">])):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">playsnd</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>Output:
-The sound of the single channel of the combination of <span style="font-style:italic">L</span> and <span style="font-style:italic">R</span> is
-played.</p>
+<span style="font-family:monospace">dodecahedron</span> takes three arguments:
+<span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span>, three points.
+</li><li class="li-itemize"><span style="font-family:monospace">dodecahedron(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span><span style="font-family:monospace">)</span> returns and draws the
+dodecahedron centered at <span style="font-style:italic">A</span> with a vertex at <span style="font-style:italic">B</span> and with an axis
+of symmetry in the plane <span style="font-style:italic">ABC</span>. (Note that each face is a pentagon,
+but will be drawn with one of its diagonals and so will show up as a
+trapezoid and a triangle.)
+</li></ul><h4 id="sec2506" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">dodecahedron</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,0,0],[0,0,5],[0,1,0])</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en423.png">
+
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">dodecahedron</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,0,0],[0,2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5)/2+3/2],[0,0,1])</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en424.png">
+
+</div>
 <hr>
-<a href="cascmd_en1008.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en1010.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en1008.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en1010.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

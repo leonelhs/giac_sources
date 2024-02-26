@@ -2,30 +2,63 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Drawing unit vectors in the plane</title>
+<title>Defining a function with a variable number of arguments</title>
 </head>
 <body >
-<a href="cascmd_en793.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en795.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en793.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en795.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec2015" class="subsection">24.2.1  Drawing unit vectors in the plane</h3>
-<p>The <span style="font-family:monospace">Ox_2d_unit_vector</span><a id="hevea_default1618"></a>
-command takes no arguments and draws the unit vector in the <span style="font-style:italic">x</span>-direction on a plane.</p><h4 id="sec2016" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">Ox_2d_unit_vector</span></span><span style="font-weight:bold"><span style="color:#BF0000">()</span></span></td></tr>
-</table><div class="center">
+<h3 id="sec2037" class="subsection">24.5.1  Defining a function with a variable number of arguments</h3>
+<p>The <span style="font-family:monospace">args</span><a id="hevea_default1630"></a>
+command returns the list of arguments of a function.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">args</span> takes no arguments.
+</li><li class="li-itemize"><span style="font-family:monospace">args</span> (or <span style="font-family:monospace">args(NULL)</span>) returns a list of the
+arguments of the current function, starting with the name of the
+function at index 0.
+</li></ul><p>
+Note that <span style="font-family:monospace">args()</span> will not work, the command must be called as
+<span style="font-family:monospace">args</span> or <span style="font-family:monospace">args(NULL)</span>. You can also use
+<span style="font-family:monospace">(args)[0]</span> to get the name of the function and
+<span style="font-family:monospace">(args)[1]</span> to get the first argument, etc., but the
+parentheses about <span style="font-family:monospace">args</span> is mandatory.</p><h4 id="sec2038" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">testargs</span></span><span style="font-weight:bold"><span style="color:#BF0000">():={ </span></span><span style="font-weight:bold"><span style="color:#0000CC">local</span></span><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">; </span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">args</span></span><span style="font-weight:bold"><span style="color:#BF0000">; </span></span><span style="font-weight:bold"><span style="color:#0000CC">return</span></span><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">[1]; }:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">testargs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(12,5)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-<img src="cascmd_en170.png">
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+12
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>As another example, enter the function:
 
-</div><p>Similarly, the <span style="font-family:monospace">Oy_2d_unit_vector</span><a id="hevea_default1619"></a>
-command draws the unit vector in the <span style="font-style:italic">y</span> direction.
-The <span style="font-family:monospace">frame_2d</span><a id="hevea_default1620"></a> command
-simultaneously draws both unit vectors.</p>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> total():={
+   <span style="color:#0000CC"><span style="font-weight:bold">local</span></span> s,a;
+   a:=args;
+   s:=0;
+   <span style="color:#0000CC"><span style="font-weight:bold">for</span></span> (k:=1;k&lt;size(a);k++) {
+     s:=s+a[k];
+   }
+   <span style="color:#0000CC"><span style="font-weight:bold">return</span></span> s;
+ }</td></tr>
+</table><p>then:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">total</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,2,3,4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+10
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en793.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en795.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en793.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en795.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

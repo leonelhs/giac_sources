@@ -2,26 +2,29 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Checking whether four points form a harmonic division</title>
+<title>Checking whether a point is on an object in the plane</title>
 </head>
 <body >
-<a href="cascmd_en896.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en898.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en896.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en898.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec2235" class="subsection">24.15.15  Checking whether four points form a harmonic division</h3>
-<p>The <span style="font-family:monospace">is_harmonic</span><a id="hevea_default1808"></a>
-command determines whether or not four
-points form a harmonic division.
+<h3 id="ssec:2diselem" class="subsection">25.15.1  Checking whether a point is on an object in the plane</h3>
+<p>See Section <a href="cascmd_en970.html#ssec%3A3diselem">26.11.1</a> for checking elements in three-dimensional
+geometry.</p><p>The <span style="font-family:monospace">is_element</span><a id="hevea_default1799"></a>
+command determines whether or not a point lies on a geometric object.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">is_harmonic</span> takes four arguments:
-<span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span>,<span style="font-style:italic">R</span>,<span style="font-style:italic">S</span>, four points.
-</li><li class="li-itemize"><span style="font-family:monospace">is_harmonic(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span>,<span style="font-style:italic">R</span>,<span style="font-style:italic">S</span><span style="font-family:monospace">)</span> returns 1 if <span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span>,<span style="font-style:italic">R</span> and <span style="font-style:italic">S</span> form a
-harmonic range and returns 0 otherwise.
-</li></ul><h4 id="sec2236" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_harmonic</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,2,3/2,3)</span></span></td></tr>
+<span style="font-family:monospace">is_element</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">P</span>, a point.
+</li><li class="li-itemize"><span style="font-style:italic">G</span>, a geometric object.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">is_element(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns <span style="font-family:monospace">1</span> if <span style="font-style:italic">P</span> is an element of
+<span style="font-style:italic">G</span> and returns <span style="font-family:monospace">0</span> otherwise.
+</li></ul><h4 id="sec2265" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_element</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
@@ -29,7 +32,7 @@ harmonic range and returns 0 otherwise.
 1
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_harmonic</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_element</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
@@ -39,8 +42,8 @@ harmonic range and returns 0 otherwise.
 </table></td></tr>
 </table>
 <hr>
-<a href="cascmd_en896.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en898.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en896.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en898.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

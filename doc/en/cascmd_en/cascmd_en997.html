@@ -2,49 +2,30 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Image structure in Xcas</title>
+<title>Graph of parametric equations in space</title>
 </head>
 <body >
-<a href="cascmd_en996.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en998.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en996.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en998.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec:imagestruct" class="subsection">26.1.1  Image structure in <span style="font-variant:small-caps">Xcas</span></h3>
-<p>Starting from version 1.9.0, images in <span style="font-variant:small-caps">Xcas</span> are special objects
-which can be loaded from PNG, JPEG or GIF files and written to PNG files.
-Such objects allow for visualization, extraction and modification of the image data.
-An image object evaluates to a string describing the structure of the image.</p><p>In earlier versions of <span style="font-variant:small-caps">Xcas</span>, an image is a list with the following elements
-(referred to as the <em>legacy format</em> in the further text):
-</p><ol class="enumerate" type=1><li class="li-enumerate">
-A list of three integers:
-<ul class="itemize"><li class="li-itemize">
-the number of channels (3 or 4, depending on whether a
-transparency channel is present),
-</li><li class="li-itemize">the number <span style="font-style:italic">n</span>, representing the height of the image in pixels,
-</li><li class="li-itemize">the number <span style="font-style:italic">p</span>, representing the width of the image in pixels.
-</li></ul>
-Each channel will be an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix of
-integers between 0 and 255.
-</li><li class="li-enumerate">A matrix of red channel values.
-</li><li class="li-enumerate">A matrix of green channel values.
-</li><li class="li-enumerate">A matrix of transparency channel values.
-</li><li class="li-enumerate">A matrix of blue channel values.
-</li></ol><p>
-The color of the point at line <span style="font-style:italic">i</span> and column <span style="font-style:italic">j</span> is
-determined by the values of the (<span style="font-style:italic">i</span>,<span style="font-style:italic">j</span>)th entry of
-the matrices. Note that the transparency channel data comes before
-the blue channel data since color values in <span style="font-variant:small-caps">Xcas</span> are
-<span style="font-family:monospace">red</span>=1, <span style="font-family:monospace">green</span>=2 and <span style="font-family:monospace">blue</span>=4,
-which allows for extraction of channel data using colors as indices.</p><p>Note that the number of points in the structure isn’t necessarily the
-same as the number of pixels on the screen when it is drawn.
-A single point in the structure can appear as a
-(small) rectangle of pixels when displayed on the screen.</p><p>Loading images to the legacy format is supported
-by the <span style="font-family:monospace">readrgb</span> command.</p>
+<h3 id="sec2483" class="subsection">26.13.6  Graph of parametric equations in space</h3>
+<p>The <span style="font-family:monospace">paramplot</span><a id="hevea_default1906"></a>
+command can draw a parametric surface in
+ℝ<sup>3</sup> (see Section <a href="cascmd_en632.html#ssec%3A3dplotparam">18.7.2</a> for a full description).</p><p><span style="font-family:monospace">paramplot</span> can take two arguments; a list of three expressions
+involving two parameters and a list of the parameters (possibly with
+bounds), and it returns and draws the parameterized surface.</p><h4 id="sec2484" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">paramplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">cos</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">],[</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en407.png">
+
+</div>
 <hr>
-<a href="cascmd_en996.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en998.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en996.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en998.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

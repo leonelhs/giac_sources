@@ -2,56 +2,45 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Trace of a geometric object</title>
+<title>Checking whether two lines in the plane are perpendicular</title>
 </head>
 <body >
-<a href="cascmd_en907.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en909.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en907.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en909.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec2263" class="subsection">24.17.3  Trace of a geometric object</h3>
-<p>The <span style="font-family:monospace">trace</span><a id="hevea_default1822"></a>
-command draws the trace of an object.
+<h3 id="ssec:2dcheckperp" class="subsection">25.15.12  Checking whether two lines in the plane are perpendicular</h3>
+<p>See Section <a href="cascmd_en973.html#ssec%3A3dcheckperp">26.11.4</a> for checking for perpendicularity in
+three-dimensional geometry.</p><p>The <span style="font-family:monospace">is_perpendicular</span><a id="hevea_default1810"></a>
+command determines whether or not two lines are perpendicular.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">trace</span> takes
-<span style="font-style:italic">G</span>, a geometric object which depends on a parameter.
-</li><li class="li-itemize"><span style="font-family:monospace">trace(</span><span style="font-style:italic">G</span><span style="font-family:monospace">)</span> draws the trace of <span style="font-style:italic">G</span> as the parameter is
-changed or the object is moved in <span style="font-family:monospace">Pointer</span> mode.
-</li></ul><h4 id="sec2264" class="subsubsection">Example</h4>
-<p>
-For example, to find the locus of points equidistant from a line
-<span style="font-style:italic">d</span> and a point <span style="font-style:italic">F</span>, you can create a point <span style="font-style:italic">H</span> on
-the line <span style="font-style:italic">d</span>. To do this, open a graphic
-window (<span style="font-family:sans-serif">Alt+G</span>) and type in the following commands, one per
-line.</p><p>First, create a line <span style="font-style:italic">d</span> (using sample points) and a
-sample point <span style="font-style:italic">F</span>.
+<span style="font-family:monospace">is_perpendicular</span> takes two arguments:
+<span style="font-style:italic">L</span><sub>1</sub>,<span style="font-style:italic">L</span><sub>2</sub>, two lines.
+</li><li class="li-itemize"><span style="font-family:monospace">is_perpendicular(</span><span style="font-style:italic">L</span><sub>1</sub>,<span style="font-style:italic">L</span><sub>2</sub><span style="font-family:monospace">)</span> returns 1 if <span style="font-style:italic">L</span><sub>1</sub> and
+<span style="font-style:italic">L</span><sub>2</sub> are perpendicular and otherwise returns 0.
+</li></ul><h4 id="sec2287" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_perpendicular</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1))</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-3-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1/2+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">d</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">F</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(4/3,1/2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0)</span></span></td></tr>
-</table><p>Then create a point <span style="font-style:italic">H</span> on the line <span style="font-style:italic">d</span> which you can move
-around.
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_parallel</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1))</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">assume</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">=[0.7,-5,5,0.1]);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">H</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">element</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">d</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>To find a point equidistant from <span style="font-style:italic">d</span> and <span style="font-style:italic">F</span>, find the
-point <span style="font-family:monospace">M</span> where the perpendicular to <span style="font-style:italic">d</span> (at <span style="font-style:italic">H</span>)
-intersects the perpendicular bisector of <span style="text-decoration:overline"><span style="font-style:italic">HF</span></span>, and trace that
-point.
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">T</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">perpendicular</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">H</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">d</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">M</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">single_inter</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">perpen_bisector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">H</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">F</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">T</span></span><span style="font-weight:bold"><span style="color:#BF0000">));</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">trace</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">M</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>Then as the point <span style="font-style:italic">H</span> on the line moves (by changing the value
-of <span style="font-style:italic">a</span> with the slider), you will get the trace of <span style="font-style:italic">M</span>.</p><p>To erase traces, add traces, activate or deactivate them, use the
-<span style="font-family:sans-serif">Trace</span> menu of the <span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">M</span></span></span> button located on
-the right side of the geometry screen.</p>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en907.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en909.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en907.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en909.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

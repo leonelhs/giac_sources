@@ -2,62 +2,33 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Checking whether two lines or two spheres in space are orthogonal</title>
+<title>Parabolas in space</title>
 </head>
 <body >
-<a href="cascmd_en959.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en961.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en959.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en961.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:3dcheckorth" class="subsection">25.11.5  Checking whether two lines or two spheres in space are orthogonal</h3>
-<p>See Section <a href="cascmd_en895.html#ssec%3A2dcheckorth">24.15.13</a> for checking for orthogonality in
-two-dimensional geometry.</p><p>The <span style="font-family:monospace">is_orthogonal</span><a id="hevea_default1878"></a>
-command determines whether or not two objects are orthogonal.
+<h3 id="ssec:3dparabola" class="subsection">26.9.4  Parabolas in space</h3>
+<p>See Section <a href="cascmd_en868.html#ssec%3A2dparabola">25.11.3</a> for parabolas in the plane.</p><p>The <span style="font-family:monospace">parabola</span><a id="hevea_default1867"></a>
+command creates parabolas in space.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">is_orthogonal</span> takes two arguments:
-<span style="font-style:italic">L</span>,<span style="font-style:italic">P</span>, which can be two lines, two spheres, two planes or a line and
-a plane.
-</li><li class="li-itemize"><span style="font-family:monospace">is_orthogonal(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">P</span><span style="font-family:monospace">)</span> returns <span style="font-family:monospace">1</span> is the
-objects are orthogonal; it returns <span style="font-family:monospace">0</span> otherwise.
-</li></ul><h4 id="sec2380" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_orthogonal</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">([2,3,-2],[-1,-1,-1]),</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,0,0],[1,2,8]))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+<span style="font-family:monospace">parabola</span> takes three arguments:
+<span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span> three non-collinear points.
+</li><li class="li-itemize"><span style="font-family:monospace">parabola(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span><span style="font-family:monospace">)</span> returns and draws the parabola
+in plane <span style="font-style:italic">ABC</span> with focus <span style="font-style:italic">A</span> and vertex <span style="font-style:italic">B</span>. 
+</li></ul><h4 id="sec2407" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">parabola</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,0,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,1,1))</span></span></td></tr>
+</table><div class="center">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-1
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_orthogonal</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">([2,3,-2],[-1,-1,-1]),</span></span><span style="font-weight:bold"><span style="color:#BF0000">plane</span></span><span style="font-weight:bold"><span style="color:#BF0000">([-1,-1,-1],[-1,0,3],[-2,0,0]))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+<img src="cascmd_en388.png">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-1
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_orthogonal</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">plane</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,0,0],[1,2,-3],[1,1,-2]),</span></span><span style="font-weight:bold"><span style="color:#BF0000">plane</span></span><span style="font-weight:bold"><span style="color:#BF0000">([-1,-1,-1],[1,2,-3],[0,0,0]))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-1
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_orthogonal</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sphere</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,0,0],</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2)),</span></span><span style="font-weight:bold"><span style="color:#BF0000">sphere</span></span><span style="font-weight:bold"><span style="color:#BF0000">([2,0,0],</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2)))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-1
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table>
+</div>
 <hr>
-<a href="cascmd_en959.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en961.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en959.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en961.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

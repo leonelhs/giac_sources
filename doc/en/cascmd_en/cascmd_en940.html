@@ -2,44 +2,35 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Regular polygons in space</title>
+<title>Common perpendiculars to lines in space</title>
 </head>
 <body >
-<a href="cascmd_en939.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en941.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en939.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en941.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:3dregpoly" class="subsection">25.8.2  Regular polygons in space</h3>
-<p>See Section <a href="cascmd_en840.html#ssec%3A2dregpoly">24.9.2</a> for regular polygons in the plane.</p><p>The <span style="font-family:monospace">isopolygon</span><a id="hevea_default1856"></a>
-command creates regular polygons in space.
+<h3 id="sec2361" class="subsection">26.4.8  Common perpendiculars to lines in space</h3>
+<p>The <span style="font-family:monospace">common_perpendicular</span><a id="hevea_default1847"></a>
+command finds the common perpendicular to two lines.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">isopolygon</span> takes four arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">P</span>, three points.
-</li><li class="li-itemize"><span style="font-style:italic">k</span>, an integer.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">isopolygon(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">P</span>,<span style="font-style:italic">k</span><span style="font-family:monospace">)</span> returns and draws a regular
-polygon with one edge <span style="font-style:italic">AB</span> in the plane <span style="font-style:italic">ABP</span> with |<span style="font-style:italic">k</span>| sides.
-If |<span style="font-style:italic">k</span>| is positive, then the polygon is positively oriented,
-otherwise it is negatively oriented.
-</li></ul><h4 id="sec2337" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,0); </span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3,3,3); </span></span><span style="font-weight:bold"><span style="color:#BF0000">P</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,3);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">isopolygon</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">P</span></span><span style="font-weight:bold"><span style="color:#BF0000">,5)</span></span></td></tr>
+<span style="font-family:monospace">common_perpendicular</span> takes two arguments:
+<span style="font-style:italic">L</span>,<span style="font-style:italic">M</span>, two lines.
+</li><li class="li-itemize"><span style="font-family:monospace">common_perpendicular(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">M</span><span style="font-family:monospace">)</span> returns and draws the
+common perpendicular to <span style="font-style:italic">L</span> and <span style="font-style:italic">M</span>.
+</li></ul><h4 id="sec2362" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">L1</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,1,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1,1)):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">L2</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,-1,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,-1,1)):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">common_perpendicular</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">L1</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">L2</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en339.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">isopolygon</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">P</span></span><span style="font-weight:bold"><span style="color:#BF0000">,-5)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en340.png">
+<img src="cascmd_en360.png">
 
 </div>
 <hr>
-<a href="cascmd_en939.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en941.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en939.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en941.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

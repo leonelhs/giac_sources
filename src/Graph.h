@@ -255,6 +255,13 @@ namespace xcas {
     std::string current_config();
     // return a sequence of graphic objects, ready for animation
     void adjust_cursor_point_type();
+    int top_margin() const;
+    int bottom_margin() const;
+    int right_margin() const;
+    int horz_pixels() const { return w()-right_margin(); }
+    int vert_pixels() const { return h()-top_margin()-bottom_margin(); }
+    double window_width() const { return window_xmax-window_xmin; }
+    double window_height() const { return window_ymax-window_ymin; }
   };
 
   class Graph2d:public Graph2d3d {
@@ -409,6 +416,26 @@ namespace xcas {
   public:
     BorderBox(int X,int Y,int W,int H):Fl_Box(X,Y,W,H,"") {}
     virtual int handle(int event);
+  };
+
+  typedef std::pair<Fl_Image *,Fl_Image *> img_ptr_pair_t;
+  class TextureCache {
+    std::map<std::string,img_ptr_pair_t*> _cache;
+    void _remove(img_ptr_pair_t *p,bool is_internal);
+public:
+    ~TextureCache();
+    img_ptr_pair_t *get(const std::string &s) const;
+    void insert(const std::string &s,std::pair<Fl_Image *,Fl_Image *> *iptr);
+    bool erase(const std::string &s);
+  };
+
+  class InternalImageCache {
+    std::map<std::string,Fl_Image *> _cache;
+public:
+    ~InternalImageCache();
+    Fl_Image * get(const std::string &s) const;
+    void insert(const std::string &s,Fl_Image * imgptr);
+    static bool is_internal_image_name(const std::string &s);
   };
 
 #endif // HAVE_LIBFLTK

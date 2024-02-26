@@ -2,47 +2,52 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Interactive plotting of solutions of a differential equation</title>
+<title>2D implicit curve</title>
 </head>
 <body >
-<a href="cascmd_en628.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en630.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en628.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en630.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec:iplotode" class="subsection">17.9.2  Interactive plotting of solutions of a differential equation</h3>
-<p>The <span style="font-family:monospace">interactive_plotode</span><a id="hevea_default1204"></a>
-or <span style="font-family:monospace">interactive_odeplot</span><a id="hevea_default1205"></a>
-command draws interactive tangent
-fields of differential equations.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">interactive_plotode</span> takes two arguments:
+<h3 id="ssec:implicitplot" class="subsection">18.6.1  2D implicit curve</h3>
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span> an expression depending on two or three
-variables, a time variable and one or two dependent variables.
-</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a list of the time variable and the dependent
-variable.
+For an implicit plot in ℝ<sup>2</sup>,
+<span style="font-family:monospace">plotimplicit</span> takes three mandatory arguments and
+three optional arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">expr</span>, an expression of two variables implicitly
+defining a curve by <span style="font-style:italic">expr=0</span>.
+</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a list of the two variables, optionally with
+their ranges <span style="font-style:italic">var</span><span style="font-family:monospace">=</span><span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>. If a range is not given, the
+ranges are determined by <span style="font-family:monospace">WX-, WX+</span> and <span style="font-family:monospace">WY-, WY+</span>
+in the graphical configuration (see Section <a href="cascmd_en031.html#ssec%3Aconfgraph">2.5.8</a>).
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">xstep</span>, which can be
+<span style="font-family:monospace">xstep=</span><span style="font-style:italic">n</span> to specify the discretization
+step in the <span style="font-style:italic">x</span> direction.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">ystep</span>, which can be
+<span style="font-family:monospace">ystep=</span><span style="font-style:italic">m</span> to specify the discretization
+step in the <span style="font-style:italic">y</span> direction.
+</li><li class="li-itemize">Optionally, <span style="font-family:monospace">unfactored</span>.
+<a id="hevea_default1213"></a>
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">interactive_plotode(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">vars</span><span style="font-family:monospace">)</span>
-draws the tangent field of the differential equation
-<span style="font-style:italic">y</span>′=<span style="font-style:italic">expr</span> (where <span style="font-style:italic">y</span> is the dependent variable) in a new
-window. In this window, one can click on a point to get the plot of
-the solution of <span style="font-style:italic">y</span>′=<span style="font-style:italic">expr</span> passing through this point.<p>You can further click to display several solutions. To stop, press
-the <span style="font-family:sans-serif">Esc</span> key.
-</p></li></ul><h4 id="sec1505" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">interactive_plotode</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">/</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">),[</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">plotimplicit(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">vars</span> ⟨,<span style="font-style:italic">xstep</span>,<span style="font-style:italic">ystep</span>,<span style="font-family:monospace">unfactored</span> ⟩<span style="font-family:monospace">)</span>
+draws the graphic representation of the curve defined by the implicit equation
+<span style="font-style:italic">expr=0</span> over the given ranges of the variables.
+</li></ul><h4 id="sec1525" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotimplicit</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotimplicit</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">unfactored</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en089.png">
+<img src="cascmd_en091.png">
 
-</div><p>
-
-Solutions of the differential equation can be plotted by clicking on
-an initial point in the graphic screen (see Section <a href="cascmd_en601.html#sec%3Agraphscreen">17.1.1</a>).</p>
+</div>
 <hr>
-<a href="cascmd_en628.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en630.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en628.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en630.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

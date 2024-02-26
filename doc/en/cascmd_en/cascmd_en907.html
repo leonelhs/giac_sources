@@ -2,43 +2,45 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Envelopes</title>
+<title>Checking whether two lines in the plane are parallel</title>
 </head>
 <body >
-<a href="cascmd_en906.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en908.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en906.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en908.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec2261" class="subsection">24.17.2  Envelopes</h3>
-<p>The <span style="font-family:monospace">envelope</span><a id="hevea_default1821"></a>
-command draws the envelope of a family of curves.
+<h3 id="ssec:2dcheckparallel" class="subsection">25.15.11  Checking whether two lines in the plane are parallel</h3>
+<p>See Section <a href="cascmd_en972.html#ssec%3A3dcheckparallel">26.11.3</a> for checking for parallels in
+three-dimensional geometry.</p><p>The <span style="font-family:monospace">is_parallel</span><a id="hevea_default1809"></a>
+command determines whether or not two lines are parallel.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">envelope</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span>, an expression of two variables and one
-parameter.
-</li><li class="li-itemize"><span style="font-style:italic">L</span>, a list of the names of the variables and the
-parameters. If the variables are <span style="font-family:monospace">x</span> and <span style="font-family:monospace">y</span>,
-then <span style="font-style:italic">L</span> only need to be the name of the parameter.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">envelope(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">L</span><span style="font-family:monospace">)</span>
-draws the envelope of the family of curves given by
-<span style="font-style:italic">expr</span>=0 over the parameter.
-</li></ul><h4 id="sec2262" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">envelope</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">tan</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">)-2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>or:
+<span style="font-family:monospace">is_parallel</span> takes two arguments:
+<span style="font-style:italic">L</span><sub>1</sub>,<span style="font-style:italic">L</span><sub>2</sub>, two lines.
+</li><li class="li-itemize"><span style="font-family:monospace">is_parallel(</span><span style="font-style:italic">L</span><sub>1</sub>,<span style="font-style:italic">L</span><sub>2</sub><span style="font-family:monospace">)</span> returns 1 if <span style="font-style:italic">L</span><sub>1</sub> and
+<span style="font-style:italic">L</span><sub>2</sub> are parallel and otherwise returns 0.
+</li></ul><h4 id="sec2285" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_parallel</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,-1))</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">envelope</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">tan</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">)-2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">),[</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
-</table><div class="center">
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_parallel</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,-1-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-<img src="cascmd_en296.png">
-
-</div>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en906.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en908.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en906.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en908.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

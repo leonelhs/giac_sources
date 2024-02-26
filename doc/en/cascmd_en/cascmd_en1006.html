@@ -2,50 +2,34 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>New audio clips from existing ones</title>
+<title>Centered tetrahedra</title>
 </head>
 <body >
-<a href="cascmd_en1005.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en1007.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en1005.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en1007.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:audio-clips-from-old" class="subsection">26.2.2  New audio clips from existing ones</h3>
-<p>You can create audio clips from existing ones by using some standard operators.</p>
-<h5 id="sec2483" class="paragraph">Slicing.</h5>
-<p>
-Audio clips can be obtained from existing clips by slicing. To extract a portion
-of length <span style="font-style:italic">n</span> samples starting at <span style="font-style:italic">k</span>th sample in an audio clip <span style="font-family:monospace">clip</span>,
-use the <span style="font-family:monospace">()</span><a id="hevea_default1930"></a> operator like this:
+<h3 id="sec2499" class="subsection">26.15.1  Centered tetrahedra</h3>
+<p>The <span style="font-family:monospace">centered_tetrahedron</span><a id="hevea_default1916"></a>
+command creates a regular tetrahedron.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">centered_tetrahedron</span> command takes three arguments:
+<span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span>, three points.
+</li><li class="li-itemize"><span style="font-family:monospace">centered_tetrahedron(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span><span style="font-family:monospace">)</span> returns and draws the
+tetrahedron centered at <span style="font-style:italic">A</span>, with a vertex at <span style="font-style:italic">B</span> and another vertex
+on the plane <span style="font-style:italic">ABC</span>.
+</li></ul><h4 id="sec2500" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">centered_tetrahedron</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,0,0],[0,0,6],[0,1,0])</span></span></td></tr>
+</table><div class="center">
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">subclip</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">k</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">n</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>The second argument may be omitted, in which case <span style="font-style:italic">n</span>=<span style="font-style:italic">L</span>−<span style="font-style:italic">k</span> is used, where <span style="font-style:italic">L</span> is the length
-of <span style="font-family:monospace">clip</span> in samples. You can also use
+<img src="cascmd_en419.png">
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">subclip</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t1</span></span><span style="font-weight:bold"><span style="color:#BF0000">..</span></span><span style="font-weight:bold"><span style="color:#BF0000">t2</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>to extract the portion between timestamps <span style="font-style:italic">t</span><sub>1</sub> and <span style="font-style:italic">t</span><sub>2</sub> (in seconds).</p>
-<h5 id="sec2484" class="paragraph">Concatenation.</h5>
-<p>
-Existing audio clips can be concatenated together by
-using the <span style="font-family:monospace">+</span> operator. Note that clips to be concatenated
-must have the same number of channels, bit depth and sample rate. For example, to
-concatenate two audio clips <span style="font-family:monospace">clip1</span> and <span style="font-family:monospace">clip2</span>, input:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip1</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip2</span></span></td></tr>
-</table><p>This is useful for e.g. padding audio with zeros (silence).</p>
-<h5 id="sec2485" class="paragraph">Inverting and reversing.</h5>
-<p>
-Audio clips can be inverted (which is equivalent to multiplying sample
-data with −1 for each channel) by using the unary sign operator
-<span style="font-family:monospace">-</span><a id="hevea_default1931"></a>
-or the <span style="font-family:monospace">inv</span><a id="hevea_default1932"></a>
-command which takes an audio clip as its only argument.</p><p>To reverse an audio clip in the time domain, use the
-<span style="font-family:monospace">reverse</span><a id="hevea_default1933"></a>
-command which takes an audio clip as its only argument.</p>
+</div>
 <hr>
-<a href="cascmd_en1005.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en1007.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en1005.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en1007.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

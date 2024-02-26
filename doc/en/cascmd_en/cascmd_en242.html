@@ -2,107 +2,119 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Defining a function with history</title>
+<title>Transforming an expression into a function</title>
 </head>
 <body >
-<a href="cascmd_en241.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en243.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en241.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en243.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec543" class="subsection">7.3.5  Defining a function with history</h3>
-<p>The <span style="font-family:monospace">as_function_of</span><a id="hevea_default447"></a>
-command creates a function defined by an expression, even if the desired variable
-already has a value.
+<h3 id="ssec:unapply" class="subsection">8.2.2  Transforming an expression into a function</h3>
+<p>The <span style="font-family:monospace">unapply</span><a id="hevea_default401"></a> command transforms
+an expression into a function.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">as_function_of</span> takes two arguments:
+<span style="font-family:monospace">unapply</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">x</span>, a variable.
-</li><li class="li-itemize"><span style="font-style:italic">exprvar</span>, another variable containing an expression which
-itself may involve <span style="font-style:italic">x</span>.
+<span style="font-style:italic">expr</span>, an expression.
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, the name of a variable or sequence of names
+of variables.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">as_function_of(</span><span style="font-style:italic">exprvar</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span>
-returns a function defined by the expression that <span style="font-style:italic">exprvar</span>
-contains.
-</li></ul><h4 id="sec544" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">unapply(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span>
+returns the function defined by the expression <span style="font-style:italic">expr</span> and
+variable(s) <span style="font-style:italic">x</span>, as in <span style="font-style:italic">x</span><span style="font-family:monospace">-&gt;</span><span style="font-style:italic">expr</span>.
+</li></ul><h4 id="sec509" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">unapply</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">exp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+2),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">↦ </span><span style="color:#0000CC"><span style="font-style:italic">e</span></span><sup><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+2</span></sup><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">unapply</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">-</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">,</span><span style="color:#0000CC"><span style="font-style:italic">y</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td><td class="dcell"><span style="color:#0000CC">↦ </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">−</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">−</span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">
+</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><h5 id="sec510" class="paragraph">Remark.</h5>
+<p>
+When a function being is defined, the right side of the assignment is
+not evaluated, hence <span style="font-family:monospace">g:=sin(x+1); f(x):=g</span> does not define the
+function <span style="font-style:italic">f</span>: <span style="font-style:italic">x</span> → sin(<span style="font-style:italic">x</span>+1) but defines the function <span style="font-style:italic">f</span>: <span style="font-style:italic">x</span>
+→ <span style="font-style:italic">g</span>. To define the former function, <span style="font-family:monospace">unapply</span> should
+be used, as in the following example:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">g</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1); </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">unapply</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">g</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
 </span><span style="color:#0000CC">sin</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+1</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td><td class="dcell"><span style="color:#0000CC">,</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">↦ </span><span style="color:#0000CC">sin</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+1</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
 ⎠</span></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+</table><p>
+Hence, the variable <span style="font-family:monospace">g</span> is assigned to a symbolic expression
+and the variable <span style="font-family:monospace">f</span> is assigned to a function.</p><h4 id="sec511" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">unapply</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">lagrange</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,3],[4,8,12]),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>(See Section <a href="cascmd_en360.html#ssec%3Alagrange">11.2.1</a>.)
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1+</span><span style="color:#0000CC">sin</span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td></tr>
-</table></td></tr>
+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">↦ 4 </span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">−1</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td><td class="dcell"><span style="color:#0000CC">+4
+</span></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">c</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">as_function_of</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">unapply</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">integrate</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">log</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC"><span style="font-family:monospace">(a)-&gt;{ return(sqrt(1+a^2)); }</span></span><span style="color:#0000CC">
+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">↦ </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC">ln</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">−</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+1
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">c</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">unapply</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">integrate</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">log</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">2</span></sup></td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC">ln</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">−</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+1
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><h5 id="sec545" class="paragraph">Remark.</h5>
+</table><h5 id="sec512" class="paragraph">Remark.</h5>
 <p>
-If the variable <span style="font-family:monospace">b</span> has been assigned several times, the first
-assignment of <span style="font-family:monospace">b</span> following the last assignment of <span style="font-family:monospace">a</span>
-will be used. Moreover, the order used is the order of validation of
-the commandlines, which may not be reflected by the <span style="font-variant:small-caps">Xcas</span> interface if
-you reused previous commandlines.</p><h4 id="sec546" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=2:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">+2:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">c</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">as_function_of</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+Suppose that <span style="font-style:italic">f</span> is a function of 2 variables <span style="font-style:italic">f</span>:(<span style="font-style:italic">x</span>,<span style="font-style:italic">w</span>)→
+<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">w</span>), and that <span style="font-style:italic">g</span> is the function defined by <span style="font-style:italic">g</span>: <span style="font-style:italic">w</span> →
+<span style="font-style:italic">h</span><sub><span style="font-style:italic">w</span></sub>, where <span style="font-style:italic">h</span><sub><span style="font-style:italic">w</span></sub> is the function defined by <span style="font-style:italic">h</span><sub><span style="font-style:italic">w</span></sub>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">w</span>).</p><p><span style="font-family:monospace">unapply</span> can also be used to define <span style="font-style:italic">g</span>.</p><h4 id="sec513" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">w</span></span><span style="font-weight:bold"><span style="color:#BF0000">):=2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">w</span></span><span style="font-weight:bold"><span style="color:#BF0000">:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">g</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">w</span></span><span style="font-weight:bold"><span style="color:#BF0000">):=</span></span><span style="font-weight:bold"><span style="color:#BF0000">unapply</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">w</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">g</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC"><span style="font-family:monospace">(a)-&gt;{ return(sqrt(1+a^2)); }</span></span><span style="color:#0000CC">
+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">↦ 2 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+3
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><p>
-So <span style="font-family:monospace">c(x)</span> is equal to 2<span style="font-style:italic">x</span>+1. But:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=2:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=2:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">+2:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">c</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">as_function_of</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC"><span style="font-family:monospace">(a)-&gt;{ return(sqrt(2+3*a^2)); }</span></span><span style="color:#0000CC">
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-So <span style="font-family:monospace">c(x)</span> is equal to 3<span style="font-style:italic">x</span>+2.</p><p>Hence the line where <span style="font-family:monospace">a</span> is defined must be reevaluated before the good
-definition of <span style="font-family:monospace">b</span>.</p>
+</table>
 <hr>
-<a href="cascmd_en241.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en243.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en241.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en243.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

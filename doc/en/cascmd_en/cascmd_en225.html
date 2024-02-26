@@ -2,68 +2,78 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Modulus and argument of a complex number</title>
+<title>Derivatives of the DiGamma function</title>
 </head>
 <body >
-<a href="cascmd_en224.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en226.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en224.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en226.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:absarg" class="subsection">6.4.4  Modulus and argument of a complex number</h3>
-<p>A complex number <span style="font-style:italic">z</span> can be written in polar form <span style="font-style:italic">r</span><span style="font-style:italic">e</span><sup><span style="font-style:italic">i</span>θ</sup>,
-where <span style="font-style:italic">r</span> is the modulus and θ is the argument. The angle
-θ is only determined up to a multiple of 2π; there will be
-a unique value in the interval (−π,π], the value in this
-interval is called the <em>principal value</em> of the argument.</p><p>The <span style="font-family:monospace">abs</span><a id="hevea_default369"></a> and
-<span style="font-family:monospace">arg</span><a id="hevea_default370"></a> commands find the modulus and
-argument of a complex number, respectively (see also
-Section <a href="cascmd_en239.html#ssec%3Astandardfns">7.3.2</a>).</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">abs</span> takes
-<span style="font-style:italic">z</span>, a complex number.
-</li><li class="li-itemize"><span style="font-family:monospace">abs(</span><span style="font-style:italic">z</span><span style="font-family:monospace">)</span> returns the modulus |<span style="font-style:italic">z</span>|.
-</li><li class="li-itemize"><span style="font-family:monospace">arg</span> takes
-<span style="font-style:italic">z</span>, a complex number.
-</li><li class="li-itemize"><span style="font-family:monospace">arg(</span><span style="font-style:italic">z</span><span style="font-family:monospace">)</span> returns the principal value of the argument of <span style="font-style:italic">z</span>.
-</li></ul><h4 id="sec464" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">abs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3+4*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-5
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">arg</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3+4*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+<h3 id="sec468" class="subsection">7.3.17  Derivatives of the DiGamma function</h3>
+<p>The DiGamma function is the derivative of the logarithm of the
+Γ function (see Section <a href="cascmd_en221.html#ssec%3Agamma">7.3.13</a>),
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">ψ(<span style="font-style:italic">z</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span><span style="font-style:italic">z</span></td></tr>
+</table></td><td class="dcell">ln(Γ(<span style="font-style:italic">z</span>))=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">Γ′(<span style="font-style:italic">z</span>)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">Γ(<span style="font-style:italic">z</span>)</td></tr>
+</table></td><td class="dcell">. </td></tr>
+</table><p>
+This function is used to evaluated sums of rational functions having poles at integers.</p><p>The <span style="font-family:monospace">Psi</span><a id="hevea_default366"></a> function computes
+the DiGamma function and its derivatives.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">Psi</span> takes one mandatory argument and one optional
+argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">a</span>, a real number.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">n</span>, a non-negative integer.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">Psi(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)</span> returns the value of the DiGamma function
+ψ(<span style="font-style:italic">a</span>).
+</li><li class="li-itemize"><span style="font-family:monospace">Psi(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns the <span style="font-style:italic">n</span>th derivative of the DiGamma
+function at <span style="font-style:italic">x</span>=<span style="font-style:italic">a</span>.
+</li></ul><h4 id="sec469" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">Psi</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span><span style="color:#0000CC">arctan</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎜<br>
-⎜<br>
-⎝</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">4</span></td></tr>
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
 <tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎟<br>
-⎟<br>
-⎠</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
+</table></td><td class="dcell">−γ
+</td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">arg</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3.0+4.0*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">evalf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">Psi</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3))</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.927295218002
+0.922784335098
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">Psi</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3,1)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">π </span><sup><span style="color:#0000CC">2</span></sup></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">6</span></td></tr>
+</table></td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">5</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
 <hr>
-<a href="cascmd_en224.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en226.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en224.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en226.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

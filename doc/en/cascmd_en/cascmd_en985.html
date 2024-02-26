@@ -2,54 +2,47 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Tetrahedrons</title>
+<title>Translation in space</title>
 </head>
 <body >
-<a href="cascmd_en984.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en986.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en984.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en986.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec2431" class="subsection">25.14.2  Tetrahedrons</h3>
-<p>The <span style="font-family:monospace">tetrahedron</span><a id="hevea_default1903"></a>
-or <span style="font-family:monospace">pyramid</span><a id="hevea_default1904"></a>
-command creates tetrahedra.
+<h3 id="ssec:3dtranslations" class="subsection">26.12.2  Translation in space</h3>
+<p>See Section <a href="cascmd_en890.html#ssec%3A2dtranslations">25.14.2</a> for translations in the plane.</p><p>The <span style="font-family:monospace">translation</span><a id="hevea_default1893"></a>
+command creates a translation.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">tetrahedron</span> command takes three or four arguments:
+<span style="font-family:monospace">translation</span> takes one mandatory argument and
+one optional argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span>, three points.
-</li><li class="li-itemize">Optionally <span style="font-style:italic">D</span>, another point.
+<span style="font-style:italic">v</span>, the translation vector, which can be given as a vector or
+a list of coordinates.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">G</span>, a geometric object.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">tetrahedron(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span><span style="font-family:monospace">)</span> returns and draws the regular
-tetrahedron given by:
-<ul class="itemize"><li class="li-itemize">
-One edge is <span style="font-style:italic">AB</span>.
-</li><li class="li-itemize">One face is in the plane <span style="font-style:italic">ABC</span>, on the same side of
-line <span style="font-style:italic">AB</span> as is <span style="font-style:italic">C</span>.
-</li><li class="li-itemize">The tetrahedron is on the side of plane <span style="font-style:italic">ABC</span> that makes the
-points <span style="font-style:italic">A</span>, <span style="font-style:italic">B</span> and <span style="font-style:italic">C</span> counterclockwise.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">tetrahedron(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span>,<span style="font-style:italic">D</span><span style="font-family:monospace">)</span> returns and draws the
-tetrahedron <span style="font-style:italic">ABCD</span>.
-</li></ul><h4 id="sec2432" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">tetrahedron</span></span><span style="font-weight:bold"><span style="color:#BF0000">([-2,0,0],[2,0,0],[0,2,0])</span></span></td></tr>
-</table><p>or:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">pyramid</span></span><span style="font-weight:bold"><span style="color:#BF0000">([-2,0,0],[2,0,0],[0,2,0])</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">translation(</span><span style="font-style:italic">v</span><span style="font-family:monospace">)</span> returns a new command which
+translates by <span style="font-style:italic">v</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">translation(</span><span style="font-style:italic">v</span>,<span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns and draws the translation
+<span style="font-style:italic">G</span> by the vector <span style="font-style:italic">v</span>.
+</li></ul><h4 id="sec2459" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">translation</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,1,1]);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">sphere</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,0,0],0.5);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">blue</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en371.png">
+<img src="cascmd_en389.png">
 
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">tetrahedron</span></span><span style="font-weight:bold"><span style="color:#BF0000">([-2,0,0],[2,0,0],[0,2,0],[0,0,2])</span></span></td></tr>
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">translation</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,1,1],</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en372.png">
+<img src="cascmd_en390.png">
 
 </div>
 <hr>
-<a href="cascmd_en984.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en986.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en984.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en986.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

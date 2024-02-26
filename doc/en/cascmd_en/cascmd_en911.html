@@ -2,44 +2,45 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Drawing unit vectors</title>
+<title>Checking whether four points form a harmonic division</title>
 </head>
 <body >
-<a href="cascmd_en910.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en912.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en910.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en912.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec2270" class="subsection">25.2.1  Drawing unit vectors</h3>
-<p>The <span style="font-family:monospace">Ox_3d_unit_vector</span><a id="hevea_default1823"></a>
-command takes no arguments and draws the unit vector in the <span style="font-style:italic">x</span>-direction
-on a three-dimensional graphic screen.</p><h4 id="sec2271" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">Ox_3d_unit_vector</span></span><span style="font-weight:bold"><span style="color:#BF0000">()</span></span></td></tr>
-</table><div class="center">
+<h3 id="sec2292" class="subsection">25.15.15  Checking whether four points form a harmonic division</h3>
+<p>The <span style="font-family:monospace">is_harmonic</span><a id="hevea_default1813"></a>
+command determines whether or not four
+points form a harmonic division.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">is_harmonic</span> takes four arguments:
+<span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span>,<span style="font-style:italic">R</span>,<span style="font-style:italic">S</span>, four points.
+</li><li class="li-itemize"><span style="font-family:monospace">is_harmonic(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span>,<span style="font-style:italic">R</span>,<span style="font-style:italic">S</span><span style="font-family:monospace">)</span> returns 1 if <span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span>,<span style="font-style:italic">R</span> and <span style="font-style:italic">S</span> form a
+harmonic range and returns 0 otherwise.
+</li></ul><h4 id="sec2293" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_harmonic</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,2,3/2,3)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-<img src="cascmd_en298.png">
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_harmonic</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-</div><p>Similarly, the <span style="font-family:monospace">Oy_3d_unit_vector</span><a id="hevea_default1824"></a>
-and <span style="font-family:monospace">Oz_3d_unit_vector</span><a id="hevea_default1825"></a>
-commands draw the unit vector in the <span style="font-style:italic">y</span> and <span style="font-style:italic">z</span> directions, respectively.</p><p>These commands have no parameters, but can be decorated with the
-<span style="font-family:monospace">legend</span> command.</p><h4 id="sec2272" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">Ox_3d_unit_vector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(), </span></span><span style="font-weight:bold"><span style="color:#BF0000">legend</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,0,0]),</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"unit x vector"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">blue</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en299.png">
-
-</div><p>The <span style="font-family:monospace">frame_3d</span><a id="hevea_default1826"></a>
-command draws all three vectors simultaneously.</p><h4 id="sec2273" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">frame_3d</span></span><span style="font-weight:bold"><span style="color:#BF0000">()</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en300.png">
-
-</div>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en910.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en912.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en910.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en912.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

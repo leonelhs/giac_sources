@@ -23,7 +23,13 @@ class autoshutdown : public std::exception{
 extern  const int LCD_WIDTH_PX;
 extern   const int LCD_HEIGHT_PX;
 extern char* fmenu_cfg;
+#ifdef HP39
+#define color_gris 0
+#define MENUHEIGHT 8
+#else
 #define color_gris 57083
+#define MENUHEIGHT 12
+#endif
 #define STATUS_AREA_PX 0 // 24
 #define GIAC_HISTORY_MAX_TAILLE 32
 #define GIAC_HISTORY_SIZE 2
@@ -215,6 +221,8 @@ namespace xcas {
     bool OKparse=true;
     bool editable=false;
     bool changed=false;
+    bool minimini=false; // global font setting
+    bool longlinescut=true;
     int python=0;
     int type=TEXTAREATYPE_NORMAL;
     int cursorx,cursory; // where the last cursor was displayed
@@ -530,7 +538,9 @@ namespace xcas {
 #endif
   
 #define is_wchar(c) ((c == 0x7F) || (c == 0xF7) || (c == 0xF9) || (c == 0xE5) || (c == 0xE6) || (c == 0xE7))
+#ifndef HP39
 #define printf(s) Console_Output((const char *)s);
+#endif
 
   int Console_DelStr(char *str, int end_pos, int n);
   int Console_InsStr(char *dest, const char *src, int disp_pos);
@@ -652,11 +662,12 @@ namespace giac {
     char* nodatamsg; // message to show when there are no menu items to display
     int startX=1; //X where to start drawing the menu. NOTE this is not absolute pixel coordinates but rather character coordinates
     int startY=0; //Y where to start drawing the menu. NOTE this is not absolute pixel coordinates but rather character coordinates
-    int width=30; // NOTE this is not absolute pixel coordinates but rather character coordinates
 #ifdef HP39
     int height=8;
+    int width=28; // character number
 #else
-    int height=12; // NOTE this is not absolute pixel coordinates but rather character coordinates
+    int height=12; // character number
+    int width=30; 
 #endif
     int scrollbar=1; // 1 to show scrollbar, 0 to not show it.
     int scrollout=0; // whether the scrollbar goes out of the menu area (1) or it overlaps some of the menu area (0)

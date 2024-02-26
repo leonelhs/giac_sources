@@ -830,6 +830,18 @@ namespace giac {
   extern const unary_function_ptr * const  implicittex_plot_sommets;
 #endif
 
+// colormap support, addition by L.Marohnić
+bool is_colormap_index(int pal);
+bool is_colormap_cyclic(int pal);
+int colormap_color(int pal,double t,GIAC_CONTEXT=context0);
+bool colormap_color_rgb(int pal,double t,int &c,int &r,int &g,int &b,GIAC_CONTEXT=context0);
+gen _colormap(const gen &g,GIAC_CONTEXT);
+extern const unary_function_ptr * const at_colormap;
+void rgb2xyz(double R,double G,double B,double &x,double &y,double &z);
+void xyz2rgb(double x,double y,double z,double &R,double &G,double &B);
+void blend(uchar r1,uchar g1,uchar b1,uchar r2,uchar g2,uchar b2,double t,uchar &r,uchar &g,uchar &b);
+gen _bezier(const gen & args,GIAC_CONTEXT);
+
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac
 #endif // ndef NO_NAMESPACE_GIAC

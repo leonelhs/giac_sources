@@ -2,90 +2,65 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Linear regression</title>
+<title>Histograms</title>
 </head>
 <body >
-<a href="cascmd_en650.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en652.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en650.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en652.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1559" class="subsection">18.2.4  Linear regression</h3>
-<p>Given a set of points (<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub>),…,(<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span>−1</sub>,<span style="font-style:italic">y</span><sub><span style="font-style:italic">n</span>−1</sub>), linear
-regression finds the line <span style="font-style:italic">y</span>=<span style="font-style:italic">mx</span>+<span style="font-style:italic">b</span> that comes closest to passing
-through all of the points; i.e., that makes
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >(<span style="font-style:italic">y</span><sub>0</sub>−(<span style="font-style:italic">m</span> <span style="font-style:italic">x</span><sub>0</sub>+<span style="font-style:italic">b</span>))<sup>2</sup>+⋯+(<span style="font-style:italic">y</span><sub><span style="font-style:italic">n</span>−1</sub>−(<span style="font-style:italic">m</span> <span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span>−1</sub>+<span style="font-style:italic">b</span>))<sup>2</sup></td></tr>
-</table></td></tr>
-</table><p>
-as small as possible.
-The <span style="font-family:monospace">linear_regression</span><a id="hevea_default1259"></a>
-command finds the linear regression of a set of points.
+<h3 id="sec1576" class="subsection">19.1.10  Histograms</h3>
+<p>Given a list of intervals and a number of points in each interval,
+such as is given by the output of the <span style="font-family:monospace">classes</span> command
+(see Section <a href="cascmd_en650.html#ssec%3Aclasses">19.1.9</a>), a histogram is a graph consisting of a
+box over each interval, where the height of each box is proportional
+to the number of points and the total area of the boxes is 1.
+The <span style="font-family:monospace">histogram</span><a id="hevea_default1269"></a>
+or <span style="font-family:monospace">histogramme</span><a id="hevea_default1270"></a>
+command draws histograms. Data does not have to be sorted.</p><p>With sorted data:
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">linear_regression</span> takes two arguments:
+<span style="font-family:monospace">histogram</span> takes one mandatory argument and one optional argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">xcoords</span>, a list of <span style="font-style:italic">x</span>-coordinates.
-</li><li class="li-itemize"><span style="font-style:italic">ycoords</span>, a list of <span style="font-style:italic">y</span>-coordinates.
+<span style="font-style:italic">L</span>, a list whose elements are lists of a range <span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>
+and a positive integer.
+</li><li class="li-itemize">Optionally, <span style="font-family:monospace">color=</span><span style="font-style:italic">col</span>, where <span style="font-style:italic">col</span> is a color object
+(see Section <a href="cascmd_en611.html#ssec%3Acolors">18.1.3</a>).
 </li></ul>
-You can combine two arguments into a matrix with two columns (each
-list becomes a column of the matrix).
-</li><li class="li-itemize"><span style="font-family:monospace">linear_regression(</span><span style="font-style:italic">xcoords</span>,<span style="font-style:italic">ycoords</span><span style="font-family:monospace">)</span>
-returns a sequence <span style="font-style:italic">m</span>,<span style="font-style:italic">b</span> of the slope and <span style="font-style:italic">y</span>-intercept of the
-regression line.
-</li></ul><h4 id="sec1560" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">linear_regression</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[0,0],[1,1],[2,4],[3,9],[4,16]])</span></span></td></tr>
-</table><p>or:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">linear_regression</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,1,2,3,4],[0,1,4,9,16])</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-4,−2
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-which means that the line <span style="font-style:italic">y</span>=4<span style="font-style:italic">x</span>−2 is the best fit line.</p><p>The <span style="font-family:monospace">linear_regression_plot</span><a id="hevea_default1260"></a>
-command draws the best fit line.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">linear_regression_plot</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">xcoords</span>, a list of <span style="font-style:italic">x</span>-coordinates.
-</li><li class="li-itemize"><span style="font-style:italic">ycoords</span>, a list of <span style="font-style:italic">y</span>-coordinates.
-</li></ul>
-You can combine two arguments into a matrix with two columns (each
-list becomes a column of the matrix).
-</li><li class="li-itemize"><span style="font-family:monospace">linear_regression_plot(</span><span style="font-style:italic">xcoords</span>,<span style="font-style:italic">ycoords</span><span style="font-family:monospace">)</span>
-draws the line of best fit through the points. It will also
-give you the equation at the top, as well as the <span style="font-style:italic">R</span><sup>2</sup> value, which
-is
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    <span style="font-style:italic">R</span><sup>2</sup>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>−1</td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">j</span>=0</td></tr>
-</table></td><td class="dcell"> (<span style="font-style:italic">m</span> <span style="font-style:italic">x</span><sub><span style="font-style:italic">j</span></sub>+<span style="font-style:italic">b</span>−ȳ)<sup>2</sup></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>−1</td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">j</span>=0</td></tr>
-</table></td><td class="dcell"> (<span style="font-style:italic">y</span><sub><span style="font-style:italic">j</span></sub>−ȳ)<sup>2</sup></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table>
-(The <span style="font-style:italic">R</span><sup>2</sup> value will be between 0 and 1 and is one measure of how
-good the line fits the data; a value close to 1 indicates a good fit,
-a value close to 0 indicates a bad fit.)
-</li></ul><h4 id="sec1561" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">linear_regression_plot</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,1,2,3,4],[0,1,4,9,16])</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">histogram(</span><span style="font-style:italic">L</span> ⟨,<span style="font-family:monospace">color=</span><span style="font-style:italic">col</span> ⟩<span style="font-family:monospace">)</span>
+draws a histogram for the data. If <span style="font-style:italic">col</span> is provided,
+then the fill color is changed from grey to <span style="font-style:italic">col</span>.
+</li></ul><h4 id="sec1577" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">histogram</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[0,1],[1,4],[2,3],[3,2],[4,1]])</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en120.png">
+<img src="cascmd_en129.png">
+
+</div><p>With unsorted data:
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">histogram</span> takes one mandatory argument and two
+optional arguments.
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">L</span>, a list of numbers.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, numbers.
+</li><li class="li-itemize">Optionally, <span style="font-family:monospace">color=</span><span style="font-style:italic">col</span>, where <span style="font-style:italic">col</span>
+is a color object (see Section <a href="cascmd_en611.html#ssec%3Acolors">18.1.3</a>).
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">histogram(</span><span style="font-style:italic">L</span> ⟨,<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>⟩ ⟨,<span style="font-family:monospace">color=</span><span style="font-style:italic">col</span> ⟩<span style="font-family:monospace">)</span>
+returns the histogram for <span style="font-family:monospace">classes(</span><span style="font-style:italic">L</span> ⟨,<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>⟩<span style="font-family:monospace">)</span> (see
+Section <a href="cascmd_en650.html#ssec%3Aclasses">19.1.9</a>). If <span style="font-style:italic">col</span> is given, then the fill color
+is changed from grey to <span style="font-style:italic">col</span>.
+</li></ul><h4 id="sec1578" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">histogram</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,2.5,2.5,3],0.5,0.75,</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">brown</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en130.png">
 
 </div>
 <hr>
-<a href="cascmd_en650.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en652.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en650.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en652.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

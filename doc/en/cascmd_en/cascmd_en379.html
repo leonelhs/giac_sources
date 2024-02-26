@@ -2,139 +2,94 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Exact values of rational roots of a polynomial</title>
+<title>Cyclotomic polynomial</title>
 </head>
 <body >
-<a href="cascmd_en378.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en380.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en378.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en380.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec846" class="subsection">10.4.5  Exact values of rational roots of a polynomial</h3>
-<p>The <span style="font-family:monospace">rationalroot</span><a id="hevea_default642"></a>
-command finds rational roots of polynomials.
+<h3 id="sec850" class="subsection">11.3.11  Cyclotomic polynomial</h3>
+<p>For a positive integer <span style="font-style:italic">n</span>, <em>cyclotomic polynomial</em> of index <span style="font-style:italic">n</span> is
+the monic polynomial whose roots are exactly the primitive <span style="font-style:italic">n</span>th roots
+of unity (an <span style="font-style:italic">n</span>th root of unity is primitive if the set of
+its powers is the set of all the <span style="font-style:italic">n</span>th roots of unity). Note that
+this will divide <span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup>−1, whose roots are all the <span style="font-style:italic">n</span>th roots of
+unity.</p><p>The <span style="font-family:monospace">cyclotomic</span><a id="hevea_default644"></a>
+command computes cyclotomic polynomials.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">rationalroot</span> takes one mandatory and two optional
-arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">P</span>, a polynomial.
-</li><li class="li-itemize">Optionally, α and β, two real numbers.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">rationalroot(</span><span style="font-style:italic">P</span><span style="font-family:monospace">)</span> returns the list
-of the value of the rational roots of <span style="font-style:italic">P</span> without
-multiplicity.
-</li><li class="li-itemize"><span style="font-family:monospace">rationalroot(</span><span style="font-style:italic">P</span>,α,β<span style="font-family:monospace">)</span> returns the list
-of the rational roots of <span style="font-style:italic">P</span> which are in the interval
-[α,β].
-</li></ul><h4 id="sec847" class="subsubsection">Examples</h4>
+<span style="font-family:monospace">cyclotomic</span> takes
+<span style="font-style:italic">n</span>, an integer.
+</li><li class="li-itemize"><span style="font-family:monospace">cyclotomic(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns the list of the coefficients
+of the cyclotomic polynomial of index <span style="font-style:italic">n</span>.
+</li></ul><h4 id="sec851" class="subsubsection">Examples</h4>
 <p>
-Find the rational roots of 2<span style="font-style:italic">x</span><sup>3</sup>−3<span style="font-style:italic">x</span><sup>2</sup>−8<span style="font-style:italic">x</span>+12:
+Let <span style="font-style:italic">n</span>=4; the fourth roots of unity are: {1,<span style="font-style:italic">i</span>,−1,−<span style="font-style:italic">i</span>} and
+the primitive roots are: {<span style="font-style:italic">i</span>,−<span style="font-style:italic">i</span>}. Hence, the cyclotomic polynomial
+of index 4 is (<span style="font-style:italic">x</span>−<span style="font-style:italic">i</span>)(<span style="font-style:italic">x</span>+<span style="font-style:italic">i</span>)=<span style="font-style:italic">x</span><sup>2</sup>+1.</p><p>Input for verification:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rationalroot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3-3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-8*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+12)</span></span></td></tr>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cyclotomic</span></span><span style="font-weight:bold"><span style="color:#BF0000">(4)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
 </span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎢<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">2,−2,</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎥<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">1,0,1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>Obtain cyclotomic poylnomial of index 5:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cyclotomic</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">1,1,1,1,1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
 ⎦</span></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table><p>
-Find the rational roots of 2<span style="font-style:italic">x</span><sup>3</sup>−3<span style="font-style:italic">x</span><sup>2</sup>−8<span style="font-style:italic">x</span>+12 in [1,2]:
+Hence, the cyclotomic polynomial of index 5 is <span style="font-style:italic">x</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>+1,
+which divides <span style="font-style:italic">x</span><sup>5</sup>−1 since (<span style="font-style:italic">x</span>−1)(<span style="font-style:italic">x</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>+1)=<span style="font-style:italic">x</span><sup>5</sup>−1.</p><p>Obtain the cyclotomic polynomial of index 10:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rationalroot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3-3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-8*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+12,1,2)</span></span></td></tr>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cyclotomic</span></span><span style="font-weight:bold"><span style="color:#BF0000">(10)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
 </span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎢<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">2,</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎥<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">1,−1,1,−1,1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
 ⎦</span></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table><p>
-Find the rational roots of 2<span style="font-style:italic">x</span><sup>3</sup>−3<span style="font-style:italic">x</span><sup>2</sup>+8<span style="font-style:italic">x</span>−12:
+Hence, the cyclotomic polynomial of index 10 is <span style="font-style:italic">x</span><sup>4</sup>−<span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>−<span style="font-style:italic">x</span>+1 and
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  (<span style="font-style:italic">x</span><sup>5</sup>−1)(<span style="font-style:italic">x</span>+1)(<span style="font-style:italic">x</span><sup>4</sup>−<span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>−<span style="font-style:italic">x</span>+1)=<span style="font-style:italic">x</span><sup>10</sup>−1.
+</td></tr>
+</table><p>Obtain the cyclotomic polynomial of index 20:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rationalroot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3-3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+8*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-12)</span></span></td></tr>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cyclotomic</span></span><span style="font-weight:bold"><span style="color:#BF0000">(20)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
 </span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎥<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">1,0,−1,0,1,0,−1,0,1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
 ⎦</span></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table><p>
-Find the rational roots of 2<span style="font-style:italic">x</span><sup>3</sup>−3<span style="font-style:italic">x</span><sup>2</sup>+8<span style="font-style:italic">x</span>−12:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rationalroot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3-3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+8*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-12)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎥<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-Find the rational roots of (3<span style="font-style:italic">x</span>−2)<sup>2</sup>(2<span style="font-style:italic">x</span>+1)=18<span style="font-style:italic">x</span><sup>3</sup>−15<span style="font-style:italic">x</span><sup>2</sup>−4<span style="font-style:italic">x</span>+4:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rationalroot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(18*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3-15*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-4*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+4)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎢<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">−</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">,</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎥<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
+Hence, the cyclotomic polynomial of index 20 is <span style="font-style:italic">x</span><sup>8</sup>−<span style="font-style:italic">x</span><sup>6</sup>+<span style="font-style:italic">x</span><sup>4</sup>−<span style="font-style:italic">x</span><sup>2</sup>+1 and
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  (<span style="font-style:italic">x</span><sup>10</sup>−1)(<span style="font-style:italic">x</span><sup>2</sup>+1)(<span style="font-style:italic">x</span><sup>8</sup>−<span style="font-style:italic">x</span><sup>6</sup>+<span style="font-style:italic">x</span><sup>4</sup>−<span style="font-style:italic">x</span><sup>2</sup>+1)=<span style="font-style:italic">x</span><sup>20</sup>−1.
+</td></tr>
 </table>
 <hr>
-<a href="cascmd_en378.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en380.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en378.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en380.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

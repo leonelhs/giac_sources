@@ -2,51 +2,183 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Potential</title>
+<title>Z-transform of a sequence</title>
 </head>
 <body >
-<a href="cascmd_en474.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en476.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en474.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en476.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1072" class="subsection">12.7.6  Potential</h3>
-<p>Recall that a vector field <span style="font-weight:bold"><span style="font-style:italic">F</span></span> is conservative if there is a
-scalar-valued function <span style="font-style:italic">f</span> such that grad <span style="font-style:italic">f</span>=<span style="font-weight:bold"><span style="font-style:italic">F</span></span>. In
-this case, <span style="font-style:italic">f</span> is called a potential of <span style="font-weight:bold"><span style="font-style:italic">F</span></span>, and is only
-determined up to a constant.</p><p>The <span style="font-family:monospace">potential</span><a id="hevea_default774"></a>
-command computes the potential of a vector field, or signals an error
-if the vector field is not conservative.
+<h3 id="sec1078" class="subsection">13.6.1  Z-transform of a sequence</h3>
+<p>The Z-transform of a sequence <span style="font-style:italic">a</span><sub>0</sub>, <span style="font-style:italic">a</span><sub>1</sub>, …, <span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>, … is the
+function
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">f</span>(<span style="font-style:italic">z</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=0</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">z</span><sup><span style="font-style:italic">n</span></sup></td></tr>
+</table></td><td class="dcell">.
+</td></tr>
+</table><p>
+For example, the Z-transform of the sequence 0, 1, 2, 3, … is
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">f</span>(<span style="font-style:italic">z</span>)=0+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">z</span></td></tr>
+</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">z</span><sup>2</sup></td></tr>
+</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">3</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">z</span><sup>3</sup></td></tr>
+</table></td><td class="dcell">+⋯
+</td></tr>
+</table><p>
+which has closed form
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">f</span>(<span style="font-style:italic">z</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">z</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">(<span style="font-style:italic">z</span>−1)<sup>2</sup></td></tr>
+</table></td><td class="dcell">.
+</td></tr>
+</table><p>
+The <span style="font-family:monospace">ztrans</span><a id="hevea_default776"></a> command
+finds the Z-transform of a sequence.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">potential</span> takes two arguments:
+<span style="font-family:monospace">ztrans</span> takes one mandatory and two optional arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-weight:bold"><span style="font-style:italic">F</span></span>, a vector field given as a list of <span style="font-style:italic">n</span> expressions
-involving <span style="font-style:italic">n</span> variables.
-</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a list of the variable names.
+<span style="font-style:italic">a</span><sub><span style="font-style:italic">x</span></sub>, a formula with a variable for the general
+term of a sequence.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span>, the variable (by default <span style="font-family:monospace">x</span>).
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">z</span>, a variable to be used by the resulting
+function.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">potential(</span><span style="font-weight:bold"><span style="font-style:italic">F</span></span>,<span style="font-style:italic">vars</span><span style="font-family:monospace">)</span>
-returns a potential function for <span style="font-weight:bold"><span style="font-style:italic">F</span></span> if <span style="font-weight:bold"><span style="font-style:italic">F</span></span> is
-conservative, and raises an error otherwise.
-</li></ul><p>
-Note that <span style="font-family:monospace">potential</span> is the reciprocal function of <span style="font-family:monospace">derive</span>.</p><p>Also note that in ℝ<sup>3</sup>, a vector field <span style="font-weight:bold"><span style="font-style:italic">F</span></span> is
-conservative if and only if its curl is zero; i.e., if
-curl<span style="font-weight:bold"><span style="font-style:italic">F</span></span>=<span style="font-weight:bold">0</span>.
-In time-independent electro-magnetism,
-<span style="font-weight:bold"><span style="font-style:italic">F</span></span>=<span style="font-weight:bold"><span style="font-style:italic">E</span></span> is the electric field and <span style="font-style:italic">f</span> is the electric
-potential.</p><h4 id="sec1073" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">potential</span></span><span style="font-weight:bold"><span style="color:#BF0000">([2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">+3,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-4*</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">,-4*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">],[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
+<span style="font-family:monospace">ztrans(</span><span style="font-style:italic">a</span><sub><span style="font-style:italic">x</span></sub> ⟨,<span style="font-style:italic">x</span>,<span style="font-style:italic">z</span>⟩<span style="font-family:monospace">)</span> returns the
+Z-transform of the input sequence.
+</li></ul><h4 id="sec1079" class="subsubsection">Examples</h4>
+<p>
+To find the Z-transform of the identity function:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ztrans</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">+3 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">−4 </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">z</span></span><span style="color:#0000CC">
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">−2 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+1</span></td></tr>
 </table></td></tr>
-</table>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+With <span style="font-style:italic">n</span> as the original variable and <span style="font-style:italic">z</span> as the transform variable:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ztrans</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">n</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">n</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">z</span></span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">z</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">−2 </span><span style="color:#0000CC"><span style="font-style:italic">z</span></span><span style="color:#0000CC">+1</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Find the Z-transform of the constant function <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=1:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ztrans</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">−1</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Indeed:
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=0</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup></td></tr>
+</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">1−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span>−1</td></tr>
+</table></td><td class="dcell">.
+</td></tr>
+</table><p>
+You also have
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ztrans</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">n</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">z</span></span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">z</span></span><span style="color:#0000CC">−1</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Note that differentiating both sides of
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=0</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">z</span><sup><span style="font-style:italic">n</span></sup></td></tr>
+</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">z</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">z</span>−1</td></tr>
+</table></td></tr>
+</table><p>
+gives you
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=0</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">z</span><sup><span style="font-style:italic">n</span>−1</sup></td></tr>
+</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">(<span style="font-style:italic">z</span>−1)<sup>2</sup></td></tr>
+</table></td><td class="dcell">,
+</td></tr>
+</table><p>
+and so, multiplying both sides by <span style="font-style:italic">z</span>,
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=0</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">z</span><sup><span style="font-style:italic">n</span></sup></td></tr>
+</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">z</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">(<span style="font-style:italic">z</span>−1)<sup>2</sup></td></tr>
+</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">z</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">z</span><sup>2</sup>−2<span style="font-style:italic">z</span>+1</td></tr>
+</table></td><td class="dcell">,
+</td></tr>
+</table><p>
+as indicated in the previous example.</p>
 <hr>
-<a href="cascmd_en474.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en476.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en474.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en476.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

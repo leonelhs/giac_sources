@@ -2,86 +2,95 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Joining audio clips together</title>
+<title>Blending images</title>
 </head>
 <body >
-<a href="cascmd_en1019.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en1021.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en1019.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en1021.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:splice" class="subsection">26.2.16  Joining audio clips together</h3>
-<p>The <span style="font-family:monospace">splice</span><a id="hevea_default1952"></a>
-command joins two audio clips together with an overlap and optionally a crossfade.
+<h3 id="ssec:image-interp" class="subsection">27.1.10  Blending images</h3>
+<p>The <span style="font-family:monospace">interp</span><a id="hevea_default1935"></a> command
+interpolates two images linearly in the XYZ color space.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">splice</span> takes two mandatory arguments and one or two optional arguments:
+<span style="font-family:monospace">interp</span> takes three arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">A</span>, an audio clip.
-</li><li class="li-itemize"><span style="font-style:italic">B</span>, an audio clip with the same number of channels,
-bit depth and sample rate as <span style="font-style:italic">A</span>.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">len</span>, a positive integer defining the overlap size
-(by default, <span style="font-style:italic">len</span> is the minimum of 0.5· <span style="font-style:italic">s</span>, <span style="font-style:italic">L</span><sub><span style="font-style:italic">A</span></sub>/2, and <span style="font-style:italic">L</span><sub><span style="font-style:italic">B</span></sub>/2, where
-<span style="font-style:italic">L</span><sub><span style="font-style:italic">A</span></sub> and <span style="font-style:italic">L</span><sub><span style="font-style:italic">B</span></sub> are the lengths of <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> in samples and <span style="font-style:italic">s</span> is the sample rate).
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">p</span>, a real number defining the crossfade curve
-(by default, <span style="font-style:italic">p</span> is computed automatically, see below).
+<span style="font-style:italic">img1</span>, an image object with dimensions <span style="font-style:italic">w</span><sub>1</sub>× <span style="font-style:italic">h</span><sub>1</sub> and color depth <span style="font-style:italic">d</span><sub>1</sub>.
+</li><li class="li-itemize"><span style="font-style:italic">img2</span>, an image object with dimensions <span style="font-style:italic">w</span><sub>2</sub>× <span style="font-style:italic">h</span><sub>2</sub> and color depth <span style="font-style:italic">d</span><sub>2</sub>.
+</li><li class="li-itemize"><span style="font-style:italic">t</span>, a real number in [0,1].
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">splice(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span> ⟨,<span style="font-style:italic">len</span>,<span style="font-style:italic">p</span> ⟩<span style="font-family:monospace">)</span>
-returns the audio clip obtained by splicing <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> with an overlap
-of <span style="font-style:italic">len</span> samples and a crossfade which is computed using the function
-<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup><span style="font-style:italic">p</span></sup>, <span style="font-style:italic">x</span>∈[0,1], for <span style="font-style:italic">p</span>&gt;0.
-</li><li class="li-itemize">For positively correlated audio data on the overlap, it is best to set <span style="font-style:italic">p</span>=1.0
-(constant gain crossfade), while for zero-correlated data <span style="font-style:italic">p</span>=0.5 (constant power crossfade)
-works better. If <span style="font-style:italic">p</span> is not specified, it is computed automatically in [0.5,1.0]
-such that <span style="font-style:italic">p</span>−0.5 is proportional to the absolute value of the cosine distance between
-the overlapping data. Setting <span style="font-style:italic">p</span>=0 disables crossfading and thus the overlapped data is
-simply added together.
-</li></ul><h4 id="sec2510" class="subsubsection">Example</h4>
+</li><li class="li-itemize"><span style="font-family:monospace">interp(</span><span style="font-style:italic">img1</span>,<span style="font-style:italic">img2</span>,<span style="font-style:italic">t</span><span style="font-family:monospace">)</span>
+returns the image with dimensions <span style="font-style:italic">w</span>× <span style="font-style:italic">h</span> and color depth <span style="font-style:italic">d</span>,
+obtained by linear interpolation between <span style="font-style:italic">img1</span>
+and <span style="font-style:italic">img2</span>. The width an height of the resulting image are computed by solving the
+system of equations
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">w</span> <span style="font-style:italic">h</span>=(1−<span style="font-style:italic">t</span>)<span style="font-style:italic">w</span><sub>1</sub> <span style="font-style:italic">h</span><sub>1</sub>+<span style="font-style:italic">t</span> <span style="font-style:italic">w</span><sub>2</sub> <span style="font-style:italic">h</span><sub>2</sub>,  ln</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">w</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">h</span></td></tr>
+</table></td><td class="dcell">=(1−<span style="font-style:italic">t</span>)ln</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">w</span><sub>1</sub></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">h</span><sub>1</sub></td></tr>
+</table></td><td class="dcell">+<span style="font-style:italic">t</span>ln</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">w</span><sub>2</sub></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">h</span><sub>2</sub></td></tr>
+</table></td><td class="dcell">.</td></tr>
+</table>
+The resulting color depth <span style="font-style:italic">d</span> is the smallest one that
+is able to fit data from each image. For example, if <span style="font-style:italic">img1</span> is a grayscale image with
+alpha channel (<span style="font-style:italic">d</span><sub>1</sub>=2) and <span style="font-style:italic">img2</span> is a RGB image (<span style="font-style:italic">d</span><sub>2</sub>=3) with three channels and no
+alpha channel, then the resulting depth will be RGBA, i.e. <span style="font-style:italic">d</span>=4
+(three color channels with alpha channel).<p>To interpolate pixel data, <span style="font-family:monospace">interp</span> first resizes both images to <span style="font-style:italic">w</span>× <span style="font-style:italic">h</span>.
+The RGB values of individual pixels are then computed by a perceptually uniform
+linear interpolation between the corresponding values in <span style="font-style:italic">img1</span> and <span style="font-style:italic">img2</span>
+(see Section <a href="cascmd_en611.html#ssec%3Acolor-interp">18.1.3</a>).
+</p></li></ul><h4 id="sec2539" class="subsubsection">Example</h4>
 <p>
-We load an audio file containing a speech
-(see <a href="https://www2.cs.uic.edu/~i101/SoundFiles/">here</a>)
-and normalize it.
+To begin, load two images:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">normalize</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">readwav</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"/home/luka/Downloads/gettysburg.wav"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">),-1)</span></span></td></tr>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">img1</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">image</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"/home/luka/Pictures/xcas-logo.png"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC">a sound clip with 387574 samples at 22050 Hz (16 bit, mono)</span><span style="color:#0000CC">
+</span><span style="color:#0000CC">an image of size 377×353 (RGB)</span><span style="color:#0000CC">
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><p>
-We want to remove the portion of the speech between 5.6 and 10.5 seconds.
-In order to do so, we splice the portions on the left and right,
-using an overlap of size 0.25 seconds.
-We plot the audio and mark the portion with a yellow rectangle.
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">img2</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">image</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"/usr/local/share/giac/examples/Exemples/demo/terre.jpg"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">t1</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=5.6:; </span></span><span style="font-weight:bold"><span style="color:#BF0000">t2</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=10.5:; </span></span><span style="font-weight:bold"><span style="color:#BF0000">cfl</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=0.25:;</span></span></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rectangle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t1</span></span><span style="font-weight:bold"><span style="color:#BF0000">-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t2</span></span><span style="font-weight:bold"><span style="color:#BF0000">-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t2</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">yellow</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">filled</span></span><span style="font-weight:bold"><span style="color:#BF0000">); </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotwav</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span></td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC">an image of size 512×256 (RGB)</span><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">img1</span></span><span style="font-weight:bold"><span style="color:#BF0000">); </span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">img2</span></span><span style="font-weight:bold"><span style="color:#BF0000">,400)</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en403.png">
+<img src="cascmd_en442.png">
 
 </div><p>
 
-Now we extract audio from 0 to <span style="font-style:italic">t</span><sub>1</sub> and from <span style="font-style:italic">t</span><sub>2</sub> to the end and splice the
-resulting clips with an automatic crossfade. First we need to convert <span style="font-style:italic">t</span><sub>1</sub>
-and <span style="font-style:italic">t</span><sub>2</sub> to sample offsets.
+Now blend the two images together with <span style="font-style:italic">t</span>=0.6:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">sr</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">samplerate</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">n</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">round</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sr</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">t1</span></span><span style="font-weight:bold"><span style="color:#BF0000">):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">m</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">round</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sr</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">t2</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">snd</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">splice</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,</span></span><span style="font-weight:bold"><span style="color:#BF0000">n</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">m</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">cfl</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">img</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">interp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">img1</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">img2</span></span><span style="font-weight:bold"><span style="color:#BF0000">,0.6)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC">a sound clip with 274016 samples at 22050 Hz (16 bit, mono)</span><span style="color:#0000CC">
+</span><span style="color:#0000CC">an image of size 474×277 (RGB)</span><span style="color:#0000CC">
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">img</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en443.png">
+
+</div>
 <hr>
-<a href="cascmd_en1019.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en1021.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en1019.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en1021.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

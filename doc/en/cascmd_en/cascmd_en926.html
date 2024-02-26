@@ -2,35 +2,49 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Common perpendiculars to lines in space</title>
+<title>Defining a point in three-dimensions
+</title>
 </head>
 <body >
-<a href="cascmd_en925.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en927.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en925.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en927.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec2304" class="subsection">25.4.8  Common perpendiculars to lines in space</h3>
-<p>The <span style="font-family:monospace">common_perpendicular</span><a id="hevea_default1842"></a>
-command finds the common perpendicular to two lines.
+<h3 id="ssec:3dpoint" class="subsection">26.3.1  Defining a point in three-dimensions
+</h3>
+<p>See Section <a href="cascmd_en818.html#ssec%3A2dpoint">25.5.2</a> for points in the plane.</p><p>With the 3D geometry screen in point mode, clicking on a point with
+the left mouse button will choose that point. Points chosen this way
+are automatically named, first with <span style="font-family:monospace">A</span>, then <span style="font-family:monospace">B</span>, etc.</p><p>Alternatively, the <span style="font-family:monospace">point</span><a id="hevea_default1832"></a>
+command chooses a point.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">common_perpendicular</span> takes two arguments:
-<span style="font-style:italic">L</span>,<span style="font-style:italic">M</span>, two lines.
-</li><li class="li-itemize"><span style="font-family:monospace">common_perpendicular(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">M</span><span style="font-family:monospace">)</span> returns and draws the
-common perpendicular to <span style="font-style:italic">L</span> and <span style="font-style:italic">M</span>.
-</li></ul><h4 id="sec2305" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">L1</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,1,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1,1)):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">L2</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,-1,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,-1,1)):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">common_perpendicular</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">L1</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">L2</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+<span style="font-family:monospace">point</span> takes one or three arguments:
+<span style="font-style:italic">coords</span>, where <span style="font-style:italic">coords</span> can be one of:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">c</span>, a sequence of three coordinates.
+</li><li class="li-itemize">[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">c</span>], a list of three coordinates.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">point(</span><span style="font-style:italic">coords</span><span style="font-family:monospace">)</span> returns and draws the point
+with the given coordinates.
+</li></ul><p>
+Many commands which takes points as arguments can either take them as
+<span style="font-family:monospace">point(a,b,c)</span> or the list of coordinates <span style="font-family:monospace">[a,b,c]</span>.</p><h4 id="sec2333" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,2,5)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,5])</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en319.png">
+<img src="cascmd_en342.png">
 
-</div>
+</div><p>
+
+(The marker used to indicate the point can be changed;
+see Section <a href="cascmd_en814.html#sssec%3Alocalfeatures">25.3.2</a>.)</p>
 <hr>
-<a href="cascmd_en925.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en927.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en925.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en927.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

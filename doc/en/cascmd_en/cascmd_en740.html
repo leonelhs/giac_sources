@@ -2,181 +2,126 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Approximating solutions of y′=f(t,y)</title>
+<title>Tukey window</title>
 </head>
 <body >
-<a href="cascmd_en739.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en741.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en739.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en741.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:odesolve" class="subsection">21.4.1  Approximating solutions of <span style="font-style:italic">y</span>′=<span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>)</h3>
-<p>The <span style="font-family:monospace">odesolve</span><a id="hevea_default1475"></a>
-command can solve first order differential
-equations or first order systems. This section covers equations,
-while systems of equations are discussed in the next section.</p><p><span style="font-family:monospace">odesolve</span> finds values of the solution of a
-differential equation of the form <span style="font-style:italic">y</span>′=<span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>); specifically, it will
-approximate <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span><sub>1</sub>) for a specified <span style="font-style:italic">t</span><sub>1</sub>.</p><p><span style="font-family:monospace">odesolve</span> can take its arguments in various ways.
-Letting <span style="font-style:italic">t</span> and <span style="font-style:italic">y</span> be the independent and dependent variables,
-<span style="font-style:italic">t</span><sub>0</sub> and <span style="font-style:italic">y</span><sub>0</sub> be the initial values,
-<span style="font-style:italic">t</span><sub>1</sub> the place where you want the value of <span style="font-style:italic">y</span>, <span style="font-style:italic">f</span> be the function
-in the differential equation, <span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>) be an expression which
-determines the function <span style="font-style:italic">f</span> (see Section <a href="cascmd_en235.html#ssec%3Afnexpr">7.2.1</a> for the
-difference between a function and an expression).
+<h3 id="sec1898" class="subsection">20.5.14  Tukey window</h3>
+<p>The <span style="font-family:monospace">tukey_window</span><a id="hevea_default1466"></a>
+command applies the Tukey window function to a sequence or its segment.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">odesolve</span> takes three or four mandatory arguments and
-two optional arguments:
+<span style="font-family:monospace">tukey_window</span> takes one mandatory argument
+and one to three optional arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">mandatory</span>, mandatory arguments given by one of the following
-sequences:
+<span style="font-weight:bold"><span style="font-style:italic">v</span></span>, a real vector with length <span style="font-style:italic">n</span>.
+</li><li class="li-itemize">Optionally, one of:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>),[<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>],[<span style="font-style:italic">t</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub>],<span style="font-style:italic">t</span><sub>1</sub>
-</li><li class="li-itemize"><span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>),<span style="font-style:italic">t</span>=<span style="font-style:italic">t</span><sub>0</sub>..<span style="font-style:italic">t</span><sub>1</sub>,<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span><sub>0</sub>
-</li><li class="li-itemize"><span style="font-style:italic">t</span><sub>0</sub>..<span style="font-style:italic">t</span><sub>1</sub>,<span style="font-style:italic">f</span>,<span style="font-style:italic">y</span><sub>0</sub>
-</li><li class="li-itemize"><span style="font-style:italic">t</span><sub>0</sub>..<span style="font-style:italic">t</span><sub>1</sub>,(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>)<span style="font-family:monospace">-&gt;</span><span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>),<span style="font-style:italic">y</span><sub>0</sub>
+α, a real number in [0,1] (by default, α=0.5).
+</li><li class="li-itemize"><span style="font-style:italic">m</span>,<span style="font-style:italic">N</span> ⟨,α⟩, a sequence of two integers
+and optionally a real number α∈[0,1] (by default, <span style="font-style:italic">m</span>=0 and <span style="font-style:italic">N</span>=<span style="font-style:italic">n</span>).
 </li></ul>
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">tstep=</span><span style="font-style:italic">n</span><a id="hevea_default1476"></a>,
-to set the initial tstep
-value to the numeric solver from the GSL.
-It may be modified by the solver. It is also used to control the
-number of iterations of the solver by 2(<span style="font-style:italic">t</span><sub>1</sub>−<span style="font-style:italic">t</span><sub>0</sub>)/<span style="font-style:italic">n</span> (if the number
-of iterations exceeds this value, the solver will stops at a time <span style="font-style:italic">t</span>&lt;<span style="font-style:italic">t</span><sub>1</sub>).
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">curve</span><a id="hevea_default1477"></a>, the symbol.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">odesolve(</span><span style="font-style:italic">mandatory</span> ⟨,<span style="font-family:monospace">tstep=</span><span style="font-style:italic">n</span>,<span style="font-family:monospace">curve</span> ⟩<span style="font-family:monospace">)</span>
-returns an approximate value of <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span><sub>1</sub>) where <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>) is the
-solution of:
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    <span style="font-style:italic">y</span>′(<span style="font-style:italic">t</span>)=<span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>)),     <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span><sub>0</sub>)=<span style="font-style:italic">y</span><sub>0</sub>.
+</li><li class="li-itemize"><span style="font-family:monospace">tukey_window</span>
+returns the elementwise product of [<span style="font-style:italic">v</span><sub><span style="font-style:italic">m</span></sub>,<span style="font-style:italic">v</span><sub><span style="font-style:italic">m</span>+1</sub>,…,<span style="font-style:italic">v</span><sub><span style="font-style:italic">m</span>+<span style="font-style:italic">N</span>−1</sub>]
+and the vector <span style="font-style:italic">w</span> of length <span style="font-style:italic">N</span> defined by
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    <span style="font-style:italic">w</span><sub><span style="font-style:italic">k</span></sub>=</td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
+⎪<br>
+⎪<br>
+⎪<br>
+⎪<br>
+⎪<br>
+⎨<br>
+⎪<br>
+⎪<br>
+⎪<br>
+⎪<br>
+⎪<br>
+⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">      </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell">1+cos</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell">π </td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">β</td></tr>
+</table></td><td class="dcell">−1</td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell">,</td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" ><span style="font-style:italic">k</span>&lt;β,</td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >      1,</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">β≤ <span style="font-style:italic">k</span>≤(<span style="font-style:italic">N</span>−1) </td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell">1−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">α</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell">,</td></tr>
+</table></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">      </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell">1+cos</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell">π </td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">β</td></tr>
+</table></td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">α</td></tr>
+</table></td><td class="dcell">+1</td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell">,</td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >otherwise,
 </td></tr>
-</table>
-With an optional argument of <span style="font-family:monospace">curve</span>, the list of all the
-[<span style="font-style:italic">t</span>,[<span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>)]] values that were computed are returned.
-</li></ul><h4 id="sec1884" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">odesolve</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">),[</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">],[0,1],2)</span></span></td></tr>
-</table><p>or:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">odesolve</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1)</span></span></td></tr>
-</table><p>or:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">odesolve</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0..2,(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">)-&gt;</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">),1)</span></span></td></tr>
-</table><p>or:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">):=</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">odesolve</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0..2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">1.82241255674</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">odesolve</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0..2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">tstep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0.3)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">1.82241255675</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">odesolve</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">tstep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0.5)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">1.82241255674</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">odesolve</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">tstep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0.5,</span></span><span style="font-weight:bold"><span style="color:#BF0000">curve</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    0.0</span></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">1.0</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    0.0238917513909</span></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">1.00028543504</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    0.065808814858</span></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">1.00216696089</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    0.108895370376</span></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">1.00594077449</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    ⋮</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">⋮</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    1.96462490594</span></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">1.8389834135</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    1.97769352646</span></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">1.83297839039</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    1.9908403154</span></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">1.82679805346</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    2.0</span></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">1.82241255674</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎦</span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
+where β=α (<span style="font-style:italic">N</span>−1)/2, for <span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">N</span>−1.
+</li></ul><h4 id="sec1899" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">listplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">tukey_window</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1</span></span><span style="font-weight:bold"><span style="color:#BF0000">$1000</span></span><span style="font-weight:bold"><span style="color:#BF0000">],0.4))</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en196.png">
+
+</div>
 <hr>
-<a href="cascmd_en739.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en741.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en739.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en741.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

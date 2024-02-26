@@ -2,83 +2,79 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Rhombuses in the plane</title>
+<title>Vectors in the plane</title>
 </head>
 <body >
-<a href="cascmd_en834.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en836.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en834.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en836.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:2drhombuses" class="subsection">24.8.2  Rhombuses in the plane</h3>
-<p>See Section <a href="cascmd_en935.html#ssec%3A3drhombuses">25.7.2</a> for rhombuses in space.</p><p>The <span style="font-family:monospace">rhombus</span><a id="hevea_default1734"></a>
-command creates rhombuses.
+<h3 id="ssec:2dvectors" class="subsection">25.6.4  Vectors in the plane</h3>
+<p>See Section <a href="cascmd_en936.html#ssec%3A3dvectors">26.4.4</a> for vectors in space.</p><p>The <span style="font-family:monospace">segment</span><a id="hevea_default1722"></a>
+commands returns and draws
+vectors. (The <span style="font-family:monospace">segment</span> command can also draw line segments,
+see section <a href="cascmd_en834.html#ssec%3A2dsegments">25.6.3</a>.)
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">rhombus</span> takes three mandatory arguments and two
-optional arguments.
+<span style="font-family:monospace">segment</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>, two points.
-</li><li class="li-itemize"><span style="font-style:italic">a</span>, a real number.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">varc</span>, <span style="font-style:italic">vard</span>, two variable names.
+<span style="font-style:italic">p</span>, a point.
+</li><li class="li-itemize"><span style="font-style:italic">v</span>, a vector.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">rhombus(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">a</span> ⟨,<span style="font-style:italic">varc</span>,<span style="font-style:italic">vard</span> ⟩<span style="font-family:monospace">)</span>
-returns and draws the rhombus <span style="font-style:italic">ABCD</span>, where <span style="font-style:italic">a</span> is the
-counterclockwise angle from <span style="font-style:italic">AB</span> to <span style="font-style:italic">AC</span>.
-If the arguments <span style="font-style:italic">varc</span> and <span style="font-style:italic">vard</span> are given, then
-<span style="font-style:italic">C</span> and <span style="font-style:italic">D</span> will be assigned to them.
-</li></ul><h4 id="sec2104" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rhombus</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1-2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3)+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">/3)</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">segment(</span><span style="font-style:italic">p</span>,<span style="font-style:italic">v</span><span style="font-family:monospace">)</span> returns the corresponding vector and
+draws it as a line segment from <span style="font-style:italic">p</span> to <span style="font-style:italic">p</span>+<span style="font-style:italic">v</span>.
+</li></ul><h4 id="sec2131" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">segment</span></span><span style="font-weight:bold"><span style="color:#BF0000">([-1,0],[1,1])</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en225.png">
+<img src="cascmd_en246.png">
 
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rhombus</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1-2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3)+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">/3,</span></span><span style="font-weight:bold"><span style="color:#BF0000">C</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">D</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</div><p>The <span style="font-family:monospace">vector</span><a id="hevea_default1723"></a>
+command also makes vectors, with a different syntax.
+It can take its arguments in two different ways.
+</p><ol class="enumerate" type=1><li class="li-enumerate">
+<span style="font-weight:bold">The coordinates of the vector.</span>
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">vector</span> takes
+<span style="font-style:italic">L</span>, a list of the coordinates of the vector.
+</li><li class="li-itemize"><span style="font-family:monospace">vector(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns and draws the vector with the
+given coordinates, starting from the origin.
+</li></ul>
+</li><li class="li-enumerate"><span style="font-weight:bold">Two points or a point and a vector.</span>
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">vector</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">P</span>, a point.
+</li><li class="li-itemize"><span style="font-style:italic">Q</span>, a point or a vector. If <span style="font-style:italic">Q</span> is a point, it can
+be combined with <span style="font-style:italic">P</span> in a list.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">vector(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span><span style="font-family:monospace">)</span> returns and draws the
+corresponding vector. If the arguments are two points, the vector
+goes from <span style="font-style:italic">P</span> to <span style="font-style:italic">Q</span>. If the arguments are a point and a
+vector, then the vector starts at <span style="font-style:italic">P</span>.
+</li></ul>
+</li></ol><h4 id="sec2132" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">vector</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2])</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en226.png">
+<img src="cascmd_en247.png">
 
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">evalc</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">affix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">C</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">affix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">D</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">vector</span></span><span style="font-weight:bold"><span style="color:#BF0000">([-1,0],[1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
+</table><p>or:
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">i</span> </td><td class="dcell">⎛<br>
-⎜<br>
-⎝</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >3</td></tr>
-</table></td><td class="dcell">+8</td><td class="dcell">⎞<br>
-⎟<br>
-⎠</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−2 </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >3</td></tr>
-</table></td><td class="dcell">−1</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">i</span> </td><td class="dcell">⎛<br>
-⎜<br>
-⎝</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >3</td></tr>
-</table></td><td class="dcell">+2</td><td class="dcell">⎞<br>
-⎟<br>
-⎠</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">vector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">V</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">vector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">vector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">V</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en248.png">
+
+</div>
 <hr>
-<a href="cascmd_en834.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en836.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en834.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en836.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

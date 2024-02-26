@@ -23,7 +23,6 @@
 #endif
 #ifdef HAVE_LIBFLTK
 #include <FL/fl_ask.H>
-#include <FL/fl_ask.H>
 #include <FL/Fl.H>
 #include <FL/Fl_Value_Input.H>
 #include <FL/Fl_Return_Button.H>
@@ -69,6 +68,7 @@
 using namespace std;
 using namespace giac;
 
+#define TICK_PADDING 3
 
 #ifndef NO_NAMESPACE_XCAS
 namespace xcas {
@@ -76,26 +76,95 @@ namespace xcas {
 
   bool do_helpon=true;
 
-  std::map<std::string,std::pair<Fl_Image *,Fl_Image *> *> texture2d_cache;
+  void TextureCache::_remove(img_ptr_pair_t *p,bool is_internal) {
+    if (p->first) {
+      Fl_Shared_Image *shim=dynamic_cast<Fl_Shared_Image*>(p->first);
+      if (shim!=NULL)
+        shim->release();
+      else if (!is_internal)
+        delete p->first;
+    }
+    if (p->second)
+      delete p->second;
+    delete p;
+  }
+  TextureCache::~TextureCache() {
+    std::map<std::string,img_ptr_pair_t*>::const_iterator it=_cache.begin(),itend=_cache.end();
+    for (;it!=itend;++it) {
+      std::pair<Fl_Image *,Fl_Image *> *p=it->second;
+      _remove(p,InternalImageCache::is_internal_image_name(it->first));
+    }
+  }
+  img_ptr_pair_t *TextureCache::get(const std::string &s) const {
+    std::map<std::string,img_ptr_pair_t*>::const_iterator it=_cache.find(s);
+    if (it==_cache.end())
+      return NULL;
+    return it->second;
+  }
+  void TextureCache::insert(const std::string &s,std::pair<Fl_Image *,Fl_Image *> *iptr) {
+    std::map<std::string,img_ptr_pair_t*>::iterator it=_cache.find(s);
+    if (it!=_cache.end()) {
+      _remove(it->second,InternalImageCache::is_internal_image_name(s));
+      _cache.erase(it);
+    }
+    _cache[s]=iptr;
+  }
+  bool TextureCache::erase(const std::string &s) {
+    std::map<std::string,img_ptr_pair_t*>::iterator it=_cache.find(s);
+    if (it==_cache.end())
+      return false;
+    _remove(it->second,InternalImageCache::is_internal_image_name(s));
+    _cache.erase(it);
+    return true;
+  }
+  bool InternalImageCache::is_internal_image_name(const std::string &s) {
+    return s.size()>1 && s[0]==':' && s[1]=='/';
+  }
+  InternalImageCache::~InternalImageCache() {
+    std::map<std::string,Fl_Image *>::const_iterator it=_cache.begin(),itend=_cache.end();
+    for (;it!=itend;++it) {
+      if (it->second)
+        delete it->second;
+    }
+  }
+  Fl_Image *InternalImageCache::get(const std::string &s) const {
+    std::map<std::string,Fl_Image *>::const_iterator it=_cache.find(s);
+    if (it==_cache.end())
+      return NULL;
+    return it->second;
+  }
+  void InternalImageCache::insert(const std::string &s,Fl_Image *imgptr) {
+    std::map<std::string,Fl_Image *>::iterator it=_cache.find(s);
+    if (it!=_cache.end()) {
+      delete it->second;
+      _cache.erase(it);
+    }
+    _cache[s]=imgptr;
+  }
+
+  TextureCache texture2d_cache;
+  InternalImageCache internal_image_cache;
 
   static double pow10(double d){
     return std::pow(10.,d);
   }
 
   void get_texture2d(const string & s,std::pair<Fl_Image *,Fl_Image *> * & texture){
-    texture=0;
-    std::map<std::string,std::pair<Fl_Image *,Fl_Image*> *>::const_iterator it,itend=texture2d_cache.end();
-    it=texture2d_cache.find(s);
-    if (it!=itend){
-      texture=it->second;
-      // texture->uncache();
-    }
-    else {
-      Fl_Shared_Image * ptr =Fl_Shared_Image::get(s.c_str());
-      if (ptr) 
-	ptr->reload();
-      texture=new std::pair<Fl_Image *,Fl_Image*>(ptr,0);
-      texture2d_cache[s]=texture;
+    texture=texture2d_cache.get(s);
+    if (texture==NULL) {
+      if (InternalImageCache::is_internal_image_name(s)) {
+        Fl_Image *imgptr=internal_image_cache.get(s);
+        texture=new std::pair<Fl_Image *,Fl_Image *>(imgptr,0);
+        if (imgptr)
+          texture2d_cache.insert(s,texture);
+      } else {
+        Fl_Shared_Image * ptr =Fl_Shared_Image::get(s.c_str());
+        if (ptr) 
+          ptr->reload();
+        texture=new std::pair<Fl_Image *,Fl_Image*>(ptr,0);
+        if (ptr)
+          texture2d_cache.insert(s,texture);
+      }
     }
   }
 
@@ -286,6 +355,21 @@ namespace xcas {
     delete fl_img;
     return ret;
   }
+  void cache_rgba_image(const rgba_image &img) {
+    if (img.is_original())
+      return; // do not cache, the image will be read from disk
+    Fl_Image *imgptr=internal_image_cache.get(img.file_name());
+    if (imgptr!=NULL)
+      return; // already cached
+    Fl_RGB_Image rgb_img(img.data_array(),img.width(),img.height(),img.depth());
+    internal_image_cache.insert(img.file_name(),rgb_img.copy());
+  }
+  void uncache_rgba_image(const rgba_image &img) {
+    return; // this does nothing
+  }
+  void fltk_colormap_rgb(int c,unsigned char &r,unsigned char &g,unsigned char &b) {
+    Fl::get_color((Fl_Color)c,r,g,b);
+  }
 
 #ifndef USE_OBJET_BIDON // change by L. Marohnić
   extern void localisation(){
@@ -295,10 +379,15 @@ namespace xcas {
   objet_bidon::objet_bidon(){
 #endif
     // localization code and pointer to RGB image reader
-    if (!giac::readrgb_ptr && !giac::load_image_ptr && !giac::resize_image_ptr){
+    if (!giac::fltk_colormap_rgb_ptr)
+      giac::fltk_colormap_rgb_ptr=fltk_colormap_rgb;
+    if (!giac::readrgb_ptr && !giac::load_image_ptr && !giac::resize_image_ptr &&
+        !giac::cache_rgba_image_ptr && !giac::uncache_rgba_image_ptr){
       giac::readrgb_ptr=readrgb;
       giac::load_image_ptr=load_image;
       giac::resize_image_ptr=resize_image;
+      giac::cache_rgba_image_ptr=cache_rgba_image;
+      giac::uncache_rgba_image_ptr=uncache_rgba_image;
 #if defined(HAVE_LC_MESSAGES)  || defined(__MINGW_H)
 #ifdef __MINGW_H
       xcas_locale()=getenv("XCAS_LOCALE")?getenv("XCAS_LOCALE"):"c:/xcaswin/locale";	
@@ -433,13 +522,9 @@ namespace xcas {
 	    if (optvalue.type==_VECT && optvalue._VECTptr->size()==2 && optvalue._VECTptr->front().type==_STRNG && is_undef(optvalue._VECTptr->back())){
 	      // reload cached image
 	      optvalue=optvalue._VECTptr->front();
-	      std::map<std::string,std::pair<Fl_Image *,Fl_Image*> *>::iterator it,itend=texture2d_cache.end();
-	      it=texture2d_cache.find(optvalue._STRNGptr->c_str());
-	      if (it!=itend){
-		std::pair<Fl_Image *,Fl_Image*> * old= it->second;
-		delete old;
-		texture2d_cache.erase(it);
-	      }
+	      img_ptr_pair_t *ipp=texture2d_cache.get(optvalue._STRNGptr->c_str());
+	      if (ipp!=NULL)
+          texture2d_cache.erase(optvalue._STRNGptr->c_str());
 	      get_texture2d(*optvalue._STRNGptr,background_image);
 	    }
 	    else {
@@ -732,8 +817,8 @@ namespace xcas {
   }
 
   void Graph2d::find_xy(double i,double j,double & x,double & y) const {
-    x=window_xmin+i*(window_xmax-window_xmin)/(w()-(show_axes?ylegende*labelsize():0));
-    y=window_ymax-j*(window_ymax-window_ymin)/(h()-(show_axes?((title.empty()?1:2)*labelsize()):0));
+    x=window_xmin+i*window_width()/horz_pixels();
+    y=window_ymax-j*window_height()/vert_pixels();
   }
 
   void Graph2d::find_xyz(double i,double j,double k,double & x,double & y,double & z) {
@@ -1408,7 +1493,7 @@ namespace xcas {
     bleft->color(x_axis_color);
     bleft->tooltip(gettext("Decrease x"));
     bleft->callback(cb_graph_buttons);
-    Fl_Button * bortho = new Fl_Button(bx+bw,by,bw,bh,"_|_");
+    Fl_Button * bortho = new Fl_Button(bx+bw,by,bw,bh,"⊥");
     bortho->tooltip(gettext(is3d?"Hide or show below depth":"Orthonormalize"));
     bortho->callback(cb_graph_buttons);
     Fl_Button * bright = new Fl_Button(bx+2*bw,by,bw,bh,"@-1->");
@@ -1780,6 +1865,19 @@ namespace xcas {
     x=int(floor(x*pow(10.0,3.0-n)+.5));
     x=x*pow(10.0,n-3.0);
     return x;
+  }
+
+  // TODO: return the size of the top margin (reserved for title) in pixels
+  int Graph2d3d::top_margin() const {
+    return 0;
+  }
+  // return the size of the bottom margin (reserved for x-ticks and title) in pixels
+  int Graph2d3d::bottom_margin() const {
+    return ((show_axes==0 || show_axes==2?0:1)+(title.empty()?0:1.324718))*labelsize()+TICK_PADDING;
+  }
+  // return the size of the right margin (reserved for y-ticks and (TODO) y-label) in pixels
+  int Graph2d3d::right_margin() const {
+    return (show_axes>0 && show_axes<4?int(ylegende*labelsize()):0)+TICK_PADDING;
   }
 
   void Graph2d3d::config(){
@@ -2168,8 +2266,8 @@ namespace xcas {
       ylegendesize->value(ylegende*labelsize());
       ylegendesize->show();
     }
-    double y_scale=(Graph2d3d::h()-((show_axes && gr2d)?((title.empty()?1:2)*labelsize()):0))/(window_ymax-window_ymin);
-    double x_scale=(Graph2d3d::w()-ylegende*((show_axes && gr2d)?labelsize():0))/(window_xmax-window_xmin);
+    double y_scale=vert_pixels()/(window_ymax-window_ymin);
+    double x_scale=horz_pixels()/(window_xmax-window_xmin);
     if (ct->value()){
       tx->value(x_tick*x_scale);
       ty->value(y_tick*y_scale);
@@ -2366,8 +2464,8 @@ namespace xcas {
 	    std::swap(window_ymin,window_ymax);
 	  if (window_zmin>window_zmax)
 	    std::swap(window_zmin,window_zmax);
-	  y_scale=(Graph2d3d::h()-((gr2d && show_axes)?((title.empty()?1:2)*labelsize()):0))/(window_ymax-window_ymin);
-	  x_scale=(Graph2d3d::w()-ylegende*((gr2d && show_axes)?labelsize():0))/(window_xmax-window_xmin);
+	  y_scale=vert_pixels()/(window_ymax-window_ymin);
+	  x_scale=horz_pixels()/(window_xmax-window_xmin);
 	  if (gr3d){
 	    ntheta=int(Theta->value());
 	    nphi=int(Phi->value());
@@ -2533,8 +2631,8 @@ namespace xcas {
     int taille=5;
     for (int i=0;i<affs;++i){
       double d=evalf_double(aff[i],1,contextptr)._DOUBLE_val;
-      string tmp=print_DOUBLE_(d)+y_axis_unit;
-      int taillecur=5+int(fl_width(tmp.c_str()));
+      string tmp=print_DOUBLE_(d)+" "+y_axis_unit;
+      int taillecur=TICK_PADDING+int(fl_width(tmp.c_str()));
       if (taillecur>taille)
 	taille=taillecur;
     }
@@ -2933,8 +3031,8 @@ namespace xcas {
 
   void Graph2d::orthonormalize(){ 
     // Center of the directions, orthonormalize
-    double h=(this->h()-(show_axes?((title.empty()?1:2)*labelsize()):0))*orthonormal_factor;
-    double w=this->w()-(show_axes?ylegende*labelsize():0);
+    double h=vert_pixels()*orthonormal_factor;
+    double w=horz_pixels();
     double window_w=window_xmax-window_xmin,window_h=window_ymax-window_ymin;
     double window_hsize=h/w*window_w;
     if (window_h > window_hsize*1.01){ // enlarge horizontally
@@ -2957,8 +3055,8 @@ namespace xcas {
   int Graph2d::mouse_rescale(){
     if ( current_i >=0 && current_i <= w() && current_j >= 0 && current_j <= h()){ 
       if (absint(current_i-push_i)>20 && absint(current_j-push_j)>20 ){
-	double y_scale=(window_ymax-window_ymin)/(h()-(show_axes?((title.empty()?1:2)*labelsize()):0));
-	double x_scale=(window_xmax-window_xmin)/(w()-(show_axes?ylegende*labelsize():0));
+	double y_scale=(window_ymax-window_ymin)/vert_pixels();
+	double x_scale=(window_xmax-window_xmin)/horz_pixels();
 	window_xmax=window_xmin+max(current_i,push_i)*x_scale;
 	window_xmin=window_xmin+min(current_i,push_i)*x_scale;
 	window_ymin=window_ymax-max(current_j,push_j)*y_scale;
@@ -3014,8 +3112,8 @@ namespace xcas {
       if (abs_calc_mode(contextptr)==38)
 	adjust_cursor_point_type();
     }
-    int horizontal_pixels=w()-(show_axes?int(ylegende*labelsize()):0);
-    int vertical_pixels= h()-((show_axes?1:0)+(!title.empty()))*labelsize();
+    int horizontal_pixels=horz_pixels();
+    int vertical_pixels=vert_pixels();
     double y_scale=(window_ymax-window_ymin)/vertical_pixels;
     double x_scale=(window_xmax-window_xmin)/horizontal_pixels;
     if (mode!=255 && abs_calc_mode(contextptr)==38 && event==FL_KEYBOARD){
@@ -3124,8 +3222,8 @@ namespace xcas {
 	      if (tmp.type==_VECT && !tmp._VECTptr->empty())
 		tmp=tmp._VECTptr->front();
 	      if (tmp.type==_CPLX){
-		int horizontal_pixels=w()-(show_axes?int(ylegende*labelsize()):0);
-		int vertical_pixels=h()-((show_axes?1:0)+(!title.empty()))*labelsize();
+		int horizontal_pixels=horz_pixels();
+		int vertical_pixels=vert_pixels();
 		double y_scale=vertical_pixels/(window_ymax-window_ymin);
 		double x_scale=horizontal_pixels/(window_xmax-window_xmin);
 		double i,j;
@@ -3215,7 +3313,7 @@ namespace xcas {
     else {
       if (event==FL_DRAG || event==FL_RELEASE){
 	double newx,newy,newz;
-	int dw=w()-(show_axes?int(ylegende*labelsize()):0),dh=h()-(show_axes?((title.empty()?1:2)*labelsize()):0);
+	int dw=horz_pixels(),dh=vert_pixels();
 	double dx=window_xmax-window_xmin;
 	double dy=window_ymax-window_ymin;
 	double x_scale=dx/dw,y_scale=dy/dh;
@@ -3736,7 +3834,7 @@ namespace xcas {
     }
     double newx,newy,newz;
     if (gr2d){
-      int dw=w()-(show_axes?int(ylegende*labelsize()):0),dh=h()-(show_axes?((title.empty()?1:2)*labelsize()):0);
+      int dw=horz_pixels(),dh=vert_pixels();
       double dx=window_xmax-window_xmin;
       double dy=window_ymax-window_ymin;
       double x_scale=dx/dw,y_scale=dy/dh;
@@ -4650,7 +4748,7 @@ namespace xcas {
     fl_push_clip(clip_x,clip_y,clip_w,clip_h);
     int vertical_pixels;
     in_draw(clip_x,clip_y,clip_w,clip_h,vertical_pixels);
-    int horizontal_pixels=w()-(show_axes?int(ylegende*labelsize()):0);
+    int horizontal_pixels=horz_pixels();
     int deltax=x(),deltay=y();
     if (mode<255 && abs_calc_mode(contextptr)==38){
       fl_color(FL_CYAN);
@@ -4887,7 +4985,7 @@ namespace xcas {
       return;
     if (abs_calc_mode(contextptr)==38 && legendes.size()>1 && legendes[0]=='G')
       legendes=legendes.substr(1,legendes.size()-1);
-    fl_font(cst_greek_translate(legendes),iptr->labelsize());
+    fl_font(cst_greek_translate(legendes,true),iptr->labelsize());
     int dx=3,dy=1;
     find_dxdy(legendes,labelpos,iptr->labelsize(),dx,dy);
     check_fl_draw(legendes.c_str(),iptr->x()+i0+dx,iptr->y()+j0+dy,clip_x,clip_y,clip_w,clip_h,deltax,deltay);
@@ -4991,7 +5089,7 @@ namespace xcas {
     if (g._SYMBptr->feuille.type!=_VECT)
       return;
     vecteur f=*g._SYMBptr->feuille._VECTptr;
-    int mxw=Mon_image.w(),myw=Mon_image.h()-(Mon_image.show_axes?(Mon_image.title.empty()?1:2):0)*Mon_image.labelsize();
+    int mxw=Mon_image.horz_pixels(),myw=Mon_image.vert_pixels();
     double i0,j0,i0save,j0save,i1,j1;
     int fs=f.size();
     if ((fs==4) && (s==at_parameter)){
@@ -5029,13 +5127,9 @@ namespace xcas {
 	  if (attrv1.type==_VECT && attrv1._VECTptr->size()==2 && attrv1._VECTptr->front().type==_STRNG && is_undef(attrv1._VECTptr->back())){
 	    // reload cached image
 	    attrv1=attrv1._VECTptr->front();
-	    std::map<std::string,std::pair<Fl_Image *,Fl_Image*> *>::iterator it,itend=texture2d_cache.end();
-	    it=texture2d_cache.find(attrv1._STRNGptr->c_str());
-	    if (it!=itend){
-	      std::pair<Fl_Image *,Fl_Image*> * old= it->second;
-	      delete old;
-	      texture2d_cache.erase(it);
-	    }
+	    img_ptr_pair_t *ipp=texture2d_cache.get(attrv1._STRNGptr->c_str());
+	    if (ipp!=NULL)
+        texture2d_cache.erase(attrv1._STRNGptr->c_str());
 	  }
 	  if (attrv1.type==_STRNG){
 	    get_texture2d(*attrv1._STRNGptr,texture);
@@ -5206,8 +5300,7 @@ namespace xcas {
 	  int delta_i=v[1].val,delta_j=v[2].val;
 	  double xmin=Mon_image.window_xmin,ymin=Mon_image.window_ymin,xmax=Mon_image.window_xmax,ymax=Mon_image.window_ymax;
 	  //gen psize=_Pictsize(0);
-	  int bitmap_w=Mon_image.w()-int(Mon_image.ylegende*(Mon_image.show_axes?Mon_image.labelsize():0)),
-	    bitmap_h=Mon_image.h()-(Mon_image.show_axes?((Mon_image.title.empty()?1:2)*Mon_image.labelsize()):0);
+	  int bitmap_w=Mon_image.horz_pixels(),bitmap_h=Mon_image.vert_pixels();
 	  if (v.size()>8){
 	    xmin=v[3]._DOUBLE_val;
 	    xmax=v[4]._DOUBLE_val;
@@ -5216,8 +5309,8 @@ namespace xcas {
 	    bitmap_w=v[7].val;
 	    bitmap_h=v[8].val;
 	  }
-	  double bitmap_scalex=(xmax-xmin)/bitmap_w,scalex=(Mon_image.window_xmax-Mon_image.window_xmin)/(Mon_image.w()-int(Mon_image.ylegende*(Mon_image.show_axes?Mon_image.labelsize():0)));
-	  double bitmap_scaley=(ymax-ymin)/bitmap_h,scaley=(Mon_image.window_ymax-Mon_image.window_ymin)/(Mon_image.h()-(Mon_image.show_axes?((Mon_image.title.empty()?1:2)*Mon_image.labelsize()):0));
+	  double bitmap_scalex=(xmax-xmin)/bitmap_w,scalex=Mon_image.window_width()/Mon_image.horz_pixels();
+	  double bitmap_scaley=(ymax-ymin)/bitmap_h,scaley=Mon_image.window_height()/Mon_image.vert_pixels();
 	  double X,Y;
 	  int ii,jj;
 	  const_iterateur it=v[0]._VECTptr->begin(),itend=v[0]._VECTptr->end();
@@ -5318,8 +5411,8 @@ namespace xcas {
 	  if (texture->second)
 	    delete texture->second;
 	  if (texture->first){
-	    texture->second=texture->first->copy(tw,th);
-	    texture->second->draw(tx,ty,tw,th);
+            texture->second=texture->first->copy(tw,th);
+            texture->second->draw(tx,ty,tw,th);
 	  }
 	}
 	return;
@@ -5483,8 +5576,8 @@ namespace xcas {
     if (Graph2d * gr=dynamic_cast<Graph2d *>(graphic)){
       cur_x=gr->current_i; // Fl::event_x()-gr->x();
       cur_y=gr->current_j; // Fl::event_y()-gr->y();
-      double y_scale=(gr->h()-(gr->show_axes?((gr->title.empty()?1:2)*gr->labelsize()):0))/(graphic->window_ymax-graphic->window_ymin);
-      double x_scale=(gr->w()-(gr->show_axes?gr->ylegende*gr->labelsize():0))/(graphic->window_xmax-graphic->window_xmin);
+      double y_scale=gr->vert_pixels()/graphic->window_height();
+      double x_scale=gr->horz_pixels()/graphic->window_width();
       double d_mouse_x=graphic->window_xmin+cur_x/x_scale;
       double d_mouse_y=graphic->window_ymax-cur_y/y_scale;
       check_fl_draw(("x:"+giac::print_DOUBLE_(d_mouse_x,3)).c_str(),x()+2,y()+h()/2-2,clip_x,clip_y,clip_w,clip_h,0,0);
@@ -5979,8 +6072,8 @@ namespace xcas {
     }
     Graph2d * gr2d=dynamic_cast<Graph2d *>(this);
     if (gr2d){
-      double x_scale=(w()-ylegende*((show_axes)?labelsize():0))/(window_xmax-window_xmin);
-      double y_scale=(h()-((show_axes)?((title.empty()?1:2)*labelsize()):0))/(window_ymax-window_ymin);
+      double x_scale=horz_pixels()/window_width();
+      double y_scale=vert_pixels()/window_height();
       double i,j;
       gr2d->findij(G,x_scale,y_scale,i,j,contextptr);
       current_i=int(i+.5);
@@ -6001,8 +6094,8 @@ namespace xcas {
     if (gr2d && tracemode){
       if (tracemode_add.size())
 	fl_draw(tracemode_add.c_str(),x(),y()+h()-22);
-      double x_scale=(w()-ylegende*((show_axes)?labelsize():0))/(window_xmax-window_xmin);
-      double y_scale=(h()-((show_axes)?((title.empty()?1:2)*labelsize()):0))/(window_ymax-window_ymin);
+      double x_scale=horz_pixels()/window_width();
+      double y_scale=vert_pixels()/window_height();
       if (!tracemode_disp.empty())
 	fltk_draw(*gr2d,-1,tracemode_disp,x_scale,y_scale,0,0,w(),h());
       int taille=5;
@@ -6037,9 +6130,9 @@ namespace xcas {
     History_Pack * hp =get_history_pack(this);
     context * contextptr=hp?hp->contextptr:get_context(this);
     find_title_plot(title_tmp,plot_tmp,contextptr);
-#if 1 // changes by L. Marohnic
-    int horizontal_pixels=w()-(show_axes>0?int(ylegende*labelsize())+2:0);
-    vertical_pixels=h()-((show_axes?1:0)+(!title.empty()))*labelsize();//h()-((show_axes!=0 && show_axes!=2?2:0)+(!title.empty()))*labelsize();
+#if 1 // changes by L. Marohnić
+    int horizontal_pixels=horz_pixels();
+    vertical_pixels=vert_pixels();
     int deltax=x(),deltay=y();
     double y_scale=vertical_pixels/(window_ymax-window_ymin);
     double x_scale=horizontal_pixels/(window_xmax-window_xmin);
@@ -6127,6 +6220,7 @@ namespace xcas {
 	}
       }
       string tmp=(x_axis_name.empty()?"x":x_axis_name)+" ";
+      fl_font(cst_greek_translate(tmp,true),labelsize());
       check_fl_draw(tmp.c_str(),deltax+horizontal_pixels-int(fl_width(tmp.c_str())),deltay+j_0+labelsize(),clip_x,clip_y,clip_w,clip_h,0,0);
     }
     if ( show_axes==1 && (window_xmax>=0) && (window_xmin<=0) ) {// Y-axis
@@ -6143,8 +6237,11 @@ namespace xcas {
 	  check_fl_line(deltax+i_0-2,deltay+jjj,deltax+i_0+2,deltay+jjj,clip_x,clip_y,clip_w,clip_h,0,0);
 	}
       }
-      string tmp=" "+(y_axis_name.empty()?"y":y_axis_name);
+      string yname(y_axis_name);
+      fl_font(cst_greek_translate(yname,true),labelsize());
+      string tmp=" "+(yname.empty()?"y":yname);
       check_fl_draw(tmp.c_str(),deltax+i_0+2,deltay+labelsize(),clip_x,clip_y,clip_w,clip_h,0,0);
+      fl_font(FL_HELVETICA,labelsize());
     }
     // Ticks
     if (show_axes==1 && (horizontal_pixels)/(x_scale*x_tick) < 40 && vertical_pixels/(y_tick*y_scale) <40  ){
@@ -6174,8 +6271,9 @@ namespace xcas {
     if (!is_zero(title_tmp) && function_final.type==_FUNC)
       mytitle=gen(symbolic(*function_final._FUNCptr,title_tmp)).print(contextptr);
     if (!mytitle.empty()){
+      fl_font(cst_greek_translate(mytitle,true),labelsize());
       int dt=int(fl_width(mytitle.c_str()));
-      check_fl_draw(mytitle.c_str(),deltax+(horizontal_pixels-dt)/2,deltay+h()-labelsize()/4,clip_x,clip_y,clip_w,clip_h,0,0);
+      check_fl_draw(mytitle.c_str(),deltax+(horizontal_pixels-dt)/2,deltay+h()-fl_descent()-1,clip_x,clip_y,clip_w,clip_h,0,0);
     }
     // Boundary values
     fl_font(FL_HELVETICA,labelsize());
@@ -6197,8 +6295,11 @@ namespace xcas {
     taille=int(fl_width(tmp.c_str()));
     if (delta>=taille/2 && delta<=horizontal_pixels){
       tickx=x()+delta;
-      if (show_axes>1 || logx || d!=0)
+      if (show_axes>1 || logx || d!=0) {
         fl_line(tickx,y()+vertical_pixels-1,tickx,y()+vertical_pixels-5);
+        if (show_axes>2)
+          fl_line(tickx,y()+1,tickx,y()+5);
+      }
       if (minx>tickx) minx=tickx;
       if (maxx<tickx) maxx=tickx;
       if (args_tmp.empty()) {
@@ -6208,10 +6309,14 @@ namespace xcas {
       }
     }
         }
-        if (args_tmp.empty())
-    fl_draw(x_axis_unit.c_str(),x()+horizontal_pixels,y()+vertical_pixels+labelsize()-2);
-        if (show_axes==3 && maxx!=DBL_MIN && minx!=DBL_MAX)
-          fl_line(minx,y()+vertical_pixels,maxx,y()+vertical_pixels);
+        if (args_tmp.empty()) {
+    string xunit(x_axis_unit);
+    fl_font(cst_greek_translate(xunit,true),labelsize());
+    fl_draw(xunit.c_str(),deltax+horizontal_pixels,deltay+vertical_pixels+labelsize()-2);
+    fl_font(FL_HELVETICA,labelsize());
+        }
+        //if (show_axes==3 && maxx!=DBL_MIN && minx!=DBL_MAX)
+          //fl_line(minx,y()+vertical_pixels,maxx,y()+vertical_pixels);
       }
       // Y
       //fl_color(y_axis_color);
@@ -6221,33 +6326,38 @@ namespace xcas {
       double ticky,miny=DBL_MAX,maxy=DBL_MIN;
       for (int j=0;j<affs;++j){
 	double d=evalf_double(aff[j],1,contextptr)._DOUBLE_val;
-  if (show_axes>=2 && !logy && d<0)
+  if (show_axes==4)
     continue;
 	tmp=print_DOUBLE_(logy?std::pow(10,d):d)+y_axis_unit;
-	delta=int(vertical_pixels*(window_ymax-d)/(window_ymax-window_ymin));
-	if (delta>=taille && delta<=vertical_pixels-taille){
-    ticky=y()+delta;
-    if (show_axes>1 || logy || d!=0)
-      fl_line(x()+horizontal_pixels-1,ticky,x()+horizontal_pixels-5,ticky);
+	delta=int(vertical_pixels*(window_ymax-d)/window_height());
+	if (delta>=top_margin()+taille && delta<=top_margin()+vertical_pixels-taille){
+    ticky=deltay+delta;
+    if ((show_axes>1 && show_axes!=4) || logy || d!=0) {
+      fl_line(deltax+horizontal_pixels-1,ticky,deltax+horizontal_pixels-5,ticky);
+      if (show_axes==3)
+        fl_line(deltax+1,ticky,deltax+5,ticky);
+    }
     if (miny>ticky) miny=ticky;
     if (maxy<ticky) maxy=ticky;
     if (show_axes==1) fl_color(y_axis_color);
-    fl_draw(tmp.c_str(),x()+horizontal_pixels+3,ticky+taille);
+    fl_font(cst_greek_translate(tmp,true),labelsize());
+    fl_draw(tmp.c_str(),deltax+horizontal_pixels+TICK_PADDING,ticky+(fl_height()-fl_descent())/2.);
+    fl_font(FL_HELVETICA,labelsize());
     if (show_axes==1) fl_color(FL_BLACK);
 	  int tmpi=fl_width(tmp.c_str());
-	  if (tmpi+horizontal_pixels+3>w()){
-	    ylegende=(tmpi+3.)/labelsize();
+	  if (tmpi+horizontal_pixels+TICK_PADDING>w()){
+	    ylegende=double(tmpi+TICK_PADDING)/labelsize();
 	    redraw();
 	  }
 	}
       }
-      if (show_axes>=2 && maxy!=DBL_MIN && miny!=DBL_MAX)
-        fl_line(x()+horizontal_pixels,miny,x()+horizontal_pixels,maxy);
+      if (show_axes==2 && maxy!=DBL_MIN && miny!=DBL_MAX)
+        fl_line(deltax+horizontal_pixels,miny,deltax+horizontal_pixels,maxy);
     }
-    if (show_axes==1 || background_image) {
+    if ((show_axes>0 && show_axes!=2) || background_image) {
       fl_color(FL_BLACK);
       if ( !(display_mode & 0x100) )
-        fl_rect(x(), y(), horizontal_pixels, vertical_pixels);
+        fl_rect(deltax,deltay,horizontal_pixels, vertical_pixels);
     }
 #else
     int horizontal_pixels=w()-(show_axes?int(ylegende*labelsize()):0);
@@ -6457,7 +6567,7 @@ namespace xcas {
     // cerr << "graph2d draw " << this << " block_signal" << '\n';
     fl_clip_box(x(),y(),w(),h(),clip_x,clip_y,clip_w,clip_h);
     fl_push_clip(clip_x,clip_y,clip_w,clip_h);
-    int horizontal_pixels=w()-(show_axes?int(ylegende*labelsize()):0);
+    int horizontal_pixels=horz_pixels();
     int vertical_pixels;
     int deltax=x(),deltay=y();
     in_draw(clip_x,clip_y,clip_w,clip_h,vertical_pixels);

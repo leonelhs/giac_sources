@@ -2,39 +2,48 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Listening to a digital sound</title>
+<title>Modifying images</title>
 </head>
 <body >
-<a href="cascmd_en1016.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en1018.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en1016.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en1018.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:playsnd" class="subsection">26.2.13  Listening to a digital sound</h3>
-<p>The <span style="font-family:monospace">playsnd</span><a id="hevea_default1949"></a>
-command plays digitized sound data.
+<h3 id="sec2528" class="subsection">27.1.7  Modifying images</h3>
+<h5 id="sec2529" class="paragraph">Setting pixel data explicitly.</h5>
+<p>
+Existing image objects can be modified by using the
+<span style="font-family:monospace">set_channel_data</span><a id="hevea_default1927"></a> command.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">playsnd</span> takes one mandatory argument and one to
-three optional arguments:
+<span style="font-family:monospace">set_channel_data</span> takes four or five arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">A</span>, an audio clip.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">offset</span>, <span style="font-style:italic">len</span>, a sequence of two integers,
-or <span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>, an interval of real numbers, determining the portion of the clip
-to be played (by default, the entire clip is played).
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">r</span>, a positive integer (by default, <span style="font-style:italic">r</span>=1).
+<span style="font-style:italic">img</span>, an image object.
+</li><li class="li-itemize"><span style="font-style:italic">chn</span>, a channel index, which should be either a nonnegative
+integer or <span style="font-family:monospace">red</span> for the red channel, <span style="font-family:monospace">green</span> for the green channel,
+<span style="font-family:monospace">blue</span> for the blue channel, <span style="font-family:monospace">grey</span> for the grayscale
+channel resp. <span style="font-family:monospace">tran</span> for the transparency channel.<p>For grayscale images without a transparency channel, 
+this argument should be omitted since there is only one channel.
+</p></li><li class="li-itemize"><span style="font-style:italic">x</span>, an integer.
+</li><li class="li-itemize"><span style="font-style:italic">y</span>, an integer.
+</li><li class="li-itemize"><span style="font-style:italic">data</span>, a matrix of integers between 0 and 255.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">playsnd(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span> plays the given (portion of) audio clip over
-the computer speakers and repeats it <span style="font-style:italic">r</span> times (setting <span style="font-style:italic">r</span> to a higher value
-loops the sound <span style="font-style:italic">r</span> times).
-</li><li class="li-itemize">The portion to be played is either the block of <span style="font-style:italic">len</span> samples
-starting at <span style="font-style:italic">offset</span> or the sound between <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> seconds.
-</li><li class="li-itemize">To stop the playback, press the <span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">STOP</span></span></span> button in the
-respective <span style="font-variant:small-caps">Xcas</span> session.
+</li><li class="li-itemize"><span style="font-family:monospace">set_channel_data(</span><span style="font-style:italic">img</span> ⟨,<span style="font-style:italic">chn</span> ⟩,<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">data</span><span style="font-family:monospace">)</span>
+returns a modified copy of <span style="font-style:italic">img</span> in which the indicated channel components of pixels in
+the rectangle with upper left corner (<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>)
+and lower right corner (<span style="font-style:italic">x</span>+<span style="font-style:italic">w</span>−1,<span style="font-style:italic">y</span>+<span style="font-style:italic">h</span>−1), where <span style="font-style:italic">w</span> resp. <span style="font-style:italic">h</span> is the number of columns resp. rows of the
+matrix <span style="font-style:italic">data</span>, are set to the values in <span style="font-style:italic">data</span>; i.e. the <span style="font-style:italic">chn</span> component in the
+pixel (<span style="font-style:italic">x</span>+<span style="font-style:italic">j</span>,<span style="font-style:italic">y</span>+<span style="font-style:italic">i</span>) in is set to <span style="font-style:italic">data</span><sub><span style="font-style:italic">ij</span></sub> for <span style="font-style:italic">i</span>=0,…,<span style="font-style:italic">h</span>−1 and <span style="font-style:italic">j</span>=0,…,<span style="font-style:italic">w</span>−1.
 </li></ul>
+<h5 id="sec2530" class="paragraph">Inverting pixel data.</h5>
+<p>
+To produce a negative of an image, i.e. to apply the function <span style="font-style:italic">p</span>↦ 255−<span style="font-style:italic">p</span> to all channel data
+entries, use the unary operator <span style="font-family:monospace">-</span><a id="hevea_default1928"></a> or the command
+<span style="font-family:monospace">inv</span><a id="hevea_default1929"></a>.</p>
 <hr>
-<a href="cascmd_en1016.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en1018.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en1016.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en1018.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

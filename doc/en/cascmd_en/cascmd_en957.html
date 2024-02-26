@@ -2,60 +2,53 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Checking whether points and/or lines in space are coplanar</title>
+<title>Circles in space</title>
 </head>
 <body >
-<a href="cascmd_en956.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en958.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en956.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en958.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec2373" class="subsection">25.11.2  Checking whether points and/or lines in space are coplanar</h3>
-<p>The <span style="font-family:monospace">is_coplanar</span><a id="hevea_default1875"></a>
-command determines whether or not several points or several lines are coplanar.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">is_coplanar</span> takes
-<span style="font-style:italic">S</span>, a sequence where each element is a point or a line.
-</li><li class="li-itemize"><span style="font-family:monospace">is_coplanar(</span><span style="font-style:italic">S</span><span style="font-family:monospace">)</span> returns <span style="font-family:monospace">1</span> is the elements
-of <span style="font-style:italic">S</span> are coplanar and returns <span style="font-family:monospace">0</span> otherwise.
-</li></ul><h4 id="sec2374" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_coplanar</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,0,0],[1,2,-3],[1,1,-2],[2,1,-3])</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+<h3 id="sec:3dcircles" class="subsection">26.9.1  Circles in space</h3>
+<p>See Section <a href="cascmd_en858.html#ssec%3A2dcircles">25.10.1</a> for circles in the plane.</p><p>The <span style="font-family:monospace">circle</span><a id="hevea_default1864"></a>
+command returns and draws a circle. It can take
+its arguments in two different ways.
+</p><ol class="enumerate" type=1><li class="li-enumerate">
+<span style="font-weight:bold">Three points.</span>
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">circle</span> takes three arguments:
+<span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span>, three points.
+</li><li class="li-itemize"><span style="font-family:monospace">circle(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span><span style="font-family:monospace">)</span> returns and draws the circle in plane
+<span style="font-style:italic">ABC</span> with a diameter <span style="font-style:italic">AB</span>.
+</li></ul>
+</li><li class="li-enumerate"><span style="font-weight:bold">Two points and a vector.</span>
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">circle</span> takes three points:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">C</span>, a point (which can be given by its coordinates).
+</li><li class="li-itemize"><span style="font-style:italic">v</span>, a vector.
+</li><li class="li-itemize"><span style="font-style:italic">A</span>, a point (which can be given by its coordinates).
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">circle(</span><span style="font-style:italic">C</span>,<span style="font-style:italic">v</span>,<span style="font-style:italic">A</span><span style="font-family:monospace">)</span> returns and draws the circle in plane
+<span style="font-style:italic">C</span>(<span style="font-style:italic">C</span>+<span style="font-style:italic">v</span>)<span style="font-style:italic">C</span> with center <span style="font-style:italic">C</span> and containing <span style="font-style:italic">C</span>+<span style="font-style:italic">v</span>.
+</li></ul>
+</li></ol><h4 id="sec2401" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">circle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,2,2))</span></span></td></tr>
+</table><div class="center">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-1
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_coplanar</span></span><span style="font-weight:bold"><span style="color:#BF0000">([-1,2,0],[1,2,-3],[1,1,-2],[2,1,-3])</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+<img src="cascmd_en384.png">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_coplanar</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,0,0],[1,2,-3],</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,1,-2],[2,1,-3]))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">circle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">vector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,2,2))</span></span></td></tr>
+</table><div class="center">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-1
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_coplanar</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">([-1,2,0],[1,2,-3]),</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,1,-2],[2,1,-3]))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+<img src="cascmd_en385.png">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table>
+</div>
 <hr>
-<a href="cascmd_en956.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en958.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en956.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en958.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

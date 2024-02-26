@@ -2,33 +2,80 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Program editor</title>
+<title>Approximating definite integrals</title>
 </head>
 <body >
-<a href="cascmd_en750.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en752.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en750.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en752.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:proged" class="subsection">23.1.1  Program editor</h3>
-<p><span style="font-variant:small-caps">Xcas</span> provides you with a program editor, which you can open with
-<span style="font-family:sans-serif">Alt+P</span> (see Figure <a href="#fig%3Aeditor">23.1</a>).
-This can be useful for writing small programs, but
-for writing larger programs you may want to use your usual editor.
-(Note that this requires an editor, such as <span style="font-variant:small-caps">Emacs</span>, and not a
-word processor.) If you use your own editor, then you will need to
-save the program to a file, such as <span style="font-family:monospace">myprog.cxx</span>, and then load
-it into <span style="font-variant:small-caps">Xcas</span> by creating a programming entry with <span style="font-family:sans-serif">Alt+P</span> and
-then selecting <span style="font-family:sans-serif">Prog</span> ▸ <span style="font-family:sans-serif">Load</span> from the entry menu.
-</p><blockquote class="figure"><div class="center"><div class="center"><hr style="width:80%;height:2"></div>
-<img src="cascmd_en161.png">
-<div class="caption"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="vertical-align:top;text-align:left;" >Figure 23.1: <a id="fig:editor"></a>Programming editor in <span style="font-variant:small-caps">Xcas</span></td></tr>
-</table></div>
-<div class="center"><hr style="width:80%;height:2"></div></div></blockquote>
+<h3 id="sec1931" class="subsection">22.2.2  Approximating definite integrals</h3>
+<p>The <span style="font-family:monospace">romberg</span><a id="hevea_default1489"></a>
+or <span style="font-family:monospace">nInt</span><a id="hevea_default1490"></a>
+command finds approximate values of integrals using the Romberg method.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">romberg</span> takes three mandatory arguments and one
+optional argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">expr</span>, an expression involving one variable.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">var</span>, the variable (by default
+<span style="font-family:monospace">x</span>).
+</li><li class="li-itemize"><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>, two real numbers.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">romberg(</span><span style="font-style:italic">expr</span> ⟨,<span style="font-style:italic">var</span>,⟩ <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span><span style="font-family:monospace">)</span>
+returns an approximated value of the integral
+∫<sub><span style="font-style:italic">a</span></sub><sup><span style="font-style:italic">b</span></sup><span style="font-style:italic">expr</span>·<span style="font-style:italic">d</span><span style="font-style:italic">var</span>. The integrand must be
+sufficiently regular for the approximation to be accurate,
+otherwise, <span style="font-family:monospace">romberg</span> returns a list of real values that
+come from the application of the Romberg algorithm (the first list
+element is the trapezoid rule approximation, the next ones come from
+the application of the Euler-Maclaurin formula to remove successive
+even powers of the step of the trapezoid rule).
+</li></ul><p>The <span style="font-family:monospace">gaussquad</span><a id="hevea_default1491"></a>
+command finds an approximate value of an
+integral, calculated by an adaptive method by Ernst Hairer
+which uses a 15-point Gaussian quadrature.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">gaussquad</span> takes four arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">expr</span>, an expression.
+</li><li class="li-itemize"><span style="font-style:italic">var</span>, the variable used by the expression.
+</li><li class="li-itemize"><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>, two numbers.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">gaussquad(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span><span style="font-family:monospace">)</span>
+returns an approximation of the integral
+∫<sub><span style="font-style:italic">a</span></sub><sup><span style="font-style:italic">b</span></sup><span style="font-style:italic">expr</span>·<span style="font-style:italic">d</span><span style="font-style:italic">var</span>.
+</li></ul><h4 id="sec1932" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">romberg</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">exp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,0,1)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1.46265174591
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">gaussquad</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">exp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,0,1)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1.46265174591
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">gaussquad</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">exp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,-1,1)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1.49364826562
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en750.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en752.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en750.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en752.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

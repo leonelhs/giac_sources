@@ -2,45 +2,56 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Graphing recurrent sequences</title>
+<title>Contour lines</title>
 </head>
 <body >
-<a href="cascmd_en626.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en628.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en626.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en628.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec:plotseq" class="subsection">17.8.4  Graphing recurrent sequences</h3>
-<p>The <span style="font-family:monospace">plotseq</span><a id="hevea_default1199"></a>
-or <span style="font-family:monospace">seqplot</span><a id="hevea_default1200"></a>
-or <span style="font-family:monospace">graphe_suite</span><a id="hevea_default1201"></a>
-command draws the process of finding the terms of a recurrent sequence.
+<h3 id="sec:plotcontour" class="subsection">18.5.1  Contour lines</h3>
+<p>The <span style="font-family:monospace">plotcontour</span><a id="hevea_default1206"></a>
+or <span style="font-family:monospace">DrwCtour</span><a id="hevea_default1207"></a>
+or <span style="font-family:monospace">contourplot</span><a id="hevea_default1208"></a>
+command draws contour lines for functions of two variables.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">plotseq</span> takes:
+<span style="font-family:monospace">plotcontour</span> takes two mandatory arguments and one
+optional argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span>, an expression depending on a variable.
-</li><li class="li-itemize"><span style="font-style:italic">var=a</span>, the variable and a beginning value. (If
-<span style="font-style:italic">var=</span><span style="font-family:monospace">x</span>, then the variable name can be omitted.)
-The <span style="font-style:italic">a</span> value can be replaced by a list of three elements,
-[<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>−</sub>,<span style="font-style:italic">x</span><sub>+</sub>] where <span style="font-style:italic">x</span><sub>−</sub><span style="font-family:monospace">..</span><span style="font-style:italic">x</span><sub>+</sub> will be passed as the range of the
-variable for the graph computation.
-</li><li class="li-itemize"><span style="font-style:italic">n</span>, the ending value of the variable.
+<span style="font-style:italic">expr</span>, an expression involving two variables.
+</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a list of the two variables.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">values</span>, a list of values of the contour
+lines to draw; <span style="font-style:italic">expr=value</span>, for <span style="font-style:italic">value</span> in
+<span style="font-style:italic">values</span> (by default, [−10,−8,…,8,10]).
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">plotseq(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">var</span><span style="font-family:monospace">=</span><span style="font-style:italic">a</span>,<span style="font-style:italic">n</span><span style="font-family:monospace">)</span>
-draws the line <span style="font-style:italic">y</span>=<span style="font-style:italic">x</span>, the graph of <span style="font-style:italic">y</span>=<span style="font-style:italic">expr</span>, and the <span style="font-style:italic">n</span>
-first terms of the recurrent sequence defined by: <span style="font-style:italic">u</span><sub>0</sub>=<span style="font-style:italic">a</span>,
-<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>=<span style="font-style:italic">f</span>(<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>−1</sub>) where <span style="font-style:italic">f</span> is the function determined by <span style="font-style:italic">expr</span>.
-</li></ul><h4 id="sec1500" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotseq</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=[3,0,5],5)</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">plotcontour(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">vars</span> ⟨,<span style="font-style:italic">values</span> ⟩<span style="font-family:monospace">)</span>
+draws the contour lines
+<span style="font-style:italic">expr=value</span> for <span style="font-style:italic">value</span> in <span style="font-style:italic">values</span>.
+</li></ul><h4 id="sec1519" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotcontour</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=-3..3,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">=-3..3],[1,2,3],</span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">=[</span></span><span style="font-weight:bold"><span style="color:#BF0000">green</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">red</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">black</span></span><span style="font-weight:bold"><span style="color:#BF0000">]+[</span></span><span style="font-weight:bold"><span style="color:#BF0000">filled$3</span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en086.png">
+<img src="cascmd_en087.png">
+
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotcontour</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en088.png">
+
+</div><p>If you want to draw the surface in 3D representation, use
+<span style="font-family:monospace">plotfunc</span> (see Section <a href="cascmd_en613.html#ssec%3Aplotfunc3">18.2.2</a>).
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotfunc</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en089.png">
 
 </div>
 <hr>
-<a href="cascmd_en626.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en628.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en626.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en628.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

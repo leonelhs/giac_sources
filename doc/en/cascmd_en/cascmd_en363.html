@@ -2,120 +2,103 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Euclidean quotient</title>
+<title>Numerical spline interpolation</title>
 </head>
 <body >
-<a href="cascmd_en362.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en364.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en362.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en364.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:quo" class="subsection">10.3.2  Euclidean quotient</h3>
-<p>The <span style="font-family:monospace">quo</span><a id="hevea_default615"></a> command finds the quotient
-of the Euclidean division of two polynomials.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">quo</span> takes two mandatory arguments and one optional
-argument:
+<h3 id="ssec:fast-interp" class="subsection">11.2.4  Numerical spline interpolation</h3>
+<p>The <span style="font-family:monospace">interp</span><a id="hevea_default620"></a> command interpolates a
+discretized function at a list of given points by using fast spline
+interpolation routines in GSL. You should use this command when you do not
+need the interpolated function itself but only its values at a sequence of
+points.</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">interp</span> takes two or three mandatory arguments and a sequence
+of optional arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">P</span> and <span style="font-style:italic">Q</span>, two polynomials.
-</li><li class="li-itemize">Optionally <span style="font-style:italic">x</span>, the variable (by default
-<span style="font-family:monospace">x</span>), if <span style="font-style:italic">P</span> and <span style="font-style:italic">Q</span> are given as expressions.
+<span style="font-style:italic">data</span>, a sequence or list of two vectors <span style="font-style:italic">x</span> and <span style="font-style:italic">y</span> of the same length.
+</li><li class="li-itemize"><span style="font-style:italic">v</span>, a vector of <span style="font-style:italic">x</span>-values at which the spline is evaluated.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">opts</span>, a sequence of options each of which is one of:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">"</span><span style="font-style:italic">stype</span><span style="font-family:monospace">"</span>, a string specifying spline type.
+Allowed values for <span style="font-style:italic">stype</span> are <span style="font-family:monospace">cubic</span>, <span style="font-family:monospace">akima</span> and <span style="font-family:monospace">steffen</span>
+(by default, <span style="font-style:italic">stype</span>=<span style="font-family:monospace">cubic</span>).
+</li><li class="li-itemize"><span style="font-family:monospace">periodic</span>, the symbol specifying that interpolation should be periodic
+(by default, interpolation is non-periodic).
+This argument gets ignored if <span style="font-style:italic">stype</span>=<span style="font-family:monospace">steffen</span>.
+</li><li class="li-itemize"><span style="font-style:italic">d</span>, a nonnegative integer specifying the order of the derivative
+of interpolated function to be evaluated.
+Allowed values are 0, 1 and 2 (by default, <span style="font-style:italic">d</span>=0).
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">quo(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span>  ⟨,<span style="font-style:italic">x</span>⟩<span style="font-family:monospace">)</span> returns
-the Euclidean quotient of <span style="font-style:italic">P</span> divided by <span style="font-style:italic">Q</span>.
-</li></ul><p>
-<span style="font-family:monospace">Quo</span><a id="hevea_default616"></a> is the inert form of
-<span style="font-family:monospace">quo</span>; namely, it evaluates to
-<span style="font-family:monospace">quo</span> for later evaluation. It is used when <span style="font-variant:small-caps">Xcas</span> is in
-<span style="font-variant:small-caps">Maple</span> mode (see Section <a href="cascmd_en025.html#ssec%3Alang">2.5.2</a>) to compute the euclidean quotient
-of the division of two polynomials with coefficients in
-ℤ/<span style="font-style:italic">p</span>ℤ using <span style="font-variant:small-caps">Maple</span>-like syntax.</p><h4 id="sec812" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">quo</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">interp([</span><span style="font-style:italic">x</span>,<span style="font-style:italic">y</span><span style="font-family:monospace">]</span>,<span style="font-style:italic">v</span> ⟨,<span style="font-style:italic">opts</span> ⟩<span style="font-family:monospace">)</span> or
+<span style="font-family:monospace">interp(</span><span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">v</span> ⟨,<span style="font-style:italic">opts</span> ⟩<span style="font-family:monospace">)</span>
+returns the list <span style="font-style:italic">z</span> of spline (derivative) values at points in <span style="font-style:italic">v</span>.
+</li><li class="li-itemize">Note that <span style="font-style:italic">data</span> and <span style="font-style:italic">v</span> must be entirely numeric and
+<span style="font-style:italic">data</span> should also be inexact.
+</li><li class="li-itemize">The elements of <span style="font-style:italic">x</span> must be strictly ascending. The minimal number of data points is 3.
+</li><li class="li-itemize">The elements of <span style="font-style:italic">t</span> must be between min<span style="font-style:italic">x</span> and max<span style="font-style:italic">x</span>, otherwise the output list
+will contain undefined elements (as an effect, plotting would fail).
+</li></ul><h4 id="sec814" class="subsubsection">Supported spline types</h4>
+<p>
+The description of spline types below is quoted from GSL documentation.
+</p><dl class="description"><dt class="dt-description">
+<span style="font-weight:bold">cubic</span></dt><dd class="dd-description"> Cubic spline with natural boundary conditions.
+The resulting curve is piecewise cubic on each interval,
+with matching first and second derivatives at the supplied data-points.
+The second derivative is chosen to be zero at the first point and last point.
+</dd><dt class="dt-description"><span style="font-weight:bold">periodic cubic</span></dt><dd class="dd-description"> Cubic spline with periodic boundary conditions.
+The resulting curve is piecewise cubic on each interval, with matching first
+and second derivatives at the supplied data-points.
+The derivatives at the first and last points are also matched.
+Note that the last point in the data must have the same <span style="font-style:italic">y</span>-value as the first point,
+otherwise the resulting periodic interpolation will have a discontinuity at the boundary.
+</dd><dt class="dt-description"><span style="font-weight:bold">(periodic) akima</span></dt><dd class="dd-description"> Non-rounded Akima spline with natural (periodic) boundary conditions.
+This method uses the non-rounded corner algorithm of Wodicka.
+</dd><dt class="dt-description"><span style="font-weight:bold">steffen</span></dt><dd class="dd-description"> Steffen’s method guarantees the monotonicity of the interpolating
+function between the given data points. Therefore, minima and maxima can only occur
+exactly at the data points, and there can never be spurious oscillations between data points.
+The interpolated function is piecewise cubic in each interval.
+The resulting curve and its first derivative are guaranteed to be continuous,
+but the second derivative may be discontinuous.
+</dd></dl><h4 id="sec815" class="subsubsection">Example</h4>
+<p>
+This example is adapted from GSL documentation. To define some synthetic data, enter:
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+2
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">quo</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">makelist</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">k</span></span><span style="font-weight:bold"><span style="color:#BF0000">-&gt;</span></span><span style="font-weight:bold"><span style="color:#BF0000">k</span></span><span style="font-weight:bold"><span style="color:#BF0000">+0.5*</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">k</span></span><span style="font-weight:bold"><span style="color:#BF0000">),0,10),</span></span><span style="font-weight:bold"><span style="color:#BF0000">makelist</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">k</span></span><span style="font-weight:bold"><span style="color:#BF0000">-&gt;</span></span><span style="font-weight:bold"><span style="color:#BF0000">k</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">cos</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">k</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2),0,10):;</span></span></td></tr>
+</table><p>This gives you 11 data points. To interpolate the function at intermediate points, enter:
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">+2
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-In list representation, to get the quotient of <span style="font-style:italic">x</span><sup>2</sup>+2<span style="font-style:italic">x</span>+4 by <span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>+2
-you can also input:
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">linspace</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">min</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">max</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),1000):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">interp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span></td></tr>
+</table><p>Now plot the data and the interpolated values together:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">quo</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,4],[1,1,2])</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">listplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">tran</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">]));</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">scatterplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">tran</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">]),</span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">blue</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">point_width_2</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-that is to say, the polynomial <span style="font-family:monospace">1</span>.</p><p>Input in <span style="font-variant:small-caps">Xcas</span> mode:
+<img src="cascmd_en013.png">
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">Quo</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+</div><p>
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span><span style="color:#0000CC"><span style="font-style:italic">quo</span></span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">+2 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+1,</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-Input in <span style="font-variant:small-caps">Maple</span> mode:
+To see the difference between the supported spline types, interpolate
+in the segment [4,6]. Enter:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">Quo</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3+3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+6*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+5) </span></span><span style="font-weight:bold"><span style="color:#BF0000">mod</span></span><span style="font-weight:bold"><span style="color:#BF0000"> 5</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">linspace</span></span><span style="font-weight:bold"><span style="color:#BF0000">(4,6):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">c</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">interp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"cubic"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">interp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"akima"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">interp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"steffen"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">listplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">tran</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">c</span></span><span style="font-weight:bold"><span style="color:#BF0000">]),</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">blue</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">quadrant4</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">legend</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"cubic"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">listplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">tran</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">]),</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">red</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">legend</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"akima"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">listplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">tran</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">]),</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">magenta</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">legend</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"steffen"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span></td></tr>
+</table><div class="center">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-−2</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+1
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-This division was done using modular arithmetic, unlike with the
-following command, where the division is done in ℤ[<span style="font-style:italic">X</span>]
-and reduction afterwards:
+<img src="cascmd_en014.png">
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">quo</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3+3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+6*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+5) </span></span><span style="font-weight:bold"><span style="color:#BF0000">mod</span></span><span style="font-weight:bold"><span style="color:#BF0000"> 5</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-3</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+6
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>If <span style="font-variant:small-caps">Xcas</span> is not in <span style="font-variant:small-caps">Maple</span> mode, polynomial division
-in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">X</span>] is done e.g. by:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">quo</span></span><span style="font-weight:bold"><span style="color:#BF0000">((</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3+3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)%5,(2</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+6</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+5)%5)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC">−2 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+1</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">mod</span></span><span style="color:#0000CC"> 5
-</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table>
+</div>
 <hr>
-<a href="cascmd_en362.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en364.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en362.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en364.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

@@ -2,110 +2,82 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Uniform distribution
-</title>
+<title>Polynomial regression</title>
 </head>
 <body >
-<a href="cascmd_en663.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en665.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en663.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en665.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:uniform" class="subsection">18.4.2  Uniform distribution
-</h3>
-<h5 id="sec1617" class="paragraph">The probability density function for the uniform distribution.</h5>
-<p>
-Given two values <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> with <span style="font-style:italic">a</span> &lt; <span style="font-style:italic">b</span>, the uniform distribution on
-[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] has density function 1/(<span style="font-style:italic">b</span>−<span style="font-style:italic">a</span>) for <span style="font-style:italic">x</span> in [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>]. The
-<span style="font-family:monospace">uniform</span><a id="hevea_default1297"></a>
-(or <span style="font-family:monospace">uniformd</span><a id="hevea_default1298"></a>) command
-computes this density function.
+<h3 id="sec1612" class="subsection">19.2.8  Polynomial regression</h3>
+<p>The <span style="font-family:monospace">polynomial_regression</span><a id="hevea_default1298"></a>
+command finds a more general polynomial <span style="font-style:italic">y</span>=<span style="font-style:italic">a</span><sub>0</sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup>+⋯+<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub> which best fits a set of data points.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">uniform</span> (or <span style="font-family:monospace">uniformd</span>) takes three arguments:
+<span style="font-family:monospace">polynomial_regression</span> takes three arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, real numbers with <span style="font-style:italic">a</span>&lt;<span style="font-style:italic">b</span>.
-</li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
+<span style="font-style:italic">xcoords</span>, a list of <span style="font-style:italic">x</span>-coordinates.
+</li><li class="li-itemize"><span style="font-style:italic">ycoords</span>, a list of <span style="font-style:italic">y</span>-coordinates.
+</li><li class="li-itemize"><span style="font-style:italic">n</span>, the degree of the polynomial. 
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">uniform(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> (or <span style="font-family:monospace">uniformd(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span>)
-returns the value of the probability density function for the
-uniform distribution from <span style="font-style:italic">a</span> to <span style="font-style:italic">b</span>, namely 1/(<span style="font-style:italic">b</span>−<span style="font-style:italic">a</span>).
-</li></ul><h4 id="sec1618" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">uniform</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2.2,3.5,2.8)</span></span></td></tr>
+You can combine the first two arguments into a matrix with two
+columns (each list becomes a column of the matrix).
+</li><li class="li-itemize"><span style="font-family:monospace">polynomial_regression(</span><span style="font-style:italic">xcoords</span>,<span style="font-style:italic">ycoords</span>,<span style="font-style:italic">n</span><span style="font-family:monospace">)</span>
+returns the list [<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>,…,<span style="font-style:italic">a</span><sub>0</sub>] of coefficients of the best fit polynomial.
+</li></ul><h4 id="sec1613" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">polynomial_regression</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[1,1],[2,2],[3,10],[4,20]],3)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">polynomial_regression</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,3,4],[1,2,10,20],3)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.769230769231
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎢<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">−</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">5</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">6</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">,</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">17</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">,−</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">56</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">,12</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table>
-<h5 id="sec1619" class="paragraph">The cumulative distribution function for the uniform distribution.</h5>
-<p>
-The <span style="font-family:monospace">uniform_cdf</span><a id="hevea_default1299"></a>
-or <span style="font-family:monospace">uniformd_cdf</span><a id="hevea_default1300"></a>
-command finds the cumulative distribution
-function for the uniform distribution.
+</table><p>
+so the best fit polynomial will be <span style="font-style:italic">y</span>=(−5/6)<span style="font-style:italic">x</span><sup>3</sup>+(17/2)<span style="font-style:italic">x</span><sup>2</sup> −
+(56/3)<span style="font-style:italic">x</span>+12.</p><p>The <span style="font-family:monospace">polynomial_regression_plot</span><a id="hevea_default1299"></a>
+command draws the best fit polynomial.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">uniform_cdf</span> takes three mandatory arguments and one
-optional argument:
+<span style="font-family:monospace">polynomial_regression_plot</span> takes three arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, real numbers with <span style="font-style:italic">a</span>&lt;<span style="font-style:italic">b</span>.
-</li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
-</li><li class="li-itemize">Optionally <span style="font-style:italic">y</span>, a real number. 
+<span style="font-style:italic">xcoords</span>, a list of <span style="font-style:italic">x</span>-coordinates.
+</li><li class="li-itemize"><span style="font-style:italic">ycoords</span>, a list of <span style="font-style:italic">y</span>-coordinates.
+</li><li class="li-itemize"><span style="font-style:italic">n</span>, the degree of the polynomial. 
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">uniform_cdf(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns the value of the
-cumulative distribution function for the uniform distribution from
-<span style="font-style:italic">a</span> to <span style="font-style:italic">b</span>, which in this case will be (<span style="font-style:italic">x</span>−<span style="font-style:italic">a</span>)/(<span style="font-style:italic">b</span>−<span style="font-style:italic">a</span>).
-</li><li class="li-itemize"><span style="font-family:monospace">uniform_cdf(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span><span style="font-family:monospace">)</span> returns
-<span style="font-family:monospace">Prob</span>(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>), which in this case will be
-(<span style="font-style:italic">y</span>−<span style="font-style:italic">x</span>)/(<span style="font-style:italic">b</span>−<span style="font-style:italic">a</span>).
-</li></ul><h4 id="sec1620" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">uniform_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,4,3.2)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+You can combine the first two arguments into a matrix with two
+columns (each list becomes a column of the matrix).
+</li><li class="li-itemize"><span style="font-family:monospace">polynomial_regression_plot(</span><span style="font-style:italic">xcoords</span>,<span style="font-style:italic">ycoords</span>,<span style="font-style:italic">n</span><span style="font-family:monospace">)</span>
+draws the best fit polynomial of degree <span style="font-style:italic">n</span>, and puts the equation
+and <span style="font-style:italic">R</span><sup>2</sup> value above the graph.
+</li></ul><h4 id="sec1614" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">polynomial_regression_plot</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,3,4],[1,2,10,20],3)</span></span></td></tr>
+</table><div class="center">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.6
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">uniform_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,4,3,3.2)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+<img src="cascmd_en148.png">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.1
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table>
-<h5 id="sec1621" class="paragraph">The inverse distribution function for the uniform distribution.</h5>
-<p>
-The <span style="font-family:monospace">uniform_icdf</span><a id="hevea_default1301"></a>
-or <span style="font-family:monospace">uniformd_icdf</span><a id="hevea_default1302"></a>
-command computes the inverse distribution
-for the uniform distribution.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">uniform_icdf</span> takes three arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, real numbers with <span style="font-style:italic">a</span>&lt;<span style="font-style:italic">b</span>.
-</li><li class="li-itemize"><span style="font-style:italic">h</span>, a real number between 0 and 1.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">uniform_icdf(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">h</span><span style="font-family:monospace">)</span> returns the value of the
-inverse distribution function to the uniform distribution from <span style="font-style:italic">a</span>
-to <span style="font-style:italic">b</span>; namely the value of <span style="font-style:italic">x</span> for which <span style="font-style:italic">h</span>=Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span><sub>)</sub>.
-</li></ul><h4 id="sec1622" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">uniform_icdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,.6)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-2.6
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table>
+</div>
 <hr>
-<a href="cascmd_en663.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en665.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en663.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en665.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

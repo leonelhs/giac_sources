@@ -2,85 +2,82 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Removing elements from a list</title>
+<title>Creating a list by using a function</title>
 </head>
 <body >
-<a href="cascmd_en120.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en122.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en120.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en122.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec227" class="subsection">5.3.8  Removing elements from a list</h3>
-<p>Elements can be removed from a list by using either the
-<span style="font-family:monospace">suppress</span><a id="hevea_default214"></a>
-command (which removes a single element) or the
-<span style="font-family:monospace">remove</span><a id="hevea_default215"></a> command
-(which removes all elements meeting a given conditions).
+<h3 id="ssec:makelist" class="subsection">6.3.2  Creating a list by using a function</h3>
+<p>The <span style="font-family:monospace">makelist</span><a id="hevea_default218"></a> command
+creates lists built from values of a function.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">suppress</span> takes two arguments:
+<span style="font-family:monospace">makelist</span> takes three mandatory arguments and one
+optional argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">L</span>, a list.
-</li><li class="li-itemize"><span style="font-style:italic">i</span>, a nonnegative integer.
+<span style="font-style:italic">f</span>, a function (see Section <a href="cascmd_en241.html#ssec%3Afnexpr">8.2.1</a>).
+</li><li class="li-itemize"><span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, two real numbers.
+</li><li class="li-itemize">Optionally <span style="font-style:italic">p</span>, a step size (by default 1 if <span style="font-style:italic">b</span>&gt;<span style="font-style:italic">a</span> and
+−1 if <span style="font-style:italic">b</span> &lt; <span style="font-style:italic">a</span>).
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">suppress(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">i</span><span style="font-family:monospace">)</span> returns the list <span style="font-style:italic">L</span>
-with the element at index <span style="font-style:italic">i</span> removed.
-</li><li class="li-itemize"><span style="font-family:monospace">remove</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">f</span>, a boolean function.
-</li><li class="li-itemize"><span style="font-style:italic">L</span>, a list.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">remove(</span><span style="font-style:italic">f</span>,<span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns the sublist of <span style="font-style:italic">L</span> with the
-elements <span style="font-style:italic">c</span> such that <span style="font-style:italic">f</span>(<span style="font-style:italic">c</span>)<span style="font-family:monospace">==true</span> removed.
-</li></ul><h4 id="sec228" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">suppress</span></span><span style="font-weight:bold"><span style="color:#BF0000">([3,4,2],1)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">3,2</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">remove</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-&gt;(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">&gt;=2),[0,1,2,3,1,5])</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">0,1,1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>You can use <span style="font-family:monospace">remove</span> to remove
-characters from a string. For example, to remove all instances of
-a given letter from a string, enter the following code in a program
-editor level (see Section <a href="cascmd_en752.html#ssec%3Afuncs">23.1.2</a> for writing functions):
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> f(s,c):={
-   <span style="color:#0000CC"><span style="font-weight:bold">local</span></span> ordc,l,r,x,k;
-   ordc:=ord(c);
-   l:=length(s)-1;
-   purge(x,k);
-   r:=remove(x-&gt;(ord(x)==ordc),seq(s[k],k,0,l));
-   <span style="color:#0000CC"><span style="font-weight:bold">return</span></span> char(ord(r));
- }</td></tr>
-</table><p>Here <span style="font-family:monospace">s</span> is the input string an <span style="font-family:monospace">c</span> is the letter
-to be removed. Now, for example:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"abracadabra"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"a"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC">“brcdbr”</span><span style="color:#0000CC">
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">makelist(</span><span style="font-style:italic">f</span>,<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span> ⟨,<span style="font-style:italic">p</span>⟩<span style="font-family:monospace">)</span> returns the
+list [<span style="font-style:italic">f</span>(<span style="font-style:italic">a</span>),<span style="font-style:italic">f</span>(<span style="font-style:italic">a</span>+<span style="font-style:italic">p</span>),…,<span style="font-style:italic">f</span>(<span style="font-style:italic">a</span>+<span style="font-style:italic">k</span> <span style="font-style:italic">p</span>)] with <span style="font-style:italic">k</span> such
+that <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">a</span>&lt;<span style="font-style:italic">a</span>+<span style="font-style:italic">k</span> <span style="font-style:italic">p</span> ≤ <span style="font-style:italic">b</span> &lt;<span style="font-style:italic">a</span>+(<span style="font-style:italic">k</span>+1) <span style="font-style:italic">p</span>  or   <span style="font-style:italic">a</span>&gt;<span style="font-style:italic">a</span>+<span style="font-style:italic">k</span> <span style="font-style:italic">p</span> ≥ <span style="font-style:italic">b</span> &gt;<span style="font-style:italic">a</span>+(<span style="font-style:italic">k</span>+1) <span style="font-style:italic">p</span>.</td></tr>
 </table>
+</li></ul><h4 id="sec232" class="subsubsection">Examples</h4>
+<p>
+(In these examples, purge <span style="font-family:monospace">x</span> if <span style="font-family:monospace">x</span> is not symbolic.)
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">makelist</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-&gt;</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,3,5)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">makelist</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-&gt;</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,3,5,1)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">h</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">):=</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">makelist</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">h</span></span><span style="font-weight:bold"><span style="color:#BF0000">,3,5,1)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">9,16,25</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">makelist</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-&gt;</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,3,6,2)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">9,25</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">makelist</span></span><span style="font-weight:bold"><span style="color:#BF0000">(4,1,3)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">4,4,4</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+The above command line
+regards 4 as the constant function, and so creates a list with entries
+4, from integers 1 to 3. The command
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[4</span></span><span style="font-weight:bold"><span style="color:#BF0000">$3</span></span><span style="font-weight:bold"><span style="color:#BF0000">]</span></span></td></tr>
+</table><p>is an equivalent.</p>
 <hr>
-<a href="cascmd_en120.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en122.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en120.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en122.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

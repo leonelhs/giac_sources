@@ -2,163 +2,205 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Weibull distribution</title>
+<title>Normal distributions
+</title>
 </head>
 <body >
-<a href="cascmd_en677.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en679.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en677.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en679.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:weibull" class="subsection">18.4.16  Weibull distribution</h3>
-<h5 id="sec1718" class="paragraph">The probability density function for the Weibull distribution.</h5>
+<h3 id="ssec:normald" class="subsection">19.4.7  Normal distributions
+</h3>
+<h5 id="sec1688" class="paragraph">The probability density function for a normal distribution.</h5>
 <p>
-The Weibull distribution depends on three parameters; <span style="font-style:italic">k</span>&gt;0, λ
-&gt; 0 and a real number θ. The probability density at <span style="font-style:italic">x</span> is
-given by
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><a id="eq:weibulld"></a>
-</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span></td></tr>
+The density function of the normal distribution with mean µ and
+standard deviation σ at the point <span style="font-style:italic">x</span> is
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><a id="eq:normald"></a>
+<span style="font-family:monospace">normald</span>(µ,σ,<span style="font-style:italic">x</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
 <tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">λ</td></tr>
-</table></td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span>−θ</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">λ</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">2</td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
-</table></td><td class="dcell"> <span style="font-style:italic">e</span><sup>−(<span style="font-style:italic">x</span>−θ)<sup>2</sup>λ<sup>2</sup></sup>.
-    (11)</td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2π</td></tr>
+</table></td><td class="dcell"> σ</td></tr>
+</table></td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">e</span><sup>(<span style="font-style:italic">x</span>−µ)<sup>2</sup>/2</sup>.
+    (4)</td></tr>
 </table><p>
-The <span style="font-family:monospace">weibull</span><a id="hevea_default1358"></a>
-or <span style="font-family:monospace">weibulld</span><a id="hevea_default1359"></a>
-command compute this density function.
+The <span style="font-family:monospace">normald</span><a id="hevea_default1344"></a>
+(or <span style="font-family:monospace">loi_normal</span><a id="hevea_default1345"></a>) command finds the
+value of this density function.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">weibull</span> takes three mandatory and one optional
-argument:
+<span style="font-family:monospace">normald</span> (or <span style="font-family:monospace">loi_normal</span>) command takes two
+optional arguments and one mandatory argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">k</span>, a positive integer.
-</li><li class="li-itemize">λ, a positive real number.
-</li><li class="li-itemize">Optionally θ, a real number (by default 0).
+Optionally, µ and σ, the mean and standard
+deviation. (By default, µ=0 and σ=1, giving the
+standard normal distribution.)
 </li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">weibull(</span><span style="font-style:italic">k</span>,λ ⟨,θ ⟩, <span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns the value
-of the Weibull density function, given in (<a href="#eq%3Aweibulld">11</a>).
-</li></ul><h4 id="sec1719" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">weibull</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,1,3)</span></span></td></tr>
-</table><p>or:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">weibull</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,1,0,3)</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">normald(</span>⟨µ,σ,⟩ <span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns the value of the
+normal density function with parameter µ and standard deviation
+σ at the value <span style="font-style:italic">x</span>, given in (<a href="#eq%3Anormald">4</a>).
+</li></ul><h4 id="sec1689" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">normald</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,1,3)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">6</span></td></tr>
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">e</span></span></td><td class="dcell"><table class="display"><tr><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">−</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
 <tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">e</span></span><sup><span style="color:#0000CC">9</span></sup></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table>
-<h5 id="sec1720" class="paragraph">The cumulative distribution function for the Weibull distribution.</h5>
-<p>
-The <span style="font-family:monospace">weibull_cdf</span><a id="hevea_default1360"></a>
-(or <span style="font-family:monospace">weibulld_cdf</span><a id="hevea_default1361"></a>)
-command computes the cumulative distribution function for the Weibull distribution.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">weibull_cdf</span> (or <span style="font-family:monospace">weibulld_cdf</span>) takes three
-mandatory arguments and two optional arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">k</span>, a positive integer.
-</li><li class="li-itemize">λ, a positive real number.
-</li><li class="li-itemize">Optionally θ, a real number (by default 0).
-</li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">y</span>, a real number. If this optional argument
-is included, then θ must also be included.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">weibull_cdf(</span><span style="font-style:italic">k</span>,λ ⟨,θ ⟩,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns
-Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) for the Weibull distribution with parameters
-<span style="font-style:italic">k</span>, λ and θ.
-</li><li class="li-itemize"><span style="font-family:monospace">weibull_cdf(</span><span style="font-style:italic">k</span>,λ ⟨,θ ⟩,<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span><span style="font-family:monospace">)</span> returns
-Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>).
-</li></ul><p>
-In this case, the Weibull cumulative distribution function is
-given by the formula
-<span style="font-family:monospace">weibull_cdf</span>(<span style="font-style:italic">k</span>,λ,θ,<span style="font-style:italic">x</span>)= 1−<span style="font-style:italic">e</span><sup>−(<span style="font-style:italic">x</span>−θ)<sup>2</sup>λ<sup>2</sup></sup>.</p><h4 id="sec1721" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">weibull_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,5)</span></span></td></tr>
-</table><p>or:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">weibull_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,0,5)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-1−</span><span style="color:#0000CC"><span style="font-style:italic">e</span></span></td><td class="dcell"><table class="display"><tr><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">−</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">25</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">9</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
 </table></td></tr>
 </table></td></tr>
 <tr><td class="dcell"><span style="color:#0000CC">&nbsp;</span></td></tr>
 </table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2 π </span></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">weibull_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2.2,1.5,0.4,1.9)</span></span></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">normald</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2 π </span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">e</span></span><sup><span style="color:#0000CC">2</span></sup></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="sssec:normalcdf" class="paragraph">The cumulative distribution function for normal distribution.</h5>
+<p>
+The <span style="font-family:monospace">normal_cdf</span><a id="hevea_default1346"></a>
+(or <span style="font-family:monospace">normald_cdf</span><a id="hevea_default1347"></a>)
+command computes the cumulative distribution function for the normal distribution.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">normal_cdf</span> (or <span style="font-family:monospace">normald_cdf</span>) takes three
+optional arguments and one mandatory argument:
+<ul class="itemize"><li class="li-itemize">
+Optionally, µ and σ, the mean and standard
+deviation. (By default, µ=0 and σ=1, giving the
+standard normal distribution.)
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">y</span>, a real number.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">normal_cdf(</span>⟨µ,σ,⟩ <span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns
+Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) for the normal distribution with mean µ
+and standard deviation σ.
+</li><li class="li-itemize"><span style="font-family:monospace">normal_cdf(</span>⟨µ,σ,⟩ <span style="font-style:italic">x</span>,<span style="font-style:italic">y</span><span style="font-family:monospace">)</span> returns
+Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>).
+</li></ul><h4 id="sec1691" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">normal_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,2,1.96)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.632120558829
+0.684386303484
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">weibull_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2.2,1.5,0.4,1.2,1.9)</span></span></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">normal_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,2.1,1.2)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.410267239944
+0.537937144066
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">normal_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,2.1,1.2,9)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.461993238584
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
-<h5 id="sec1722" class="paragraph">The inverse distribution function for the Weibull distribution.</h5>
+<h5 id="sec1692" class="paragraph">The inverse distribution function for normal distribution.</h5>
 <p>
-The <span style="font-family:monospace">weibull_icdf</span><a id="hevea_default1362"></a>
-(or <span style="font-family:monospace">weibulld_icdf</span><a id="hevea_default1363"></a>)
-command computes the inverse distribution for the Weibull distribution.
+The <span style="font-family:monospace">normal_icdf</span><a id="hevea_default1348"></a>
+(or <span style="font-family:monospace">normald_icdf</span><a id="hevea_default1349"></a>)
+command computes the inverse distribution for the normal distribution.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">weibull_icdf</span> (or <span style="font-family:monospace">weibulld_icdf</span>) takes
-three mandatory arguments and one optional argument:
+<span style="font-family:monospace">normal_icdf</span> (or <span style="font-family:monospace">normald_icdf</span>) takes two
+optional arguments and one mandatory argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">k</span>, a positive integer.
-</li><li class="li-itemize">λ, a positive real number.
-</li><li class="li-itemize">Optionally θ, a real number (by default 0).
-</li><li class="li-itemize"><span style="font-style:italic">h</span>, a real number between 0 and 1.
+Optionally, µ and σ, the mean and standard
+deviation. (By default, µ=0 and σ=1, giving the
+standard normal distribution.)
+</li><li class="li-itemize"><span style="font-style:italic">h</span>, a real number.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">weibull_icdf(</span><span style="font-style:italic">k</span>,λ ⟨,θ ⟩,<span style="font-style:italic">h</span><span style="font-family:monospace">)</span> returns the inverse
-distribution for the Weibull distribution with parameters
-<span style="font-style:italic">k</span>, λ and θ; namely, the value of <span style="font-style:italic">x</span> for which
+</li><li class="li-itemize"><span style="font-family:monospace">normal_icdf(</span>⟨µ,σ,⟩ <span style="font-style:italic">h</span><span style="font-family:monospace">)</span> returns the inverse
+distribution for the normal distribution with mean µ and
+standard deviation σ; namely, the value of <span style="font-style:italic">x</span> for which
 Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>)=<span style="font-style:italic">h</span>.
-</li></ul><h4 id="sec1723" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">weibull_icdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2.2,1.5,0.4,0.632)</span></span></td></tr>
+</li></ul><h4 id="sec1693" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">normal_icdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0.975)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-1.89977657604
+1.95996398454
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">normal_icdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,2,0.495)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.974933060984
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="sec1694" class="paragraph">The upper tail cumulative function for normal distributions.</h5>
+<p>
+The <span style="font-family:monospace">UTPN</span><a id="hevea_default1350"></a>
+(the Upper Tail Probability-Normal distribution)
+computes Prob(<span style="font-style:italic">X</span> &gt; <span style="font-style:italic">x</span>) for a normal distribution.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">UTPN</span> takes two
+optional arguments and one mandatory argument:
+<ul class="itemize"><li class="li-itemize">
+Optionally, µ and σ<sup>2</sup>, the mean variance
+deviation. (By default, µ=0 and σ<sup>2</sup>=1, giving the
+standard normal distribution.)<p>Note that, unlike <span style="font-family:monospace">normald</span> and <span style="font-family:monospace">normal_cdf</span>,
+the <span style="font-family:monospace">UTPN</span> takes the variance and not the standard deviation.
+</p></li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">UTPN(</span>⟨µ,σ<sup>2</sup>,⟩ <span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns
+Prob(<span style="font-style:italic">X</span> &gt; <span style="font-style:italic">x</span>), for the normal distribution with mean
+µ and variance σ<sup>2</sup>.
+</li></ul><h4 id="sec1695" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">UTPN</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1.96)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.0249978951482
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">UTPN</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,4,1.96)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.315613696516
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
 <hr>
-<a href="cascmd_en677.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en679.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en677.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en679.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

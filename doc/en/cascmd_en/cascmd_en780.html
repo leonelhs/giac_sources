@@ -2,56 +2,49 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Writing variable values to a file</title>
+<title>Displaying exponents</title>
 </head>
 <body >
-<a href="cascmd_en779.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en781.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en779.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en781.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:write" class="subsection">23.5.3  Writing variable values to a file</h3>
-<p>The <span style="font-family:monospace">write</span><a id="hevea_default1589"></a>
-command saves variable values to a file, to be read later.
+<h3 id="sec1998" class="subsection">24.2.7  Displaying exponents</h3>
+<p>The <span style="font-family:monospace">printpow</span><a id="hevea_default1592"></a>
+command determines how the <span style="font-family:monospace">print</span>
+command will print exponents in the special pane above the output line.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">write</span> takes two arguments:
+<span style="font-family:monospace">printpow</span> takes
+<span style="font-style:italic">n</span>, which is either −1, 0 or 1 (by default 1).
+</li><li class="li-itemize"><span style="font-family:monospace">printpow(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> sets the style for printing exponents
+with the <span style="font-family:monospace">print</span> command.
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">filename</span>, a string.
-</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a sequence of variables.
+If <span style="font-style:italic">n</span>=−1, <span style="font-family:monospace">print(</span><span style="font-style:italic">a</span><span style="font-family:monospace">^</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span> will subsequently print
+<span style="font-style:italic">a</span><span style="font-family:monospace">**</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span>.
+</li><li class="li-itemize">If <span style="font-style:italic">n</span>=0, <span style="font-family:monospace">print(</span><span style="font-style:italic">a</span><span style="font-family:monospace">^</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span> will subsequently print
+<span style="font-family:monospace">pow(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span><span style="font-family:monospace">)</span>.
+</li><li class="li-itemize">If <span style="font-style:italic">n</span>=1, <span style="font-family:monospace">print(</span><span style="font-style:italic">a</span><span style="font-family:monospace">^</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span> will subsequently print
+<span style="font-style:italic">a</span><span style="font-family:monospace">^</span><span style="font-style:italic">b</span>.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">write(</span><span style="font-style:italic">filename</span>,<span style="font-style:italic">vars</span><span style="font-family:monospace">)</span>
-writes the variables in <span style="font-style:italic">vars</span> assigned to their values in a
-file named <span style="font-style:italic">filename</span>.
-</li></ul><h4 id="sec1980" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=3.14</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=7</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">write</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"foo"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>creates a file named “foo” containing:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> a:=(3.14);
- b:=7;</td></tr>
-</table><p>If you wanted to store the first million digits of π to a file,
-you could set it equal to a variable and store it in a file:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">pidec</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">evalf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">,10^6):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">write</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"pi1million"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">pidec</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>The file is written so that it can be loaded with the <span style="font-family:monospace">read</span>
-command (Section <a href="cascmd_en073.html#ssec%3Aread">3.5.2</a>), which simply takes a file name as a
-string. This allows you to restore the values of variables saved
-this way, for example in a different session or if you have purged the
-variables.</p><h4 id="sec1981" class="subsubsection">Example</h4>
-<p>
-If, in a different session, you want to use the
-values of <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> above, enter:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">read</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"foo"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>This will reassign the values <span style="font-family:monospace">3.14</span> and <span style="font-family:monospace">7</span> to
-<span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span>. Be careful, this will silently overwrite
-any values that <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> might have had.</p>
+</li></ul><h4 id="sec1999" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">print</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3):;</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+x</span></span></span><code><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">^</span></span></span></code><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">3
+</span></span></span></p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">printpow</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">print</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3):;</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+x**3
+</span></span></span></p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">printpow</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">print</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3):;</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+pow(x,3)
+</span></span></span></p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">printpow</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">print</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3):;</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+x</span></span></span><code><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">^</span></span></span></code><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">3
+</span></span></span></p>
 <hr>
-<a href="cascmd_en779.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en781.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en779.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en781.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

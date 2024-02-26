@@ -2,42 +2,65 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.34">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Assignments in a program</title>
+<title>Printing</title>
 </head>
 <body >
-<a href="cascmd_en778.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en780.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en778.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en780.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1978" class="subsection">23.5.2  Assignments in a program</h3>
-<p>Recall that the <span style="font-family:monospace">=&lt;</span> operator will change the value of a single
-entry in a list or matrix by reference (see Section <a href="cascmd_en063.html#ssec%3Arefassign">3.3.3</a>).
-This make it efficient when changing many values, one at a time, in a
-list, as might be done by a program.</p><p>You must be careful when doing this, since your intent might be
-changed when a program is compiled. For example, if a program contains
+<h3 id="sec1995" class="subsection">24.2.6  Printing</h3>
+<p>The <span style="font-family:monospace">print</span><a id="hevea_default1589"></a>
+or <span style="font-family:monospace">Disp</span><a id="hevea_default1590"></a>
+command prints in a special pane called message area, located
+between input and output panes of a command line entry (the text
+is shown in green).
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">print</span> takes
+<span style="font-style:italic">seq</span>, a sequence of objects.
+</li><li class="li-itemize"><span style="font-family:monospace">print(</span><span style="font-style:italic">seq</span><span style="font-family:monospace">)</span> returns 1 and prints the
+<span style="font-style:italic">seq</span> in a special pane just above the output line.
+</li></ul><h4 id="sec1996" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">print</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"Hello"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+Hello
+</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> <span style="color:#0000CC"><span style="font-weight:bold">local</span></span> a;
- a:=[0,1,2,3,4];
- ...
- a[3]=&lt;33;</td></tr>
-</table><p>then in the compiled program, <span style="font-family:monospace">a:=[0,1,2,3,4]</span> will be
-replaced by <span style="font-family:monospace">a:=[0,1,2,33,4]</span>. To avoid this, you can assign
-a copy of the list to <span style="font-family:monospace">a</span>; you could write:
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=12</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">print</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"a="</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> <span style="color:#0000CC"><span style="font-weight:bold">local</span></span> a;
- a:=copy([0,1,2,3,4]);
- ...
- a[3]=&lt;33;</td></tr>
-</table><p>Alternately, you could use a command which recreates a list every time
-the program is run, such as <span style="font-family:monospace">makelist</span><a id="hevea_default1588"></a> or
-<span style="font-family:monospace">$</span>, instead of copying a list; <span style="font-family:monospace">a:=makelist(n,n,0,4)</span> or
-<span style="font-family:monospace">a:=[n$(n=0..4)]</span> can also be used in
-place of <span style="font-family:monospace">a:=[0,1,2,3,4]</span>.</p>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >“a=,12”</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >1
+</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>The <span style="font-family:monospace">ClrIO</span><a id="hevea_default1591"></a>
+command erases printing on the level it was typed.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">ClrIO</span> takes no arguments and no parentheses.
+</li><li class="li-itemize"><span style="font-family:monospace">ClrIO</span> returns 1 and erases any printing on the
+special pane above the output line on the level it was typed.
+</li></ul><h4 id="sec1997" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">print</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"Hello"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">); </span></span><span style="font-weight:bold"><span style="color:#BF0000">ClrIO</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+(1,1)
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en778.html"><img src="previous_motif.svg" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
-<a href="cascmd_en780.html"><img src="next_motif.svg" alt="Next"></a>
+<a href="cascmd_en778.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en780.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>
