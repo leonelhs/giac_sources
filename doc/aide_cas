@@ -14776,8 +14776,8 @@ f2nd(42/12)
 f2nd((x^2+2*x+1)/(x^2-1))
 
 # gbasis
-1 Base de Groebner de l'idéal engendré par la liste de polynômes. L'argument optionnel rur permet de calculer une representation rationnelle univariee. L'argument optionnel matrix ou coeffs permet de calculer la matrice donnant la base de Groebner en fonction des générateurs initiaux respectivement avec ou sans inter-réduction.
-2 Groebner basis of the ideal spanned by the list of polynomials. The optional rur argument may be used to compute a rational univariate representation. The optional argument matrix or coeffs may be used to compute the matrix giving the Groebner basis in terms of the initial generators, respectively with or without inter-reduction.
+1 Base de Groebner de l'idéal engendré par la liste de polynômes. L'argument optionnel rur permet de calculer une representation rationnelle univariée (on peut avoir en plus la base de Groebner en ajoutant gbasis). L'argument optionnel matrix ou coeffs permet de calculer la matrice donnant la base de Groebner en fonction des générateurs initiaux respectivement avec ou sans inter-réduction.
+2 Groebner basis of the ideal spanned by the list of polynomials. The optional rur argument may be used to compute a rational univariate representation (add gbasis to also get the Groebner basis). The optional argument matrix or coeffs may be used to compute the matrix giving the Groebner basis in terms of the initial generators, respectively with or without inter-reduction.
 3 Base Groebner del ideal generado por la lista de polinomios.
 4 Βάση Groebner του ιδεώδους που παράγεται από τη λίστα των πολυωνύμων.
 0 LstPoly,LstVar,[order]
@@ -14790,6 +14790,7 @@ gbasis([x1+x2+x3,x1*x2+x1*x3+x2*x3,x1*x2*x3-1],[x1,x2,x3],tdeg)
 gbasis([x1+x2+x3,x1*x2+x1*x3+x2*x3,x1*x2*x3-1],[x1,x2,x3],plex)
 gbasis([x1+x2+x3,x1*x2+x1*x3+x2*x3,x1*x2*x3-1] mod 29,[x1,x2,x3])
 gbasis([x1+x2+x3,x1*x2+x1*x3+x2*x3,x1*x2*x3-1],[x1,x2,x3],rur)
+gbasis([x1+x2+x3,x1*x2+x1*x3+x2*x3,x1*x2*x3-1],[x1,x2,x3],rur,gbasis)
 
 # gbasis_max_pairs
 1 Reglage expert de gbasis: nombre maximal de S-paires reduites simultanement au cours de l'algorithme F4 (par defaut 32768, utiliser 0 pour ne pas le limiter). A diminuer si la memoire manque.

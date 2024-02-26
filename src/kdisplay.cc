@@ -2513,6 +2513,7 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
 
 #ifndef BW
   gen select_var(GIAC_CONTEXT){
+    giac::history_plot(contextptr).clear();
     kbd_interrupted=giac::ctrl_c=giac::interrupted=false;
 #ifdef QUICKJS
     if (xcas_python_eval<0){
