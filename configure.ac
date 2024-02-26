@@ -449,22 +449,25 @@ dnl		AC_CHECK_LIB(GLU, main)
 	AC_CHECK_LIB(Xfixes,main)
 	AC_CHECK_LIB(Xinerama, main)
 	AC_CHECK_LIB(fontconfig, main)
-	AC_CHECK_LIB(Xft, main)
-	AC_CHECK_LIB(Xext, main)
-	AC_CHECK_LIB(Xrender, main)
-	AC_CHECK_LIB(fltk_gl, main)
-	AC_CHECK_LIB(fltk, main)
-	if test "$HAVE_LIBFLTK" = "1"; then
-	   AC_DEFINE([HAVE_LIBFLVW],1, [Now defined if fltk is available])
-	fi
-	AC_CHECK_LIB(z,main)
-	AC_CHECK_HEADERS(png.h, AC_CHECK_LIB(png,main))
-	AC_CHECK_LIB(jpeg, main)
-	AC_CHECK_LIB(fltk_images, main)
-	FLTK_LIBS="$LIBS $X_LIBS"
-	AC_SUBST(FLTK_LIBS)
-  cd src && ln -sf ../fltk-1.3.8 && cd ..
-  fi
+	AC_CHECK_LIB(Xft, main,[HAVE_LIBXFT=1]) dnl  ,[], [AC_MSG_ERROR(exiting, as libXft cannot be found. Hint: you can run ./configure --disable-fltk to compile without GUI)])
+        if test "$HAVE_LIBXFT" = "1" ; then
+	   AC_CHECK_LIB(Xft, main)
+	   AC_CHECK_LIB(Xext, main)
+	   AC_CHECK_LIB(Xrender, main)
+	   AC_CHECK_LIB(fltk_gl, main)
+	   AC_CHECK_LIB(fltk, main)
+	   if test "$HAVE_LIBFLTK" = "1"; then
+	      AC_DEFINE([HAVE_LIBFLVW],1, [Now defined if fltk is available])
+	      fi
+	      AC_CHECK_LIB(z,main)
+	      AC_CHECK_HEADERS(png.h, AC_CHECK_LIB(png,main))
+	      AC_CHECK_LIB(jpeg, main)
+	      AC_CHECK_LIB(fltk_images, main)
+	      FLTK_LIBS="$LIBS $X_LIBS"
+	      AC_SUBST(FLTK_LIBS)
+              cd src && ln -sf ../fltk-1.3.8 && cd ..
+           fi
+        fi
 LIBS="$save_LIBS"
 
 AC_CHECK_HEADERS(dfu_lib.h) 
