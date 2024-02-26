@@ -29,11 +29,11 @@ namespace giac {
 #endif // ndef NO_NAMESPACE_GIAC
 
 void enable_texmacs_compatible_latex_export(bool yes);
-string export_latex(const gen &g,GIAC_CONTEXT);
-bool has_improved_latex_export(const gen &g,string &s,bool override_texmacs,GIAC_CONTEXT);
-string export_mathml(const gen &g,GIAC_CONTEXT);
-string export_mathml_presentation(const gen &g,GIAC_CONTEXT);
-string export_mathml_content(const gen &g,GIAC_CONTEXT);
+std::string export_latex(const gen &g,GIAC_CONTEXT);
+bool has_improved_latex_export(const gen &g,std::string &s,bool override_texmacs,GIAC_CONTEXT);
+std::string export_mathml(const gen &g,GIAC_CONTEXT);
+std::string export_mathml_presentation(const gen &g,GIAC_CONTEXT);
+std::string export_mathml_content(const gen &g,GIAC_CONTEXT);
 gen _export_mathml(const gen &g,GIAC_CONTEXT);
 gen _xml_print(const gen &g,GIAC_CONTEXT);
 gen _markup_cfg(const gen &g,GIAC_CONTEXT);
@@ -157,15 +157,15 @@ public:
 
 class EqElementText : public EqElement {
 private:
-  string _text;
+  std::string _text;
   int _text_type;
 public:
-  EqElementText(const gen &e,EqElement *p,const string &s,int t) : EqElement(e,p) {
+  EqElementText(const gen &e,EqElement *p,const std::string &s,int t) : EqElement(e,p) {
     _text=s;
     _text_type=t;
   }
   int type() const { return EQ_ELEMENT_TEXT; }
-  const string &text() const { return _text; }
+  const std::string &text() const { return _text; }
   int text_type() const { return _text_type; }
 };
 
@@ -196,7 +196,7 @@ private:
   int _nops;
   EqElement **_ops;
   int *_opr;
-  string _opr_user;
+  std::string _opr_user;
 public:
   EqElementOp(const gen &e,EqElement *p,int n=2) : EqElement(e,p) {
     assert(n>1);
@@ -215,7 +215,7 @@ public:
   int nops() const { return _nops; }
   void set_nth_operand(EqElement *e,int n) { assert(n<_nops && n>=0); _ops[n]=e; }
   void set_nth_operator(int opr,int n=1) { assert(n<_nops && n>=1); _opr[n-1]=opr; }
-  void set_user_operator(const string &s) {
+  void set_user_operator(const std::string &s) {
     assert(_nops==2);
     delete[] _opr;
     _opr=NULL;

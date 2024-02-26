@@ -29,6 +29,7 @@
 #include <syscall.h>
 #include "sha256.h"
 #endif
+#include "qrcodegen.h"
 #include <alloca.h>
 #ifndef is_cx2
 #define is_cx2 false
@@ -10117,6 +10118,8 @@ namespace xcas {
 	  if (t!=x)
 	    tracemode_add += ", t="+print_DOUBLE_(curt._DOUBLE_val,3);
 	  if (tracemode & 2){
+            // make sure G is the right point, e.g. for plotpolar(sqrt(cos(2x)))
+            G=subst(parameq,t,curt,false,contextptr);
 	    gen G1=derive(parameq,t,contextptr);
 	    gen G1t=subst(G1,t,curt,false,contextptr);
 	    gen G1x,G1y; reim(G1t,G1x,G1y,contextptr);
@@ -17419,7 +17422,65 @@ static void display(textArea *text, int &isFirstDraw, int &totalTextY, int &scro
     buf[1]= n & 0xff;
     buf += 2;
   }
-  void save_console_state_smem(const char * filename,bool xwaspy,GIAC_CONTEXT){
+
+// QR code 
+static void do_QRdisp(const uint8_t qrcode[]) {
+  drawRectangle(0,0,LCD_WIDTH_PX,LCD_HEIGHT_PX,0xffff);
+  int x=0,y=180;
+  os_draw_string_small(0,205,0,0xffff,"QR Code generator (c) Project Nayuki.");
+  int size = qrcodegen_getSize(qrcode);
+  int border = 0;
+  int sb=size+border;
+  int scale=177/sb;
+  // confirm("sb",giac::print_INT_(sb).c_str());
+  if (scale){
+    for (int y = -border; y < size + border; y++) {
+      for (int x = -border; x < size + border; x++) {
+        drawRectangle(4+scale*(border+x),4+scale*(border+y),scale,scale,qrcodegen_getModule(qrcode, x, y)?0:0xffff);
+      }
+    }
+  }
+  while (1) {
+    int key; ck_getkey(&key);
+    if (key==KEY_CTRL_OK || key==KEY_CTRL_EXIT)
+      break;
+  }
+}
+
+bool QRdisp(const char * text){
+  // confirm("qrdisp",text);
+  enum qrcodegen_Ecc errCorLvl = qrcodegen_Ecc_LOW;  // Error correction level
+  
+  // Make the QR Code symbol
+  uint8_t qrcode[qrcodegen_BUFFER_LEN_MAX];
+  uint8_t tempBuffer[qrcodegen_BUFFER_LEN_MAX];
+  bool ok = qrcodegen_encodeText(text, tempBuffer, qrcode, errCorLvl,
+                                 qrcodegen_VERSION_MIN, qrcodegen_VERSION_MAX, qrcodegen_Mask_AUTO, true);
+  if (ok)
+    do_QRdisp(qrcode);
+  return ok;
+}
+
+string replace_html5(const string & s){
+  string res;
+  size_t ss=s.size(),i;
+  for (i=0;i<ss;++i){
+    char ch=s[i];
+    if ( (ch>='0' && ch<='9') || (ch>='a' && ch<='z') || (ch>='A' && ch<='Z'))
+      res += ch;
+    else {
+      res +='%';
+      int t=(ch&0xf0)>>4;
+      if (t<10) res += char('0'+t); else res += char('a'+(t-10));
+      t=ch&0x0f;
+      if (t<10) res += char('0'+t); else res += char('a'+(t-10));
+    }
+  }
+  //std::cerr << s << '\n' << res << '\n';
+  return res;
+}
+
+void save_console_state_smem(const char * filename,bool xwaspy,bool qr,GIAC_CONTEXT){
     console_changed=0;
     dbgprintf("save_console_state %s\n",filename);
     string state(khicas_state(contextptr));
@@ -17449,6 +17510,10 @@ static void display(textArea *text, int &isFirstDraw, int &totalTextY, int &scro
     Bfile_WriteFile_OS4(hFile, scriptsize);
     Bfile_WriteFile_OS(hFile, script.c_str(), scriptsize);
     // save console state
+    int pos=1;
+    string qrs=lang?"http://www-fourier.univ-grenoble-alpes.fr/~parisse/xcasfr.html#":"http://www-fourier.univ-grenoble-alpes.fr/~parisse/xcasen.html#";//"https://xcas.univ-grenoble-alpes.fr/xcasjs/#";
+    qrs += xcas_python_eval==1?"micropy=":"cas=";
+    if (qr) qrs += "0,0,"+replace_html5(script)+'&';
     // save console state
     for (int i=start_row;i<=Last_Line;++i){
       console_line & cur=Line[i];
@@ -17458,6 +17523,15 @@ static void display(textArea *text, int &isFirstDraw, int &totalTextY, int &scro
       Bfile_WriteFile_OS2(hFile, s);
       unsigned char c=cur.type;
       Bfile_WriteFile_OS(hFile, &c, sizeof(c));
+      if (qr && c==0){ // qrcode write input
+        string qrsadd = replace_html5((const char *)cur.str);
+        int xpos=(pos%2)*400;
+        int ypos=(pos/2)*400;
+        ++pos;
+        string spos=print_INT_(xpos)+","+print_INT_(ypos)+ ",";
+        qrs += xcas_python_eval==1?"micropy=":"cas=";
+        qrs += spos+qrsadd+'&';
+      }
       c=1;//cur.readonly;
       Bfile_WriteFile_OS(hFile, &c, sizeof(c));
       unsigned char buf[l+1];
@@ -17470,6 +17544,7 @@ static void display(textArea *text, int &isFirstDraw, int &totalTextY, int &scro
       }
       Bfile_WriteFile_OS(hFile, buf, l);
     }
+    if (qr) QRdisp(qrs.c_str());
     char BUF[2]={0,0};
     Bfile_WriteFile_OS(hFile, BUF, sizeof(BUF));
 #ifdef NUMWORKS
@@ -18303,7 +18378,7 @@ static void display(textArea *text, int &isFirstDraw, int &totalTextY, int &scro
   }
 
 
-  void save(const char * fname,GIAC_CONTEXT){
+  void save(const char * fname,bool qr,GIAC_CONTEXT){
     dbgprintf("save %s %08lx \n",fname,contextptr);
     if (nspire_exam_mode==2)
       return;
@@ -18328,7 +18403,7 @@ static void display(textArea *text, int &isFirstDraw, int &totalTextY, int &scro
 #ifdef NSPIRE_NEWLIB
     filename+=".tns";
 #endif
-    save_console_state_smem(filename.c_str(),xwaspy,contextptr); // call before save_khicas_symbols_smem(), because this calls create_data_folder if necessary!
+    save_console_state_smem(filename.c_str(),xwaspy,qr,contextptr); // call before save_khicas_symbols_smem(), because this calls create_data_folder if necessary!
     // save_khicas_symbols_smem(("\\\\fls0\\"+filename+".xw").c_str());
     if (edptr)
       check_leave(edptr);
@@ -19018,7 +19093,7 @@ static void display(textArea *text, int &isFirstDraw, int &totalTextY, int &scro
       }
 #endif
       if (key==KEY_SAVE){
-	save(session_filename,contextptr);
+	save(session_filename,false,contextptr);
 	console_changed=false;
 	console_disp_status(contextptr);
 	continue;
@@ -19135,14 +19210,14 @@ static void display(textArea *text, int &isFirstDraw, int &totalTextY, int &scro
 	      if (strcmp(session_filename,"session")==0)
 		smallmenu.selection=3;
 	      else {
-		save(session_filename,contextptr);
+		save(session_filename,true,contextptr);
 		break;
 	      }
 	    }
 	    if (smallmenu.selection==3 && !exam_mode && nspire_exam_mode!=2){
 	      char buf[270];
 	      if (get_filename(buf,".xw")){
-		save(buf,contextptr);
+		save(buf,true,contextptr);
 		string fname(remove_path(giac::remove_extension(buf)));
 		strcpy(session_filename,fname.c_str());
 		if (edptr)
@@ -20349,11 +20424,11 @@ void PrintRev(const char *s,int color,bool colorsyntax,GIAC_CONTEXT) {
 		  (lang==1)?"OK: sauve, Back: tant pis":"OK: save, Back: discard changes"
 #endif
 		  )==KEY_CTRL_F1){
-	save(session_filename,contextptr);
+	save(session_filename,true,contextptr);
 	console_changed=0;
       }    
     }
-    save("session",contextptr);
+    save("session",true,contextptr);
     // this is only called on exit, no need to reinstall the check_execution_abort timer.
     if (edptr && edptr->changed && edptr->filename!="session.py"){
       if (!check_leave(edptr)){
@@ -20715,7 +20790,7 @@ void PrintRev(const char *s,int color,bool colorsyntax,GIAC_CONTEXT) {
       }
       else {
 #ifdef NUMWORKS // add auto-save, to avoid Memory full data loss
-        save("session",contextptr);
+        save("session",false,contextptr);
 #endif
         run(expr,7,contextptr);
       }
@@ -22516,7 +22591,7 @@ void c_turtle_fillcolor1(int c){
 
 // auto-shutdown
 int do_shutdown(){
-  xcas::save_console_state_smem("session.xw.tns",false,giac::context0);
+  xcas::save_console_state_smem("session.xw.tns",false,false,giac::context0);
 #ifdef NO_STDEXCEPT
   return 1;
 #else

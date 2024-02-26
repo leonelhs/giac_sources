@@ -30,8 +30,8 @@ icasdll:	$(OBJS) giac.dll icas.o
 	$(CXX) -s $(CXXFLAGS) $(OBJS) icas.o -o icas giac.dll $(LIBS) $(WLIBS)
 xcasdll:	$(OBJS) hist.o giac.dll
 	$(CXX) -s $(CXXFLAGS) hist.o $(OBJS) -o xcas giac.dll $(LIBS) $(WLIBS)
-qrgencode.o:	qrgencode.c
-	$(CC) $(CFLAGS) -std=c99 qrgencode.c
+qrcodegen.o:	qrcodegen.c
+	$(CC) -c $(CFLAGS) -std=c99 qrcodegen.c
 hist.o: 	hist.cxx
 	$(CXX) $(CXXFLAGS) -c hist.cxx
 nautywrapper.o:	nautywrapper.c

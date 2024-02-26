@@ -47,5 +47,6 @@
 #include "misc.h"
 #include "permu.h"
 #include "risch.h"
+#include "markup.h"
 
 #endif // _GIAC_GIAC_H

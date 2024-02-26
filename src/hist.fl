@@ -1370,12 +1370,14 @@ Function {Xcas_run(int argc,char ** argv)} {open
           }
           MenuItem Xcas_nw_rescue {
             label {Rescue mode (calculator assistance)}
-            callback {int i=fl_ask(gettext("Connect the calculator,\\nPress the 6 key on the calculator, press the RESET button on the back keeping the 6 key pressed, release the 6 key,\\nThe screen should be down and the led should be red\\nOn windows, please install a driver for STM32-BOOTLOADER from https://zadig.akeo.ie/")); if (!i) return;
+            callback {int i=fl_ask(gettext("Connect the calculator,\\nPress the 6 key on the calculator, press the RESET button on the back keeping the 6 key pressed, release the 6 key,\\nThe screen should be down and the led should be red\\nOn windows, please install a driver for STM32-BOOTLOADER from https://zadig.akeo.ie/\\nIf you run Xcas from a virtual machine, enable the STM32 BOOTLOADER in USB devices")); if (!i) return;
              std::string prefix=giac::giac_aide_dir()+"doc/";
              if (!dfu_send_rescue((prefix+"recovery").c_str()))
                fl_alert("%s",gettext("Unable to send rescue RAM image to the Numworks calculator."));
-              i=fl_ask(gettext("Install KhiCAS?"));
+              i=fl_ask(gettext("If you are running Xcas from a virtual machine, please enable the Numworks calculator in USB devices. Install KhiCAS?"));
               if (!i) return;
+              if (!dfu_send_bootloader((prefix+"bootloader.bin").c_str()))
+	        fl_alert("%s",gettext("Unable to send multi-boot loader. You will be asked to update your bootloader when running KhiCAS for the first time."));
               if (!dfu_send_firmware((prefix+"khi.A.bin").c_str(),0))
                 fl_alert("%s",gettext("Unable to send slot 1\\nTry again after reset+4 on the Numworks"));
               else if (!dfu_send_firmware((prefix+"khi.B.bin").c_str(),0x18))

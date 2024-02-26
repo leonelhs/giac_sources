@@ -3754,8 +3754,8 @@ extern "C" void Sleep(unsigned int miliSecond);
 #endif
   volatile bool ctrl_c=false,interrupted=false,kbd_interrupted=false;
 #ifdef GIAC_HAS_STO_38
-  double powlog2float=1e4;
-  int MPZ_MAXLOG2=8600; // max 2^8600 about 1K
+  double powlog2float=1e4*10; // increase max int size for HP Prime
+  int MPZ_MAXLOG2=8600*10; // max 2^8600 about 1K*10
 #else
   double powlog2float=1e8;
   int MPZ_MAXLOG2=80000000; // 100 millions bits

@@ -1073,7 +1073,8 @@ namespace xcas {
 	    if (Xcas_config.ortho)
 	      tmp->orthonormalize();
 	  }
-	tmp->add(evaled_g);
+	tmp->add(*evaled_g._VECTptr);
+	tmp->init_tracemode(); tmp->tracemode_set();
 	if (anim)
 	  tmp->animation_dt=1./5;
 	if (Xcas_config.autoscale)
