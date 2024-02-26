@@ -2666,6 +2666,54 @@ Pour tester en mode pas \`a pas, ajoutez \verb|debug(| au
 d\'ebut de la commande qui pr\'ec\`ede\\
 \verb|debug(rapide(123,4567890,123456))|
 
+\subsection{Application de la puissance rapide: trouver un g\'n\'erateur de 
+$F_p^*=\mathbb{Z}/p^*$}
+Un entier $g$ est un g\'en\'erateur de $F_p^*$ si et seulement
+si son ordre est exactement $p-1$. Si on suppose connue
+la factorisation de $p-1$, cela revient \`a tester que
+$$ g^{\frac{p-1}{p_i}} \neq 1 \pmod p $$
+pour tous les diviseurs premiers $p_i$ de $p-1$.
+On essaie des entiers $g$ compris entre 1 et $p$ jusqu'\`a ce que ces
+tests soient v\'erifi\'es. La probabilit\'e de r\'eussite est
+de $\phi(p-1)/(p-1)$ donc en moyenne le nombre de tests
+\`a effectuer est $(p-1)/\phi(p-1)$. On va montrer que cela se comporte
+au pire en $\log(\log(p))$.
+
+Le cas le pire \`a taille de $p$ fix\'ee
+est celui o\`u on prend tous les facteurs premiers
+depuis 2 et o\`u la multiplicit\'e des $p_i$ dans la
+factorisation de $p-1$ est 1, dans ce cas
+$$ \frac{\phi(p-1)}{p-1} = \prod_i (1-\frac{1}{p_i}), \quad
+p-1=\prod_i p_i $$
+On va observer ce qui se passe lorsque on prend de plus en plus de facteurs
+premiers. Fixons nous un entier $k$ assez grand, on prend d'abord 
+tous les nombres
+premiers entre 2 et $k$, puis on regarde comment \'evolue
+$$ \log(\prod_i (1-\frac{1}{p_i}))
+= \sum_i \log(1-\frac{1}{p_i})
+\geq -\sum_i \frac{1}{p_i}
+$$ 
+lorsqu'on ajoute les nombres premiers entre $k$ et $2k$, 
+puis entre $2k$ et $4k$, ... puis entre $2^Nk$ et $2^{N+1}k$.
+Avec le r\'esultat sur la densit\'e des nombres premiers, il va y avoir
+$k/\log(k)$ nombres premiers dans la premi\`ere tranche, 
+puis $2k/\log(2k)$, ... puis
+$2^Nk/\log(2^Nk)$, d'o\`u la minoration
+$$ \log(\prod_i (1-\frac{1}{p_i})) 
+\geq -\frac{1}{\log(k)} - \frac{1}{\log(2k)} 
+- ... - \frac{1}{\log(2^Nk)}  $$
+Quand $N$ est grand, les log sont \'equivalents \`a $N\log(2)$
+et on se retrouve avec la s\'erie harmonique, donc un \'equivalent 
+de la minoration de $\log(\phi(p-1)/(p-1))$ en 
+$ -\log(N)/\log(2)$.
+Comparons $N$ avec la taille de $p$. On
+a $\log(p-1)=\sum_i \log(p_i)$, si on fait
+le m\^eme d\'ecoupage en tranche, le log de $p-1$ est encadr\'e
+\`a une constante multiplicative pr\`es par $\sum_{i\leq N} 2^i=2^{N+1}-1$.
+Donc $N$ est en $\log(\log(p))$ et au final on a une minoration
+de $\phi(p-1)/(p-1)$ en $O(\log(log(\log(p))))$ donc un double log
+en la taille de $p$.
+
 \subsection{Application de la puissance rapide: cryptographie RSA}
 \subsubsection{Interpr\'etation du codage et du d\'ecodage.}
 Nous revenons sur la cryptographie RSA, en utilisant les notions
@@ -2738,8 +2786,8 @@ Une attaque de ce type pour $p$ et $q$ presque egaux et $d$ petit
 devant $n$ est d\'ecrite par exemple 
 \ahref{https://agreg.org/Textes/public2018-C2.pdf}{ici}.
 \item Difficult\'e de trouver $a$ connaissant $b=a^e \pmod n$.
-Il n'y a pas d'algorithme connu permettant de le faire dans tous les
-cas (c'est ce qu'on appelle le logarithme discret). 
+Il n'y a pas d'algorithme connu permettant de le faire efficacement 
+dans tous les cas (c'est ce qu'on appelle le logarithme discret, cf. infra). 
 Mais il faut quand m\^eme faire attention au choix de $e$.
 Par exemple prendre $e=3$ pour minimiser le nombre d'\'etapes
 de la puissance modulaire n'est pas judicieux, car si un message
@@ -2749,6 +2797,74 @@ $$ a^3 \pmod{ n_1}, \quad a^3 \pmod{ n_2}, \quad a^3 \pmod{ n_3} $$
 permet de retrouver $a^3 \pmod{ n_1n_2n_3}$ par le lemme chinois si
 $n_1,n_2,n_3$ sont premiers entre eux 2 \`a deux, puis $a^3$ puis $a$.
 \end{itemize}
+
+\subsubsection{Logarithme discret} \index{log discret} \index{discret, log}
+Il s'agit de r\'esoudre en $x$ entier l\'equation 
+$$ g^x=a \pmod n $$
+Si $a$ est dans le sous-groupe multiplicatif engendr\'e par $g$, il
+y a des solutions qui sont \'egales modulo l'ordre de $g$ dans
+$\mathbb{Z}/n^*$, et
+on peut noter $x=\log_g(a)$ la plus petite solution positive
+par analogie avec les r\'eeks.
+
+Pour trouver $x$, on peut bien sur tester tous les entiers
+en partant de 1 (en multipliant par $g$ \`a chaque it\'eration)
+jusqu'\`a trouver $a$ mais le cout est en $O(n \log(n)^2)$.
+
+Si $\varphi(n)$ est connu (par exemple si $n=p$ est premier) 
+et si on connait la factorisation de $\varphi(n)$
+$$p-1=\prod_i p_i^{m_i}$$
+on peut faire mieux, on se ram\`ene d'abord \`a r\'esoudre
+plusieurs \'equations $g_i^{x_i}=a_i \pmod n$, 
+en prenant l'\'equation
+de d\'epart \`a la puissance $e_i=(p-1)/p_i^{m_i}=\prod_{j\neq i} p_j^{m_j}$,
+(avec $g_i=g^{e_i}$ et $a_i=a^{e_i}$), puis on
+retrouve $x$ \`a partir des $x_i$ par les restes chinois
+appliqu\'es \`a $x=x_i \pmod{p_i^{m_i}}$.
+Ces \'equations sont moins couteuses \`a r\'esoudre, 
+car si $g$ est un g\'en\'erateur
+de $\mathbb{Z}/n^*$, l'ordre de $g_i$ est 
+$p_i^{m_i}$. On peut d'ailleurs appliquer une m\'ethode $p$-adique
+pour trouver $x_i$ et se ramener \`a des \'equations 
+avec un $g_i$ d'ordre $p_i$,
+en commen\c{c}ant par prendre l'\'equation \`a la puissance $p_i^{m_i-1}$
+ce qui donne $x_i \pmod {p_i}$ puis on cherche le 2\`eme terme du 
+d\'eveloppement en puissance croissantes de $x_i$ en prenant l'\'equation
+\`a la puissance $p_i^{m_i-2}$, etc.
+
+On peut donc se ramener \`a r\'esoudre une \'equation de logarithme
+discret avec $g$ d'ordre $p_i$ plus petit (premier ou suffisament 
+petit pour pouvoir faire une recherche exhaustive) et $a$ dans le sous-groupe
+engendr\'e par $g$.
+
+Lorsque la recherche exhaustive en $O(n)$ (\`a des termes
+logarithmiques pr\`es) devient couteuse (par exemple
+$n$ de l'ordre de  quelques milliers), il est possible d'utiliser
+une m\'ethode d\'eterministe (pas de b\'eb\'e, pas de g\'eant)
+ou probabiliste de type Pollard-rho pour diminuer
+le cout en $O(\sqrt{n})$ (\`a des termes
+logarithmiques pr\`es). 
+
+La m\'ethode pas de b\'eb\'e, pas de g\'eant d\'ecompose $x=qm+r$ 
+o\`u $m$ est 
+la partie enti\`ere d'un majorant de la racine carr\'ee
+de l'ordre du sous-groupe engendr\'e par $g$.
+On calcule toutes les puissances $r$-i\`eme de $g$ de 0 \`a $m$ et on place
+les paires $(g^r,r)$ dans une liste tri\'ee selon la valeur de $g^r$.
+On compare ensuite les $a(g^{-m})^q$ pour q de 0 \`a $m$ avec les
+\'el\'ements de la table, si on a \'egalit\'e on en d\'eduit $x=qm+r$.
+La m\'ethode de Pollard-rho permet de gagner sur le stockage de la table
+des pas de b\'eb\'e.
+
+On peut aussi rechercher des $k$ tels que $g^k$ se factorise sur une base
+de nombre premiers $b_i$ fix\'ee \`a l'avance
+$$ g^k=\prod_i b_i^{m_{i,k}}$$
+Ce qui permet de calculer les log en base $g$ des $b_i$ en r\'esolvant
+un syst\`eme lin\'eaire dans $\mathbb{Z}/(p-1)$ (par restes chinois
+et calcul $p_i$-adique).
+
+On cherche alors une puissance $l$ telle que $ag^l$ se factorise sur
+la base, ce qui permet de trouver le log de $a$.
 
 \section{Algorithmes rapides sur les polyn\^omes en une variable.}
 On a pr\'esent\'e \`a la section \ref{sec:kara} un algorithme 
@@ -4897,7 +5013,7 @@ classique (changement de signe), ou \`a la m\'ethode de Newton
 \`a une puissance de 2). C'est ce qui est utilis\'e par
 l'instruction \verb|realroot| de Giac si on donne en argument
 optionnel \verb|sturm|.
-\\\giacinput{realroot(sturm,x^3+7x-5)}\\
+\verb|realroot(sturm,x^3+7x-5)|
 \item Il existe un autre algorithme de localisation de racines
 r\'eelles d\^u \`a {\bf Vincent, Akritas et 
 Strzebonski}\index{Vincent}\index{Akritas}\index{Strzebonski}, cf. la
@@ -9851,17 +9967,17 @@ pouvoir corriger des erreurs en supposant
 que leur nombre est major\'e par $N$. 
 Si les erreurs de
 transmissions sont ind\'ependantes, la probabilit\'e d'avoir
-au moins $N+1$ erreurs dans un message de longueur $L$
-est $\sum_{k=N+1}^L \left( ^L_{k} \right) \epsilon^{k} (1-\epsilon)^{L-k}$, 
+au moins $t+1$ erreurs dans un message de longueur $n$
+est $\sum_{j=t+1}^n \left( ^n_{j} \right) \epsilon^{j} (1-\epsilon)^{n-j}$, 
 o\`u $\epsilon$ est la probabilit\'e d'une erreur
-de transmission, c'est aussi \verb|1-binomial_cdf(L,epsilon,N)|. 
+de transmission, c'est aussi \verb|1-binomial_cdf(n,epsilon,t)|. 
 Par exemple, pour un message de $10^3$ caract\`eres,
 chacun ayant une probabilit\'e d'erreur de transmission de $10^{-3}$,
-si on prend $N=3$, alors la probabilit\'e d'avoir au moins 4 erreurs
+si on prend $t=3$, alors la probabilit\'e d'avoir au moins 4 erreurs
 est de 0.019 (arrondi par exc\`es)~:\\
-\verb|P(N,eps,L):=sum(comb(L,k)*eps^k*(1-eps)^(L-k),k,N+1,L):;|\\
-\verb|P(3,1e-3,10^3)|\\
-ou directement \verb|1-binomial_cdf(1000,1e-3,3)|.
+\giacinput{P(t,eps,n):=sum(comb(n,j)*eps^j*(1-eps)^(n-j),j,t+1,n):;}\\
+\giacinput{P(3,1e-3,10^3)}\\
+ou directement \giacinput{1-binomial_cdf(1000,1e-3,3)}.
 
 {\bf Exemple}~: On ne peut pas corriger d'erreur avec le bit de parité.
 
@@ -10381,8 +10497,14 @@ si $p+1=0 \pmod 4$, si $N$ est un carré alors $N^{(p-1)/2}=1 \pmod p$
 donc $\pm N^{(p+1)/4} \pmod p$ est la racine cherchée (calcul
 effectu\'e par l'algorithme de la puissance rapide).
 \item sinon on cherche le pgcd de $x^2-N$ avec
-  powmod$(x+r,(p-1)/2,p,x^2-N)$ 
-où $r$ est aléatoire, il y a une chance sur 2 que le pgcd soit de degré 1.\\
+  powmod$(x+r,(p-1)/2,p,x^2-N)-1$ 
+où $r$ est aléatoire, il y a environ 
+une chance sur 2 que le pgcd soit de degré 1. En effet, le PGCD est de degr\'e
+2 ou 0 lorsque 
+$$ (\sqrt{N}+r)^{\frac{1}{2}(p-1)}=(-\sqrt{N}+r)^{\frac{1}{2}(p-1)}$$
+qui est une \'equation polynomiale en $r$ qui a au plus $\frac{1}{2}(p-1)-1$
+solutions.
+\\
 Si $p$ est assez petit (disons $p< \sqrt{2^{31}}$), il est plus rapide de
 tester les carrés mod $p$ de $k=1,2,3, ..., (p-1)/2$. Comme
 $(k+1)^2=k^2+2*k+1 \pmod p$, cela se résume à faire un shift (*2) une
@@ -10472,11 +10594,6 @@ et simplifier $W$ et $Y$ par leur pgcd puis poser $Y=Y-W'$.
 l'itération suivante.
 \end{enumerate}
 
-Remarque~: lorsqu'on veut factoriser un polynôme à coefficients modulaires,
-il faut aussi se ramener à un polynôme sans facteurs multiples mais
-on ne peut pas utiliser cet algorithme tel quel car la caractéristique
-du corps n'est pas nulle.
-
 {\bf Exemple}~:\\ 
 Factorisation sans facteurs multiples de 
 $P(X)=(X^3-1)(X+2)^2(X^2+3)^3$.
@@ -10513,6 +10630,35 @@ G:=gcd(W,Y);
 \end{verbatim}
 puis $W=1$ et $Y=0$ et le prochain $G$ vaut 1, on a bien trouvé tous
 les facteurs $P_i$.
+
+{\bf Remarque}~: 
+lorsqu'on veut factoriser un polynôme à coefficients modulaires,
+il faut aussi se ramener à un polynôme sans facteurs multiples mais
+l'algorithme doit \^etre adapt\'e car la caractéristique
+du corps n'est pas nulle. Ainsi le pgcd $G$ de $P$ et $P'$ contient
+$P_k^k$ au lieu de $P_k^{k-1}$ lorsque $k$ est multiple de $p$,
+donc $W_1$ ne contient pas les $P_k$ pour $k=0 \pmod p$ et
+$$ Z_1=\frac{P'}{G}=\sum_{k=1}^n (k \pmod p) P_k'\Pi_{j\neq k} P_j $$
+Dans le d\'eroulement de l'algorithme, les facteurs de m\^eme multiplicit\'e
+modulo $p$ vont \^etre d\'etermin\'es en m\^eme temps, 
+$$ G_m=\Pi_{k \pmod p=m} P_k$$
+Pour les distinguer, et d\'eterminer la bonne puissance de chaque %P_k$, 
+on calcule le quotient $Q$ de $P/G_m^m$. 
+Puis on fait une boucle sur un indice $l$ d\'ebutant \`a 0~:
+\begin{itemize}
+\item on calcule le PGCD $D$ de $Q$ avec $G_m$. 
+\item si le PGCD $D$ n'est pas \'egal \`a $G_m$ on ajoute $G_m/D$ 
+\`a la liste des facteurs avec multiplicit\'e $m+lp$ et on remplace
+$G_m$ par $D$
+\item si $D=1$ on arr\^ete la boucle
+\item On divise $Q$ par $G_m^p$.
+\end{itemize}
+\`A la fin
+de l'algorithme, on aura extrait de $P$ 
+$$ \Pi_{k\pmod p \neq 0} P_k^{k} $$
+il restera donc des puissances multiples de $p$, le polyn\^ome quotient
+peut alors s'\'ecrire comme une puissance $p$-i\`eme d'un polyn\^ome
+\`a qui il faut appliquer r\'ecursivement l'algorithme. 
 
 \section{Factorisation en une variable}
 On suppose maintenant qu'on veut factoriser un polynôme $P$ sans facteur
@@ -10680,22 +10826,24 @@ Donc pour tout élément $\beta \in K=\mathbb{Z}/p\mathbb{Z}[Y] \pmod {D(Y)}$, o
 \[(T^{p^d}-T)(\beta)=\Pi_{\alpha \in K }(T(\beta)-\alpha)=0\]
 Donc $T^{p^d}-T$ est divisible par $X^{p^d}-X$ (puisque toutes les racines
 du second sont racines du premier), donc est divisible par tout polynôme
-irréductible de degré inférieur ou égal à $d$ à coefficients dans $Z/p\mathbb{Z}$.
+irréductible de degré divisant $d$ à coefficients dans $Z/p\mathbb{Z}$.
 Comme
 \begin{equation} \label{eq:cantor}
 T^{p^d}-T=T(T^{\frac{p^d-1}{2}}-1)(T^{\frac{p^d-1}{2}}+1)
 \end{equation}
 et que ces trois facteurs sont premiers entre eux, on en déduit que tout 
-polynôme irréductible de degré inférieur ou égal à $d$ à coefficients dans 
-$Z/p\mathbb{Z}$ divise l'un des trois facteurs ci-dessus. Pour casser $P$, l'idée
+polynôme irréductible de degré divisant $d$ à coefficients dans 
+$Z/p\mathbb{Z}$ divise l'un des trois facteurs ci-dessus. 
+Pour casser $P$, l'idée
 consiste alors à calculer le pgcd de $P$ et $T^{\frac{p^d-1}{2}}-1$
 pour un polynôme pris au hasard. On sait que $P$ divise le produit des
 3 termes de (\(\ref{eq:cantor}\)), et on espère que les facteurs irréductibles
 de $P$ ne diviseront pas tous le même terme.
 
 On va montrer que si $T$ est un polynôme de degré $\leq 2d-1$ choisi au hasard,
-la probabilité que deux facteurs irréductibles de $P$ ne divisent pas 
-$T^{p^d}-T$ est proche de 0.5. Soient donc $A$ et $B$ deux facteurs
+la probabilité que deux facteurs irréductibles de $P$ ne divisent
+pas simultan\'ement 
+$T^{\frac{1}{2}(p^d-1)}-T$ est proche de 1/2. Soient donc $A$ et $B$ deux facteurs
 irréductibles de $P$ de degré $d$. D'après l'identité de Bézout, tout 
 polynôme $T$ de degré $\leq 2d-1$ s'écrit de manière unique sous la forme~:
 \begin{equation} \label{eq:bezout2} 
@@ -10750,6 +10898,12 @@ qui vaut $x^3+x+1 \pmod 5$, on a donc cassé $P$ en deux.
 En prenant $T:=x^4-x^3+x+2$, on trouve $T^{62}=1 \pmod P$, donc
 ce $T$ n'aurait pas permis de casser $P$.
 
+En caract\'eristique $p=2$, comme $p^d-1$ n'est pas divisible par 2, 
+il faut adapter, on utilise alors l'identit\'e
+$$ P(P+1)=x^{2^d}-x, \quad P=x+x^2+...+x^{2^{d-1}}$$
+(pour calculer $P^2$ on utilise la lin\'earit\'e de l'application
+$x \rightarrow x^2$).
+
 \subsection{La méthode de Berlekamp}\index{Berlekamp}
 Cette méthode permet de factoriser un polynôme sans facteurs multiples,
 elle peut aussi servir à casser des groupes de facteurs de même degré.
@@ -10783,9 +10937,9 @@ irréductibles. De plus, on remarque que le polynome constant 1 est un
 autres polynômes unitaires d'une base du noyau. 
 Ensuite, on calcule le pgcd de $P$ avec $T_2-jT_1$
 pour $j\in \mathbb{Z}/p\mathbb{Z}$. On sait que $T_2=s_{2,k} \pmod {F_k}$, donc pgcd$(P,T_2-jT_1)$
-est égal au produit des facteurs $F_k$ tels que $s_{2,k}=jT_1$. L'un au moins
-des pgcd calculés est non trivial car sinon $T_2=T_1 \pmod{F_j}$ pour
-tout $j$ donc $T_2=T_1$. Si on a de la chance tous les $s_{2,j}$ seront
+est égal au produit des facteurs $F_k$ tels que $s_{2,k}=j$. L'un au moins
+des pgcd calculés est non trivial car sinon $T_2=jT_1 \pmod{F_k}$ pour
+tout $k$ donc $T_2=jT_1$. Si on a de la chance tous les $s_{2,j}$ seront
 distincts et les pgcd non triviaux de $P$ avec $T_2-jT_1$ donneront les $F_k$.
 Sinon il faudra continuer avec $T_3-jT_1$ etc.
 
@@ -12970,19 +13124,19 @@ d'{\bf Euler-Mac Laurin}\index{Euler, Mac Laurin}\index{Mac Laurin, Euler}~:
 On pose alors $x=a+ht$ (donc $dt=dx/h$) et $f(t)=g(x)$
 (donc $f'(t)=df/dt=h dg/dx$), on obtient 
 \begin{eqnarray*}
- \frac1h T_h^{[a,b]}(g)&=& \frac1h \int_0^N g(x) \ dx 
+ \frac1h T_h^{[a,b]}(g)&=& \frac1h \int_a^b g(x) \ dx 
 + \frac{B_2(0)}{2} h(g'(b)-g'(a)) 
 + ... \\
-& &+ \frac{B_{2k}(0)}{(2k)!} h^{2k-1} (g^{[2k-1]}(N)-g^{[2k-1]}(0)) 
-- \int_0^N \frac{B_{2k}}{(2k)!} h^{2k} g^{[2k]}(x) \ \frac1h dx 
+& &+ \frac{B_{2k}(0)}{(2k)!} h^{2k-1} (g^{[2k-1]}(b)-g^{[2k-1]}(a)) 
+- \int_a^b \frac{B_{2k}}{(2k)!} h^{2k} g^{[2k]}(x) \ \frac1h dx 
 \end{eqnarray*}
 donc
 \begin{eqnarray*}
- T_h^{[a,b]}(g) &=&  \int_0^N g(x) \ dx 
+ T_h^{[a,b]}(g) &=&  \int_a^b g(x) \ dx 
 + h^2 \frac{B_2(0)}{2} (g'(b)-g'(a)) 
 + ... \\
-& & + h^{2k} \frac{B_{2k}(0)}{(2k)!}  (g^{[2k-1]}(N)-g^{[2k-1]}(0)) 
-- h^{2k} \int_0^N \frac{B_{2k}}{(2k)!}  g^{[2k]}(x) \  dx 
+& & + h^{2k} \frac{B_{2k}(0)}{(2k)!}  (g^{[2k-1]}(b)-g^{[2k-1]}(a)) 
+- h^{2k} \int_a^b \frac{B_{2k}}{(2k)!}  g^{[2k]}(x) \  dx 
 \end{eqnarray*}
 
 L'accélération consiste à éliminer les puissances de $h^2$ en
@@ -13765,6 +13919,89 @@ par l'application $x\rightarrow x-f'(x)^{-1} f(x)$.
 %% en précision double ou illimitée. Exemple de cas où Newton marche
 %% et ne marche pas, utilisation du préfacteur.
 
+\section{Vitesse de convergence, acc\'el\'eration de convergence.}
+On distingue en pratique trois importants types de convergence~:
+\begin{itemize}
+\item convergence lente~: $|u_n-l|$ se comporte comme une puissance de $1/n$.
+\item convergence lin\'eaire, aussi appel\'ee convergence g\'eom\'etrique,
+$|u_n-l|$ se comporte comme une suite g\'eom\'etrique $Cq^n$ avec
+$q<1$. Il faut en gros effectuer un nombre constant d'it\'erations
+pour gagner une d\'ecimale.
+\item convergence quadratique, $|u_n-l|$ se comporte comme 
+$Cq^{2^n}$ avec $q<1$. En gros on multiplie par deux le nombre
+de d\'ecimales \`a chaque it\'eration.
+Il peut y avoir des variantes comme $Cq^{\lambda^n}$ avec 
+$\lambda>1$.
+\end{itemize}
+Bien sur, pour trouver des valeurs approch\'ees de limites (qui ne sont
+pas des rationnels), on pr\'ef\`ere des suites qui convergent 
+le plus rapidement possible. Il existe des proc\'ed\'es d'acc\'el\'eration
+de convergence, dont deux bien connus~:
+\begin{itemize}
+\item Richardson~: \\
+si la convergence est lente
+avec un exposant $N$ connu, $u_n-l=Cn^{-N}+o(n^{-N})$, on peut \'eliminer le
+terme principal de l'\'ecart $u_n-l$ en utilisant 
+$u_{2n}-l=C2^{-N}n^{-N}+o(n^{-N})$
+donc 
+$$ 2^N(u_{2n}-l)-(u_n-l)=o(n^{-N})
+\ \Rightarrow \ 
+v_n=\frac{2^Nu_{2n}-u_n}{2^N-1}=l+o(n^{-N})
+$$
+Si $v_n$ est \`a convergence lente avec un exposant connu, on peut
+\`a nouveau lui appliquer l'acc\'el\'eration. C'est le cas si on
+connait un d\'eveloppement asymptotique de $u_n$ sans connaitre
+la valeur des constantes devant les puissances de $1/n$.
+Exemple~: la m\'ethode de Richardson-Romberg acc\'el\`ere la convergence
+de la m\'ethode des trap\`ezes (qui converge en $1/n^2$ o\`u
+$n$ est le nombre de subdivisions), la premi\`ere acc\'el\'eration
+est d'ailleurs la m\'ethode de Simpson.\\
+Cela fonctionne aussi avec une fonction dont on a un d\'eveloppement
+asymptotique dont on ne connait pas les coefficients, par exemple
+un d\'eveloppement de Taylor de $f$ en un point pour trouver une
+des d\'eriv\'ees num\'eriquement.
+\item Le $\delta^2$ d'Aitken. \\
+Si la convergence est exactement g\'eom\'etrique
+$u_n-l=Cq^n$, on peut d\'eterminer $l$ ($C$ et $q$) avec 3 valeurs
+successives de la suite. 
+$$ q=\frac{u_{n+2}-u_{n+1}}{u_{n+1}-u_n}, \quad
+l=\frac{u_{n+2}-qu_{n+1}}{1-q}=u_n-\frac{(u_1-u_0)^2}{(u_2-u_1)-(u_1-u_0)}$$
+\giacinputmath{l:=solve([u0=l+c,u1=l+c*q,u2=l+c*q^2],[l,c,q])[0,0];
+factor(l-u0);}
+On utilise cette formule pour d\'efinir
+une nouvelle suite $v_n$ qui converge vers $l$ plus vite que $u_n$
+si la convergence est lin\'eaire.
+\end{itemize}
+Exemple de programme pour Aitken, il prend en argument une liste de valeurs
+successives de la suite~:
+\begin{giacprog}
+def Aitken(L):
+    n=size(L)-2
+    A=[]
+    for j in range(n):
+        u0=L[j]
+        d1=L[j+1]-u0 # u1-u0
+        d2=L[j+2]-L[j+1] # u2-u1
+        u0 -= d1*d1/(d2-d1)
+        A.append(u0)
+    return A
+\end{giacprog}
+Par exemple, on calcule dans \verb|L| la suite des sommes partielles
+de $\sum_j \frac{(-1)^{j}}{j+1}$
+\begin{giacprog}
+def somme_partielle(N):
+    L=[]
+    S=0.0
+    for j in range(1,N):
+        S -= 1.0*(-1)^j/j
+        L.append(S)
+    return L
+\end{giacprog}
+\giacinputmath{L:=somme_partielle(100)}
+puis on applique l'acc\'el\'eration, qui marche quand m\^eme
+bien que la suite ne converge pas \`a vitesse lin\'eaire~:\\
+\giacinputmath{ln(2.0);L1:=Aitken(L)}
+
 \section{Calcul approch\'e des racines complexes simples} 
 \index{factorisation} \index{racine} \label{sec:proot}
 La section pr\'ec\'edente nous a montr\'e qu'on pouvait
@@ -13804,7 +14041,13 @@ d'une racine de $P$ pour que le th\'eor\`eme s'applique, on
 effectue alors 1 ou 2 it\'erations de Newton avec $r'$ mais pour $P$
 (et non $Q$) afin d'am\'eliorer sa pr\'ecision comme racine de $P$.
 
-Une m\'ethode de calcul plus stable utilise la recherche des valeurs
+Une autre amélioration simple due à Maehly\index{Maehly}
+consiste à ne pas calculer $Q$ mais à utiliser
+l'identité
+$$ \frac{Q'}{Q}=\frac{P'}{P} - \frac{1}{x-r}$$
+dans les itérations de Newton.
+
+Une m\'ethode de calcul assez stable utilise la recherche des valeurs
 propres de la matrice companion en double pr\'ecision, 
 puis affine par la m\'ethode de
 Newton pour obtenir des valeurs approch\'ees multi-pr\'ecision,
@@ -13815,8 +14058,9 @@ est garantie, cet algorithme est impl\'ement\'e dans PARI (voir
 la th\`ese de Xavier Gourdon et l'article Splitting circle method de Wikipedia)
 et est appel\'e par Xcas pour des polyn\^omes mals conditionn\'es.
 
-Enfin, on peut appliquer directement la m\'ethode de Newton pour
-trouver dans $\mathbb{C}^n$ toutes les racines simultan\'ement, c'est la
+Une autre méthode consiste à
+appliquer directement la m\'ethode de Newton pour
+trouver dans $\mathbb{C}^n$ {\em toutes} les racines simultan\'ement, c'est la
 m\'ethode de {\bf Durand-Kerner, Weierstrass}\index{Durand-Kerner, Weierstrass}.
 On pose $g_x(z)=\prod_{i=1}^n (x-z_i)$, il s'agit de r\'esoudre en $z$
 $g_x(z)=P(x)$. On a a l'ordre 1 en $z$
@@ -13854,6 +14098,47 @@ dw(P,N,eps):={ // Weierstrass, Durand-Kerner polynomial rooter
 \end{verbatim}
 Par exemple \verb|dw(x^3+x+1,100,1e-10)| renvoie des valeurs
 approch\'ees des racines de $x^3+x+1$.
+
+La méthode d'Aberth\index{Aberth, méthode d'}\index{méthode d'Aberth}
+applique la méthode de Newton racine
+par racine, mais au lieu de l'appliquer à $P(z)=0$ pour améliorer
+la précision d'une racine $z_i$ en $z_i-P(z_i)/P'(z_i)$, on l'applique
+à $P_i(z)=P(z)/\prod_{j\neq i} (z-z_j)$ et on améliore $z_i$ en
+$$ z_i -\frac{P_i(z_i)}{P'_i(z_i)} = z_i-\frac{1}{\frac{1}{d}-p}, \quad d=P(z_i)/P'(z_i), \ p=\sum_{j \neq i} \frac{1}{z_i-z_j} $$
+On peut d'ailleurs voir la méthode d'Aberth comme une méthode de Newton avec
+préfacteur $1/(1-dp)$, car
+$$ z_i -\frac{P_i(z_i)}{P'_i(z_i)} =  z_i-\frac{d}{1-dp}$$
+Lorsque les $z_i$ sont assez proches des racines de $P$, $P_i$ est presque
+linéaire (sauf au voisinage immédiat des $z_j, j \neq i$) ce qui
+assure une convergence rapide vers la racine $r_i$ depuis un très grand
+bassin d'attraction. Contrairement à la méthode de Newton, le facteur
+$p=\sum_{j\neq i}1/(z_i-z_j)$ assure que pendant les itérations successives
+plusieurs racines approchées ne tendent pas vers une même racine (simple
+et isolée des autres).
+
+Pour trouver un bon jeu de valeurs initiales
+pour les $z_i$ afin de limiter le nombre total d'itérations,
+on calcule l'enveloppe convexe des points $(j,\log(|a_j|))$ où
+les $a_j$ sont les coefficients du polynôme (cf.
+{\em Numerical computation of polynomial zeros by means of Aberth's method,
+  Dario A. Bini} et
+le logiciel \ahref{https://github.com/robol/MPSolve}{MPSolve}), ce qui donne
+des anneaux dans le plan complexe
+où se trouvent un certain nombre de racines de $P$.
+
+Si les racines sont bien isolées les unes des autres,
+la convergence est rapide (une
+dizaine d'itérations pour un polynôme de degré quelques dizaines).
+Pour traiter les aggrégats de racines proches, on peut calculer
+le barycentre $z$ des approximations, et faire un shift de taylor du
+polynôme en $z$ puis changer $z$ en $1/z$ ce qui revient à inverser
+l'ordre des coefficients du polynôme. On repousse ainsi la distance
+entre racines d'autant plus qu'elles sont proches.
+
+Pour calculer $P/P'$, on utilise la méthode de Horner en calculant
+simultanément $P(z)$ et $P'(z)$. Lorsque $|z|>1$, on utilise les
+évaluations du polynôme avec coefficients inversés et de sa dérivée
+en $1/z$.
 
 Si on s'int\'eresse seulement \`a la racine de module maximal d'un
 polyn\^ome, on peut
@@ -16460,10 +16745,11 @@ vecteurs propres peuvent faire un angle tr\`es petit. Par
 exemple la matrice 
 $$ A=\left(\begin{array}{cc} 
 -1 & 0\\
--\frac1\epsilon& 1
+-\frac{1}{\epsilon}& 1
 \end{array}\right)$$
 a pour valeurs propres $-1$ et $1$ mais
-$A\left(^\epsilon_1\right)=\left(^{-\epsilon}_0\right)$ donc 0 semble
+$A\left(\begin{array}{c}\epsilon \\ 1\end{array}\right)=
+  \left(\begin{array}{c}-\epsilon \\ 0\end{array}\right)$ donc 0 semble
 \^etre une valeur propre approch\'ee. Il vaut alors mieux tester
 l'\'ecart entre deux estimations cons\'ecutives de la valeur
 propre, en effet au premier ordre
@@ -16480,7 +16766,28 @@ $$
 Mais cette estimation n'est plus correcte s'il y a plusieurs indices
 $j$ sous-dominants (cas par exemple d'une paire 
 de valeurs propres conjugu\'ees
-pour une matrice r\'eelle).
+pour une matrice r\'eelle). On peut dans ce cas utiliser une estimation
+en calculant la suite des itérées de la matrice transconjuguée
+$z_k=A^*z_{k-1}$ 
+$$ x_k-\lambda_k \approx \frac{\langle z_k | (A-\lambda_k) v_k\rangle}
+{\langle z_k | v_k \rangle} $$
+En effet, les vecteurs propres $e_j$ de $A^*$ sont  orthogonaux aux vecteurs
+propres $f_{\tilde{j}}$ de $A$ correspondant à des valeurs propres distinctes. Comme
+$$ v_k=e_n+ O(\epsilon), \quad z_k=f_n+O(\epsilon), \quad \epsilon=(x_{n-1}/x_n)^k $$
+on en tire à cause de l'orthogonalité des $O(\epsilon)$ avec respectivement
+$f_n$ et $e_n$:
+$$ \langle z_k | v_k \rangle = \langle f_n|e_n \rangle + O(\epsilon^2), \quad
+\langle z_k | (A-\lambda_k) v_k \rangle
+= (x_k-\lambda_k)\langle f_n|e_n \rangle + O(\epsilon^2) $$
+On observe que le calcul des $z_k$ est de toutes façons nécessaire si on veut
+éliminer la valeur propre.
+Exemple~;
+\giacinputmath{a:=ranm(3,3)+120}\\
+\giacinputmath{v:=ranv(3); w:=evalf(v); z:=w;}\\
+\giacinputmath{for j in range(20) do w:=a*w; w:=normalize(w); z:=z*a; z:=normalize(z); od;}\\
+\giacinputmath{l:=dot(w,a*w)/l2norm(w)}\\
+\giacinputmath{dot(z,(a-l)*w)/dot(z,w)}\\
+\giacinputmath{egvl(evalf(a))}
 
 Exercice~: tester la convergence de $v_k=A^kv$ vers l'espace propre
 associé à $\lambda=3$ pour la matrice \verb|[[1,-1],[2,4]]|
@@ -16595,10 +16902,17 @@ la 2ème valeur propre (en valeur absolue), l'éliminer
 et ainsi de suite.
 
 Si la matrice $A$ n'est pas symétrique, il faut consid\'erer
-$B=A-x_n e_n f_n^t /e_n.f_n$ o\`u $f_n$ est vecteur propre
-de $A^t$ associ\'e \`a $x_n$. En effet $f_k.e_j=0$ si $i \neq j$
-car $Ae_k.f_j=x_ke_k.f_j=e_k.A^tf_j=x_je_kf_j$ et donc $f_k.e_k \neq 0$
-(sinon $e_k$ est dans l'orthogonal de $\mathbb{R}^n=$Vect$(f_1,...,f_n)$.
+$$ B =A-x_n \frac{e_n f_n^t} {\langle e_n|f_n\rangle}$$
+o\`u $f_n$ est vecteur propre
+de $A^t$ associ\'e \`a $x_n$.
+En effet $\langle f_k | e_j \rangle =0$ si $i \neq j$
+car
+$$ \langle Ae_k | f_j \rangle
+=\langle x_ke_k | f_j \rangle
+=\langle e_k | A^tf_j\rangle
+=\langle x_je_k|f_j \rangle $$
+donc pour tout $k$ on a $\langle f_k | e_k \rangle \neq 0$
+(sinon $e_k$ serait dans l'orthogonal de $\mathbb{R}^n=$Vect$(f_1,...,f_n)$.
 
 
 \subsection{D\'ecomposition de Schur}\index{Schur (factorisation)}
@@ -18595,6 +18909,8 @@ du produit $P$)
 \item tel que $p>2|P|_\infty$ pour d\'eterminer $P$ \`a partir de son
 \'ecriture en repr\'esentation sym\'etrique.
 \end{itemize}
+Un nombre premier $p$ ayant ces propri\'et\'es est appel\'e
+{\bf nombre premier de Fourier}\index{Fourier, nombre premier de}\index{premier de Fourier}.
 On \'ecrit les coefficients de $A$ et $B$ dans un vecteur de longueur
 $2^n$ en compl\'etant par des 0, on calcule la DFT de $A$ et de $B$,
 puis on fait le produit \'el\'ement par \'el\'ement puis on calcule la
@@ -18658,7 +18974,7 @@ se fait en testant 2, 3,...).
 \end{itemize}
 On peut retrouver ces nombres premiers avec une boucle comme suit
 \giacinputbig{p:=2^25; for k from 64 downto 1 do if isprime(k*p+1) then print(k,k*p+1); fi od}
-et la valeur d'une racine $2^n$-i\`eme comme suit
+et la valeur d'une racine $2^m$-i\`eme comme suit
 \begin{giacprog}
 n:=2013265921;
 pour k de 2 jusque 100 faire
@@ -18680,6 +18996,37 @@ $p_i$ ayant 31 bits, mais il faut travailler si on veut \'eviter
 de faire des restes chinois avec des
 entiers de plus de 64 bits (ce qui est possible avec des entiers 128
 bits mais au prix de r\'eductions modulo couteuses).
+
+On peut aussi lorsque le degr\'e total du produit et des coefficients
+n'est pas trop grand utiliser des nombres premiers de Fourier 
+de taille machine.
+
+Remarque~: on peut d\'eterminer une racine primitive 
+$2^{m}$-i\`eme d'un nombre premier de Fourier $p$
+sans chercher un g\'en\'erateur de $\Z/p\Z^*$
+donc sans factoriser compl\`etement $p-1$, 
+on cherche $r=k^{(p-1)/2^m}$ tel que $r^{2^{m-1}}=p-1$ (mod $p$), par
+exemple
+\begin{giacinput}
+p:=2013265921; m:=16;
+pour k de 2 jusque 100 faire
+  r:=powmod(k,(p-1)/2**m,p);
+  si powmod(r,2**(m-1),p)=p-1 alors break; fsi;
+fpour;
+r;
+\end{giacinput}
+
+On peut enfin travailler dans l'anneau $\mathbb{Z}/N\mathbb{Z}$
+avec $N=2^{Rm}+1, m=2^l$, $\omega=2^R$ joue alors le r\^ole de racine
+primitive $2m=2^{l+1}$-i\`eme de l'unit\'e. La r\'eduction modulo $N$
+est optimis\'ee en observant que $a=Nq+r$ devient
+$a=2^{Rm}q+q+r$, on calcule le quotient et le reste de $a$ 
+par $2^{Rm}$, on fait la somme et on soustrait $N$ si n\'ecessaire.
+Ceci suppose que la somme des degr\'es des polyn\^omes \`a multiplier 
+soit plus petite que $m$, avec des coefficients de taile plus 
+petite que $\sqrt{N/m}$. C'est int\'eressant lorsque
+le nombre de bits des coefficients est au moins \'egal aux degr\'es
+des polyn\^omes.
 
 \chapter{Le rayonnement solaire.} \label{sec:soleil}
 
@@ -19640,6 +19987,9 @@ en utilisant la m\'ethode de Newton.
 \appendix
 
 \chapter{Bonus~: le ``making of'' de Giac/Xcas}
+Avertissement~: certains passages de ce chapitre seront
+obsol\`ete ou incorrects lorsque le lecteur les lira, cela refl\`ete
+une \'evolution depuis le moment o\`u je les ai \'ecrits.
 
 \section{Comment le projet Giac/Xcas est n\'e.}
 Lorsque j'\'etais au lyc\'ee au d\'ebut des ann\'ees 80,
@@ -19648,7 +19998,7 @@ scientifiques mais les calculatrices graphiques n'existaient pas
 encore, et les
 particuliers n'avaient pas d'ordinateurs ni de t\'el\'ephone
 portable (cela doit paraitre incroyable \`a un lyc\'een actuel,
-pourtant cela fait \`a peine plus de 30 ans!). On pouvait
+on mesure les changements en 40 ans!). On pouvait
 programmer le calcul d'une fonction pour faire un tableau
 de valeurs, par une suite d'op\'erations ressemblant un peu
 \`a de la programmation en langage assembleur,
@@ -19671,7 +20021,7 @@ l'enseignement de certains, je pense par exemple
 gros programmes et pr\'econisent de ne pas
 utiliser \verb|break| ou \verb|return| dans une boucle
 alors que cela rend le code beaucoup plus lisible que
-d'ajouter un bool\'een artificiel, ou qui
+d'ajouter un bool\'een artificiel, ou ceux qui
 sont incapables de mettre au point un programme.
 
 Je n'avais donc jamais entendu parler de calcul formel
@@ -19919,13 +20269,16 @@ plusieurs contrats de
 commercialisation (en dual-licensing), le plus important avec HP
 pour le CAS des calculatrices HP-Prime.
 
-\section{Le pr\'esent et le futur proche}
+\section{Depuis 2018}
 La collaboration avec Geogebra m'ayant fait d\'evelopper une version 
 compil\'ee en Javascript de Giac, j'avais \'ecrit 
 une petite interface web pour la tester. D\'ecid\'e \`a pouvoir
 utiliser Xcas sur mon smartphone, je l'avais am\'elior\'e petit \`a
 petit. En mars 2018 elle commence \`a \^etre une alternative envisageable \`a la
-version native de Xcas. On y retrouve l'essentiel des fonctionnalit\'es
+version native de Xcas, mais dans un navigateur sur PC, 
+sur smartphone il y a encore un travail d'adapatation de l'interface
+\`a faire. 
+On y retrouve l'essentiel des fonctionnalit\'es
 de Xcas (il manque certaines fonctionnalit\'es, mais dans des domaines
 comme la g\'eom\'etrie interactive o\`u les utilisateurs 
 travaillent avec des logiciels concurrents), en bien plus transparent
@@ -19941,24 +20294,68 @@ apr\`es les avoir \'eventuellement modifi\'es.
 
 En 2017, les programmes d'algorithmique de seconde changent, en introduisant
 la notion de fonction en algorithmique, ce qui donne une nouvelle
-opportunit\'e d'utiliser Xcas au lyc\'ee. Mais m\^eme si les programmes
+opportunit\'e d'utiliser Xcas au lyc\'ee. Mais m\^eme si dans un premier
+temps les programmes
 officiels n'imposent aucun langage, la hi\'erarchie de l'\'Education
-Nationale veut imposer Python
-ce qui va fatalement emp\^echer l'adoption de Xcas. \`A la rentr\'ee 2017,
+Nationale a impos\'e Python
+ce qui fatalement emp\^eche l'adoption de Xcas, et va limiter
+drastiquement son utilisation (le nombre de t\'el\'echargements
+de Xcas s'en ressent, avec une division par trois environ en 5 ans). 
+Parall\`element, \`a la rentr\'ee 2017,
 une nouvelle calculatrice graphique sort, la Numworks, avec micro-Python
 comme langage de programmation, elle sera d'ailleurs
-suivie par Casio en mars 2018. 
+suivie par Casio en mars 2018, TI en 2019 et HP en 2021.
 Il devient donc strat\'egiquement 
-important de faciliter le passage de Python \`a Xcas, je d\'ecide
-de cr\'eer un traducteur. Six mois plus tard, il permet de faire
-fonctionner de nombreux scripts niveau lyc\'ee avec
-des modifications mineures, voire tels quels dans les cas favorables.
-Combin\'e avec l'interface Xcas pour Firefox, on peut imaginer
+important de faciliter la prise en main de la programmation
+en Xcas, je d\'ecide
+de cr\'eer un module de traduction de la syntaxe de Python vers 
+le langage naturel de Xcas. Il permet aujourd'hui de faire
+fonctionner de nombreux scripts niveau lyc\'ee sans
+modifications, les autres scripts peuvent tourner
+dans l'interpr\'eteur MicroPython qui a \'et\'e ajout\'e dans Xcas.
+Combin\'e avec l'interface Xcas pour Firefox ou d'autres interfaces, 
+on peut imaginer
 dans un futur proche que des \'el\`eves de lyc\'ee programment
-directement sur leur smartphone ou tablette
-avec Xcas en mode compatible Python. La compatibilit\'e Python
-devrait \'egalement \^etre appr\'eci\'ee par les possesseurs
-de calculatrices HP Prime.
+directement sur leur smartphone ou tablette.
+
+Cot\'e calculatrices, apr\`es un premier portage sur les TI Nspire,
+je me lance en 2018 sur un portage restreint pour les Casio couleur de milieu
+de gamme (la Graph 90, vendue 80 \`a 90 euros) puis en 2019 sur le 
+nouveau mod\`ele Casio monochrome (Graph 35eii). En 2019 toujours,
+Numworks upgrade sa calculatrice en y ajoutant suffisamment de m\'emoire
+flash pour esp\'erer y faire tourner Xcas, ce sera chose faite fin 2019,
+avec en prime l'int\'egration dans Xcas d'un interpr\'eteur
+MicroPython.
+En 2020, je porte l'interface utilis\'ee sur Casio et Numworks
+pour les TI Nspire CX et CX 2. En 2022, suite \`a la d\'ecouverte
+par la communaut\'e de possibilit\'es mat\'erielles inutilis\'ees sur
+les Casio couleur, j'ai pu r\'ealiser
+un portage complet de Xcas. Actuellement, je travaille sur
+un portage complet de Xcas sur un syst\`eme d'exploitation
+enti\`erement libre (ExistOS) pour les HP39GII. 
+
+On peut ainsi b\'en\'eficier d'un m\^eme logiciel de calcul formel/Python 
+dans Xcas interface web ou PC et sur au moins un mod\`ele
+de chaque grande marque de calculatrice graphique. 
+Les versions Windows totalisent
+environ 12500 t\'el\'echargements en 2022, les versions web ont \'et\'e
+consult\'ees environ 75 000 fois en 2022. 
+Les versions calculatrices totalisent une
+dizaine de milliers de t\'el\'echargements en 2022: 
+Casio FXCG50/Graph90/monochrome 6000, TI Nspire CX et CX2 2500, 
+Numworks N0110 estim\'e \`a 3000 (700
+depuis ma page, estimation
+bas\'ee sur le nombre de consultations de la documentation 
+Numworks 9000 vs Casio anglophone 12000).
+
+A contrario de ces r\'esultats encourageants, les jurys des
+concours de recrutement du CAPES puis de l'agr\'egation
+ont d\'ecid\'e de bannir Xcas des oraux. La raison invoqu\'ee
+\'etant que Xcas est difficile \`a installer pour un nombre 
+d'utilisations trop faible. La raison invoqu\'ee est assez
+stup\'efiante puisqu'il y a un installeur Windows et
+que des packages Giac/Xcas sont fournis en standard par les 
+distributions Linux majeures.
 
 \section{Les concurrents open-source.} \label{sec:concurrents}
 Les principaux concurrents open-source de Giac/Xcas sont Maxima et
@@ -20026,9 +20423,9 @@ performants, mais le code propre de Sage est tr\`es d\'ependant
 de l'\'evolution de ces composants~:
 \begin{itemize}
 \item son composant d'infrastructure le plus fondamental, 
-la version de Python utilis\'ee est
-fig\'ee depuis plusieurs ann\'ees en 2.7 (alors que le module
-giacpy pour acc\'eder \`a giac depuis Python fonctionne
+la version de Python utilis\'ee est rest\'e
+fig\'e pendant plusieurs ann\'ees en 2.7 (alors que le module
+giacpy pour acc\'eder \`a giac depuis Python fonctionnait d\'ej\`a
 en versions 2.7 et 3.x),
 \item toutes les op\'erations de calcul formel non
 sp\'ecialis\'e font tr\`es souvent appel \`a Maxima,
@@ -20038,8 +20435,8 @@ les d\'eveloppeurs de Maxima
 les op\'erations polynomiales rapides font appel \`a des
 biblioth\`eques C/C++ et d\'ependent donc des performances
 de ces biblioth\`eques~: par exemple le calcul de base
-de Groebner sur les entiers utilise Singular, dont la version
-actuelle est tr\`es inefficace sur $\mathbb{Z}$
+de Groebner sur les entiers utilise Singular, qui est rest\'ee
+longtemps inefficace sur $\mathbb{Z}$
 \end{itemize} 
 De ce fait, le portage est difficile~: sans m\^eme parler des OS de tablettes
 et smartphones, ce n'est que fin 2016 qu'apparait une version 

@@ -2185,6 +2185,8 @@ namespace xcas {
 #endif
     int x=49,y=87,w=626,h=l+1;
     unsigned const char * ptr=(unsigned const char*)s;
+    if (ptr[0]==0xee && ptr[1]==0x0b && ptr[2]==0xdd && ptr[3]==0xba)
+      ptr += 4;
     // Numworks script store archive
     // record format: length on 2 bytes
     // if not zero length

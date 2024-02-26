@@ -20,6 +20,7 @@ var UI = {
   fixeddel: false,
   kbdshift: false,
   usemathjax: false,
+  mathjax_version:2,  
   prettyprint: true,
   qa: false,
   histcount: 0,
@@ -2483,7 +2484,9 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     if (form.online_doc.checked)
       UI.docprefix = UI.base_url + 'giac/doc/' + (UI.langue == -1 ? 'fr/cascmd_fr/' : 'en/cascmd_en/');
     else
-      UI.docprefix = "file://" + form.doc_path.value;
+	UI.docprefix = "file://" + form.doc_path.value;
+      // doc francaise en local, 
+      if (UI.langue==-1) UI.docprefix = "giac/doc/fr/cascmd_fr/";
     if (form.prettyprint.checked) UI.prettyprint = true; else UI.prettyprint = false;
     if (form.worker_mode.checked) {
       if (!UI.withworker) {
@@ -3773,8 +3776,8 @@ int main(int argc,const char ** argv){
     UI.scrollatend(mathoutput.parentNode);
     UI.link(0);
     if (UI.prettyprint && UI.usemathjax && UI.histcount > 0)
-    //console.log('"hist'+(UI.histcount-1)+'"');
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub, '"hist' + (UI.histcount - 1) + '"']);
+	//console.log('"hist'+(UI.histcount-1)+'"');
+	if (UI.mathjax_version==3) MathJax.typeset(); else MathJax.Hub.Queue(["Typeset", MathJax.Hub, '"hist' + (UI.histcount - 1) + '"']);
   },
   eval_cmdline1cb: function (out, value) {
     var s;
@@ -3861,6 +3864,7 @@ int main(int argc,const char ** argv){
       if (i < l - 1) nxt = t.charAt(i + 1);
       if (ch == '$' && nxt == '$') {
         if (!UI.usemathjax) {
+	  UI.mathjax_version=2;    
           var script = document.createElement("script");
           script.type = "text/javascript";
           script.src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_CHTML";
@@ -4058,8 +4062,9 @@ int main(int argc,const char ** argv){
     par.nextSibling.style.display = 'inline';
     if (comment) {
       par.nextSibling.innerHTML = UI.rendercomment(s);
-      if (UI.usemathjax)
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub, par.nextSibling]);
+	if (UI.usemathjax){
+	    if (UI.mathjax_version==3) MathJax.typeset(); else MathJax.Hub.Queue(["Typeset", MathJax.Hub, par.nextSibling]);
+	}
     }
     par.parentNode.nextSibling.style.display = 'inline';
     UI.link(0);
@@ -4253,8 +4258,8 @@ int main(int argc,const char ** argv){
     UI.render_canvas(par);
     UI.link(0);
     if (UI.prettyprint && UI.usemathjax && UI.histcount > 0) {
-      //console.log('"hist'+(UI.histcount-1)+'"');
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub, '"hist' + (UI.histcount - 1) + '"']);
+	//console.log('"hist'+(UI.histcount-1)+'"');
+	if (UI.mathjax_version==3) MathJax.typeset(); else MathJax.Hub.Queue(["Typeset", MathJax.Hub, '"hist' + (UI.histcount - 1) + '"']);
     }
     if (UI.focusaftereval) {
       if (focusnextsibling) {
@@ -4317,8 +4322,8 @@ int main(int argc,const char ** argv){
     field.innerHTML = s;
     UI.render_canvas(field);
     if (UI.prettyprint && UI.usemathjax) {
-      //console.log(s);
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub, field]);
+	//console.log(s);
+	if (UI.mathjax_version==3) MathJax.typeset(); else MathJax.Hub.Queue(["Typeset", MathJax.Hub, field]);
     }
   },
   before: function (field) {

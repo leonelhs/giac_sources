@@ -131,7 +131,7 @@ void a_propos() {
     s += "SmartCAS interface: Nicolas Pujol\n";
     s += "English user guide translation maintained by Jay Belanger\n";
     s += "Greek localization, Alkiviadis Akritas, Eugenia Kelepesi-Akritas, George Nasopoulos, Nikos Larisis\n";
-    s += "Spanish localization, Xavier Vidaux, J. Manrique Lopez\n";
+    s += "Spanish localization, Xavier Vidaux, J. Manrique Lopez, compsystems\n";
     s += "German short help localization, Philipp Rösch\n";
     s += "Tutorial (dxcas) with B. Ycart\n";
     s += "Debian package: Julien Puydt (current maintainer), Carlos Enrique Carleos Artime (first package)\n";
