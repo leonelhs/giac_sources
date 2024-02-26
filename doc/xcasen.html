@@ -81,6 +81,7 @@
     }
   </style>
   <style type="text/css">
+    #divoutput span.mjx-chtml.MJXc-display { display: inline-block; }
     .matrixcell {
       font-size: 18px;
       width: 80px;
@@ -505,6 +506,7 @@
 <span id='thelink'></span>
 <span id='themailto'></span>
 <textarea id='theforumlink' style="display:none"></textarea>
+<textarea id='locallink' style="display:none"></textarea>
 <span id="history1" style="display:none">
         <button class="bouton"
                 title="Click here to save history (filename in the next textfield)"
@@ -3776,7 +3778,8 @@ If you want to see informations while a computation is running, run first
     var ua = window.navigator.userAgent;
     var old_ie = ua.indexOf('MSIE ');
     var new_ie = ua.indexOf('Trident/');
-    if ((old_ie > -1) || (new_ie > -1) || Boolean(window.chrome)) {
+    var isSafari = /^((?!chrome|android).)*safari/i.test(ua);
+    if ((old_ie > -1) || (new_ie > -1) || Boolean(window.chrome) || isSafari) {
         (function () {
             var script = document.createElement("script");
             script.type = "text/javascript";
@@ -3821,7 +3824,8 @@ If you want to see informations while a computation is running, run first
         var ua = window.navigator.userAgent;
         var old_ie = ua.indexOf('MSIE ');
         var new_ie = ua.indexOf('Trident/');
-        if (Boolean(window.chrome) && window.location.href.substr(0, 4) != 'file') UI.prettyprint = false;
+        var isSafari = /^((?!chrome|android).)*safari/i.test(ua);
+        if ((isSafari || Boolean(window.chrome)) && window.location.href.substr(0, 4) != 'file') UI.prettyprint = false;
         if ((old_ie > -1) || (new_ie > -1)) UI.isie = true;
         var bt = UI.browser_type();
         if (UI.isie || (bt != 1 && bt != 2)) {

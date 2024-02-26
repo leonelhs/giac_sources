@@ -9,11 +9,14 @@ var UI = {
   frac_add:1.0, // set to 0 to avoid adding an approx value of a fraction
   docprefix: "https://www-fourier.univ-grenoble-alpes.fr/%7eparisse/giac/doc/fr/cascmd_fr/",
   base_url: "https://www-fourier.univ-grenoble-alpes.fr/%7eparisse/",
+  local_url:"file:///C:/xcaswin/doc/xcasfr.html",
+  //local_url: "file:///usr/share/giac/doc/xcasfr.html",
   //forum_url: "http://xcas.e.univ-grenoble-alpes.fr/XCAS/viewforum.php?f=25",
   forum_url: "http://xcas.univ-grenoble-alpes.fr/forum/viewforum.php?f=25",
   // forum_url: "http://xcas.e.univ-grenoble-alpes.fr/XCAS/posting.php?mode=post&f=12&subject=session",
   //forum_url: "http://xcas.univ-grenoble-alpes.fr/forum/posting.php?mode=post&f=12&subject=session",
   forum_warn: true,
+  locallink_warn: true,
   focused: entree,
   savefocused: entree,
   usecm: true,
@@ -2031,12 +2034,25 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
         copy += UI.langue == -1 ? "alert(\"Le lien de la session a été copié dans le presse-papier\");" : "alert(\"Clipboard contains a link to session\");";
       }
       copy += "var win=window.open(\"" + UI.forum_url + "\", \"_blank\");'>Forum</button>,";
-      //console.log(copy);
+      let copylocal = "";
+      if ($id('locallink') && !UI.detectmob()){
+        copylocal="<button title=";
+        $id('locallink').innerHTML = UI.local_url+s2;      
+        copylocal += UI.langue == -1 ? "'Sélection lien local'" : "'Select local link'";
+        copylocal += " class='bouton' onclick='var tmp=$id(\"locallink\"); tmp.style.display=\"inline\";tmp.select();document.execCommand(\"copy\");tmp.style.display=\"none\";"; 
+        if (UI.locallink_warn) {
+          UI.locallink_warn = false;
+          copylocal += UI.langue == -1 ? "alert(\"Le lien local de la session a été copié dans le presse-papier\");" : "alert(\"Clipboard contains a local link to session\");";
+        }
+        copylocal += "'>Local</button>,";
+        console.log(copylocal);
+      }
       if (window.location.href.substr(0, 4) == 'file' && !UI.detectmob()) {
         $id('thelink').innerHTML = '<a title="Clone session" href="' + s + '" target="_blank">x2</a>, <a title="Local clone" href="' + s2 + '" target="_blank">local</a>,' + copy + stableau;//+',<a href="http://xcas.e.univ-grenoble-alpes.fr/XCAS/posting.php?mode=post&f=12&subject=session&message='+encodeURIComponent(sforum)+'" target="_blank">forum</a>,';
       }
-      else
-        $id('thelink').innerHTML = '<a href="' + s + '" target="_blank">x2</a>,' + copy + stableau;
+      else {
+        $id('thelink').innerHTML = '<a href="' + s + '" target="_blank">x2</a>,' + copylocal + copy + stableau;
+      }
       var mailurl;
       if (UI.from.length > 9 && UI.from.substr(UI.from.length - 9, 9) == "gmail.com")
         mailurl = 'https://mail.google.com/mail/?view=cm&fs=1&tf=1&source=mailto&su=session+Xcas&to=' + UI.mailto;
@@ -2487,9 +2503,22 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     if (form.online_doc.checked)
       UI.docprefix = UI.base_url + 'giac/doc/' + (UI.langue == -1 ? 'fr/cascmd_fr/' : 'en/cascmd_en/');
     else
-	UI.docprefix = "file://" + form.doc_path.value;
-      // doc francaise en local, 
-      if (UI.langue==-1) UI.docprefix = "giac/doc/fr/cascmd_fr/";
+      UI.docprefix = "file://" + form.doc_path.value;
+    UI.local_url="file://" + form.doc_path.value;
+    let j=0;
+    for (let s=UI.local_url.length-1;s>=0;--s){
+      //console.log(j,s,UI.local_url[s]);
+      if (UI.local_url[s]=='/'){
+        ++j;
+        if (j==3){
+          UI.local_url=UI.local_url.substr(0,s+1);
+          //console.log(s,UI.local_url);
+          break;
+        }
+      }
+    }
+    // doc francaise en local, 
+    if (UI.langue==-1) UI.docprefix = "giac/doc/fr/cascmd_fr/";
     if (form.prettyprint.checked) UI.prettyprint = true; else UI.prettyprint = false;
     if (form.worker_mode.checked) {
       if (!UI.withworker) {

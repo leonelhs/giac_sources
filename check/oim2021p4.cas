@@ -1,0 +1,31 @@
+f(A,D,J):=reflection(projection(line(A,D),J),A);
+c:=cercle(0,1);
+p1:=point(-1,,affichage=nom_cache);
+supposons(b=[-0.5,-5,5,0.1]);
+supposons(c=[0.1,-5,5,0.1]);
+supposons(d=[0.9,-5,5,0.1]);
+p2:=point((1+i*b)/(1-i*b) ,affichage=nom_cache);
+p3:=point((1+i*c)/(1-i*c) ,affichage=nom_cache);
+p4:=point((1+i*d)/(1-i*d) ,affichage=nom_cache);
+l1:=perpendiculaire(p1, droite(0,p1),affichage=nom_cache);
+l2:=perpendiculaire(p2, droite(0,p2),affichage=nom_cache);
+l3:=perpendiculaire(p3, droite(0,p3),affichage=nom_cache);
+l4:=perpendiculaire(p4, droite(0,p4),affichage=nom_cache);
+A:=inter_unique(l1,l4);
+B:=inter_unique(l1,l2);
+C:=inter_unique(l2,l3);
+D:=inter_unique(l3,l4);
+polygone(A,B,C,D,couleur=rouge);
+I:=point(0);
+Omega:=circonscrit(A,I,C);
+J:=centre(Omega);
+X:=f(A,B,J);
+Z:=f(C,B,J);
+Y:=f(A,D,J);
+T:=f(C,D,J);
+
+
+d1:=distance(A,D)+distance(D,T)+distance(T,X)+distance(X,A):;
+d2:=distance(C,D)+distance(D,Y)+distance(Y,Z)+distance(Z,C):;
+normal(d1-d2);
+

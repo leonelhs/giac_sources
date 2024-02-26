@@ -1,0 +1,25 @@
+X:=point(-1);
+supposons(a=[0.6,-5,5,0.1]);
+Y:=point((1+i*a)/(1-i*a));
+supposons(b=[0.4,-5,5,0.1]);
+Z:=point((1+i*b)/(1-i*b));
+supposons(c=[-4.0,-5,5,0.1]);
+W:=point((1+i*c)/(1-i*c));
+cercle(0,1);
+A:=inter_unique(rotation(X,pi/2,droite(0,X)), rotation(Z,pi/2,droite(0,Z)));
+B:=inter_unique (rotation(W,pi/2,droite(0,W)), rotation(Z,pi/2,droite(0,Z)));
+D:=inter_unique( rotation(X,pi/2,droite(0,X)), rotation(Y,pi/2,droite(0,Y)));
+C:=inter_unique(rotation(W,pi/2,droite(0,W)), rotation(Y,pi/2,droite(0,Y)));
+triangle(A,B,C); triangle(A,D,C);
+w1:=inscrit(triangle(A,B,C),affichage=nom_cache);
+I1:=centre(w1);
+w2:=inscrit(triangle(A,D,C),affichage=nom_cache);
+I2:=centre(w2);
+d:=droite(I1,I2,affichage=nom_cache);
+equation(d);
+eq:=subst(x^2+y^2-1,equation(d));
+S:=solve(eq);
+evalf(S);
+X:=S[0]; Y:=right(normal(subst(equation(d),x=X)));
+normal(distance2(I1,point(X,Y))*radius2(w2)-distance2(I2,point(X,Y))*radius2(w1));
+

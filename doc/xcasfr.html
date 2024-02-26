@@ -43,6 +43,7 @@
     div.emscripten {
       text-align: center;
     }
+
   </style>
   <style id="document_style" type="text/css">
     h3 {
@@ -81,6 +82,7 @@
     }
   </style>
   <style type="text/css">
+    #divoutput span.mjx-chtml.MJXc-display { display: inline-block; }
     .matrixcell {
       font-size: 18px;
       width: 80px;
@@ -475,6 +477,7 @@
 <span id='thelink'></span>
 <span id='themailto'></span>
 <textarea id='theforumlink' style="display:none"></textarea>
+<textarea id='locallink' style="display:none"></textarea>
 <span id="history1" style="display:none">
         <button class="bouton" title="Cliquer ici pour sauvegarder l'historique avec le nom de fichier du champ texte qui suit" onclick="if ($id('loadbutton_file').style.display=='none') UI.savesession(2); else UI.savesession(0);">&#x1f4be;</button>
         <textarea cols="7" id="outputfilename" class="filenamecss" style="font-size:large" title="Nom de sauvegarde du fichier. Avec Firefox, pour pouvoir faire plusieurs sauvegardes sous le meme nom, cocher Toujours demander... dans Pr&eacute;f&eacute;rences, G&eacute;n&eacute;ral, T&eacute;l&eacute;chargements.">session</textarea>
@@ -3979,8 +3982,9 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     var ua = window.navigator.userAgent;
     var old_ie = ua.indexOf('MSIE ');
     var new_ie = ua.indexOf('Trident/');
+    var isSafari = /^((?!chrome|android).)*safari/i.test(ua);
     if ((old_ie > -1) || (new_ie > -1) 
-        || Boolean(window.chrome)
+        || Boolean(window.chrome) || isSafari
         ) {
         (function () {
             var script = document.createElement("script");
@@ -4027,7 +4031,8 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
         var ua = window.navigator.userAgent;
         var old_ie = ua.indexOf('MSIE ');
         var new_ie = ua.indexOf('Trident/');
-        if (Boolean(window.chrome) && window.location.href.substr(0, 4) != 'file') UI.prettyprint = false;
+        var isSafari = /^((?!chrome|android).)*safari/i.test(ua);
+        if ( (isSafari || Boolean(window.chrome)) && window.location.href.substr(0, 4) != 'file') UI.prettyprint = false;
         if ((old_ie > -1) || (new_ie > -1)) UI.isie = true;
         var bt = UI.browser_type();
         if (UI.isie || (bt!=1 && bt!=2 )) {

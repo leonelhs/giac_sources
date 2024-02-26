@@ -21,5 +21,6 @@ EXTRA_DIST = 	chk_integrate chk_intinda chk_intindbo chk_intindbr \
 		intindh.out intinds.out intindt.out \
 		factor.out normalize.out partfrac.out \
 		limit.out cas.out geo.out flanex \
-		TP*sol.cas TP*sol.cas.out* morley_demo.* xavier.* README
+		TP*sol.cas TP*sol.cas.out* morley_demo.* xavier.* \
+		oim*p*.cas oim.out README
 TESTS_ENVIRONMENT = top_srcdir=$(top_srcdir)

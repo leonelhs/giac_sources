@@ -1,0 +1,22 @@
+pointc(x):=(1+i*x)/(1-i*x);
+inter_c(A,D):=reflection(projection(line(A,D),0),A);
+assume(b=[0.3,0,2,0.1]);
+assume(c=[-0.6,-2,0,0.1]);
+A:=point(-1);
+B:=point(pointc(b));
+C:=point(pointc(c));
+triangle(A,B,C);circle(0,1); O:=point(0);
+supposons(p=[0.6,0,1,0.1]);
+P:=C+p*(A-C);
+supposons(q=[0.3,0,1,0.1]);
+Q:=A+q*(B-A);
+K:=milieu(B,P);
+L:=milieu(C,Q);
+M:=milieu(P,Q);
+gamma:=circonscrit(K,L,M);
+PQ:=droite(P,Q);
+J:=centre(gamma);
+I:=projection(P,Q,J);
+factor(I-M);
+factor(distance2(O,P)-distance2(O,Q));
+
